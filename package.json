@@ -7,7 +7,7 @@
     "serve": "vue-cli-service serve --host 0.0.0.0",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "electron:build": "npm run build && electron-packager . \"玄玉逍游\" --platform=win32 --arch=x64 --out=electron-build-new --overwrite --ignore=node_modules --ignore=.git",
+    "electron:build": "npm run build && electron-packager . --platform=win32 --arch=x64 --out=dist-electron",
     "electron:serve": "electron ."
   },
   "dependencies": {
