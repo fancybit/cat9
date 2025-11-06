@@ -1,0 +1,360 @@
+/* 全局样式重置与基础设置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #333333;
+  color: #ffffff;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* 根变量 - 全局主题色定义 */
+:root {
+  --primary-color: #333333;
+  --secondary-color: #222222;
+  --accent-color: #4a6da7;
+  --button-primary: #4a9f7b;
+  --button-hover: #5ab98c;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --border-color: #444444;
+  --card-bg: #444444;
+  --hover-bg: #555555;
+  --error-color: #9d2932;
+  --success-color: #4a9f7b;
+  --warning-color: #e3cf64;
+  --info-color: #2b79a2;
+}
+
+/* 容器样式 */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* 按钮基础样式 */
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  outline: none;
+}
+
+.btn-primary {
+  background-color: var(--button-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--button-hover);
+  box-shadow: 0 2px 8px rgba(74, 159, 123, 0.3);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--button-primary);
+  border: 1px solid var(--button-primary);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(74, 159, 123, 0.1);
+}
+
+.btn-danger {
+  background-color: var(--error-color);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #b03641;
+}
+
+.btn-success {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #5ab98c;
+}
+
+/* 卡片基础样式 */
+.card {
+  background-color: var(--card-bg);
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* 表单元素样式 */
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: #222222;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  color: var(--text-primary);
+  font-size: 14px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--button-primary);
+  box-shadow: 0 0 0 2px rgba(74, 159, 123, 0.2);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+/* 导航栏样式 */
+.navbar {
+  background-color: var(--secondary-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0;
+}
+
+/* 页面内容区域 */
+.page-content {
+  padding: 30px 0;
+  min-height: calc(100vh - 120px);
+}
+
+/* 标题样式 */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+h1 {
+  font-size: 28px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+/* 链接样式 */
+a {
+  color: var(--button-primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--button-hover);
+  text-decoration: underline;
+}
+
+/* 网格布局 */
+.grid {
+  display: grid;
+  gap: 16px;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* 分隔线 */
+.divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 24px 0;
+}
+
+/* 动画效果 */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 响应式设计系统 */
+
+/* 断点定义 */
+@media (max-width: 767px) {
+  /* 移动设备 */
+  .container {
+    padding: 0 15px;
+  }
+  
+  h1 {
+    font-size: 24px;
+  }
+  
+  h2 {
+    font-size: 20px;
+  }
+  
+  h3 {
+    font-size: 18px;
+  }
+  
+  .grid-cols-2,
+  .grid-cols-3,
+  .grid-cols-4 {
+    grid-template-columns: 1fr;
+  }
+  
+  .btn {
+    width: 100%;
+    padding: 12px 16px;
+  }
+  
+  .card {
+    padding: 12px;
+  }
+  
+  .page-content {
+    padding: 20px 0;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* 平板设备 */
+  .grid-cols-3,
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  /* 桌面设备 */
+  .container {
+    padding: 0 20px;
+  }
+}
+
+@media (min-width: 1440px) {
+  /* 大屏设备 */
+  .container {
+    max-width: 1400px;
+  }
+}
+
+/* 游戏卡片特殊样式 */
+.game-card {
+  background-color: var(--card-bg);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--border-color);
+}
+
+.game-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.game-card-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.game-card-content {
+  padding: 16px;
+}
+
+.game-card-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.game-card-price {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--button-primary);
+}
+
+/* 加载状态 */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  color: var(--text-secondary);
+}
+
+.loading-spinner {
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top: 3px solid var(--button-primary);
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 错误状态 */
+.error {
+  color: var(--error-color);
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* 成功状态 */
+.success {
+  color: var(--success-color);
+  font-size: 14px;
+  margin-top: 5px;
+}

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="actionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF4136;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF851B;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="20" fill="url(#actionGradient)" />
+  <g transform="translate(50, 50) scale(0.6)">
+    <!-- 游戏手柄 -->
+    <rect x="20" y="30" width="120" height="80" rx="10" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="2" />
+    <!-- 方向键 -->
+    <circle cx="50" cy="70" r="15" fill="#333333" />
+    <circle cx="70" cy="50" r="15" fill="#333333" />
+    <circle cx="70" cy="70" r="20" fill="#FFFFFF" stroke="#333333" stroke-width="2" />
+    <circle cx="70" cy="90" r="15" fill="#333333" />
+    <circle cx="90" cy="70" r="15" fill="#333333" />
+    <!-- 动作按钮 -->
+    <circle cx="130" cy="50" r="20" fill="#FF4136" />
+    <circle cx="170" cy="60" r="20" fill="#0074D9" />
+    <!-- 火焰效果 -->
+    <path d="M180,120 Q190,100 180,80 Q170,60 160,70 Q150,80 160,90 Q170,100 180,120 Z" fill="#FF851B" opacity="0.8" />
+    <path d="M185,115 Q195,95 185,75 Q175,55 165,65 Q155,75 165,85 Q175,95 185,115 Z" fill="#FFDC00" opacity="0.6" />
+  </g>
+</svg>

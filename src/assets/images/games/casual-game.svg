@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="casualGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFDC00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF851B;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="20" fill="url(#casualGradient)" />
+  <g transform="translate(60, 60) scale(0.8)">
+    <!-- 休闲游戏元素：方块匹配 -->
+    <rect x="0" y="0" width="30" height="30" rx="3" fill="#FF4136" />
+    <rect x="40" y="0" width="30" height="30" rx="3" fill="#0074D9" />
+    <rect x="80" y="0" width="30" height="30" rx="3" fill="#2ECC40" />
+    
+    <rect x="0" y="40" width="30" height="30" rx="3" fill="#0074D9" />
+    <rect x="40" y="40" width="30" height="30" rx="3" fill="#2ECC40" />
+    <rect x="80" y="40" width="30" height="30" rx="3" fill="#FF4136" />
+    
+    <!-- 笑脸 -->
+    <circle cx="60" cy="100" r="30" fill="#FFFFFF" />
+    <circle cx="50" cy="90" r="5" fill="#000000" />
+    <circle cx="70" cy="90" r="5" fill="#000000" />
+    <path d="M45,110 Q60,125 75,110" stroke="#000000" stroke-width="3" fill="none" />
+    
+    <!-- 星星 -->
+    <path d="M120,20 L131,40 L152,42 L136,56 L140,77 L120,67 L100,77 L104,56 L88,42 L109,40 Z" fill="#FFFFFF" opacity="0.8" />
+  </g>
+</svg>

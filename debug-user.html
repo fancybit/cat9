@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户数据调试工具</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .result-section {
+            margin-top: 20px;
+        }
+        .admin-check {
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .is-admin {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .not-admin {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>用户数据调试工具</h1>
+        <p>此工具用于检查浏览器中localStorage的用户数据，特别是管理员权限相关信息。</p>
+        
+        <button class="button" onclick="checkUserData()">检查用户数据</button>
+        <button class="button" onclick="clearUserData()">清除用户数据</button>
+        
+        <div class="result-section">
+            <h2>localStorage中的用户数据：</h2>
+            <pre id="userData"></pre>
+        </div>
+        
+        <div class="result-section">
+            <h2>管理员权限检查结果：</h2>
+            <div id="adminCheck" class="admin-check"></div>
+        </div>
+        
+        <div class="result-section">
+            <h2>调试信息：</h2>
+            <pre id="debugInfo"></pre>
+        </div>
+    </div>
+
+    <script>
+        function checkUserData() {
+            // 获取用户数据
+            const userStr = localStorage.getItem('user');
+            const userDataElement = document.getElementById('userData');
+            const adminCheckElement = document.getElementById('adminCheck');
+            const debugInfoElement = document.getElementById('debugInfo');
+            
+            // 显示原始用户数据
+            if (userStr) {
+                try {
+                    const userObj = JSON.parse(userStr);
+                    userDataElement.textContent = JSON.stringify(userObj, null, 2);
+                    
+                    // 检查管理员权限
+                    const isLoggedIn = userStr !== null;
+                    const hasRoleAdmin = userObj.role === 'admin';
+                    const hasRolesArray = Array.isArray(userObj.roles);
+                    const hasAdminInRoles = hasRolesArray && userObj.roles.includes('admin');
+                    const isAdmin = isLoggedIn && (hasRoleAdmin || hasAdminInRoles);
+                    
+                    // 显示管理员检查结果
+                    if (isAdmin) {
+                        adminCheckElement.textContent = '用户是管理员！应显示后台管理按钮。';
+                        adminCheckElement.className = 'admin-check is-admin';
+                    } else {
+                        adminCheckElement.textContent = '用户不是管理员。不会显示后台管理按钮。';
+                        adminCheckElement.className = 'admin-check not-admin';
+                    }
+                    
+                    // 显示详细调试信息
+                    let debugInfo = '';
+                    debugInfo += `isLoggedIn: ${isLoggedIn}\n`;
+                    debugInfo += `user.role: ${userObj.role || 'undefined'}\n`;
+                    debugInfo += `hasRoleAdmin: ${hasRoleAdmin}\n`;
+                    debugInfo += `user.roles 类型: ${typeof userObj.roles}\n`;
+                    debugInfo += `hasRolesArray: ${hasRolesArray}\n`;
+                    if (hasRolesArray) {
+                        debugInfo += `user.roles 内容: ${JSON.stringify(userObj.roles)}\n`;
+                    }
+                    debugInfo += `hasAdminInRoles: ${hasAdminInRoles}\n`;
+                    debugInfo += `最终isAdmin结果: ${isAdmin}`;
+                    debugInfoElement.textContent = debugInfo;
+                    
+                } catch (e) {
+                    userDataElement.textContent = `用户数据格式错误: ${e.message}`;
+                    adminCheckElement.textContent = '无法解析用户数据';
+                    adminCheckElement.className = 'admin-check not-admin';
+                    debugInfoElement.textContent = `错误: ${e.message}`;
+                }
+            } else {
+                userDataElement.textContent = 'localStorage中没有用户数据';
+                adminCheckElement.textContent = '用户未登录';
+                adminCheckElement.className = 'admin-check not-admin';
+                debugInfoElement.textContent = 'isLoggedIn: false';
+            }
+        }
+        
+        function clearUserData() {
+            if (confirm('确定要清除localStorage中的用户数据吗？这将模拟退出登录。')) {
+                localStorage.removeItem('user');
+                alert('用户数据已清除');
+                checkUserData(); // 重新检查以显示变化
+            }
+        }
+        
+        // 页面加载时自动检查
+        window.onload = checkUserData;
+    </script>
+</body>
+</html>

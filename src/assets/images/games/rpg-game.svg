@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="rpgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B4513;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2E8B57;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="20" fill="url(#rpgGradient)" />
+  <g transform="translate(60, 40) scale(0.7)">
+    <!-- 角色剪影 -->
+    <circle cx="80" cy="30" r="20" fill="#FFFFFF" />
+    <path d="M60,50 L100,50 L110,90 L90,100 L110,150 L70,150 L70,100 L50,90 Z" fill="#FFFFFF" />
+    <!-- 剑 -->
+    <rect x="110" y="60" width="10" height="50" fill="#C0C0C0" />
+    <path d="M115,30 L125,40 L115,50 L105,40 Z" fill="#FFD700" />
+    <!-- 魔法效果 -->
+    <circle cx="40" cy="70" r="15" fill="#4169E1" opacity="0.7" />
+    <circle cx="40" cy="70" r="10" fill="#00BFFF" opacity="0.8" />
+    <circle cx="40" cy="70" r="5" fill="#87CEEB" opacity="0.9" />
+    <!-- 经验值条 -->
+    <rect x="20" y="170" width="120" height="10" rx="5" fill="#333333" />
+    <rect x="20" y="170" width="80" height="10" rx="5" fill="#FFD700" />
+  </g>
+</svg>

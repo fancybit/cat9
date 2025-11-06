@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "username": "testuser",
+    "email": "test@example.com",
+    "passwordHash": "$2a$10$samplehash123456789",
+    "coins": 1000,
+    "role": "user",
+    "createdAt": "2023-01-01T00:00:00.000Z",
+    "updatedAt": "2023-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "username": "admin",
+    "email": "admin@example.com",
+    "passwordHash": "$2a$10$adminhash123456789",
+    "coins": 10000,
+    "role": "admin",
+    "createdAt": "2023-01-01T00:00:00.000Z",
+    "updatedAt": "2023-01-01T00:00:00.000Z"
+  },
+    {
+    "id": 3,
+    "username": "fancybit",
+    "email": "fancybit@qq.com",
+    "passwordHash": "$2a$10$adminhash123456789",
+    "coins": 10000,
+    "role": "admin",
+    "createdAt": "2023-01-01T00:00:00.000Z",
+    "updatedAt": "2023-01-01T00:00:00.000Z"
+  }
+]
