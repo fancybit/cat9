@@ -1,0 +1,21 @@
+{
+  "appId": "com.example.cat9",
+  "productName": "玄玉逍游",
+  "directories": {
+    "output": "electron-build"
+  },
+  "files": [
+    "dist/",
+    "background.js",
+    "electron/"
+  ],
+  "win": {
+    "target": "nsis",
+    "icon": "public/favicon.ico",
+    "requestedExecutionLevel": "asInvoker"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true
+  }
+}
