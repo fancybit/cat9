@@ -7,7 +7,7 @@
     "serve": "vue-cli-service serve --host 0.0.0.0",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "electron:build": "npm run build && electron-packager . cat9 --platform=win32 --arch=x64 --out=dist-electron --overwrite",
+    "electron:build": "npm run build && electron-packager . cat9 --platform=win32 --arch=x64 --out=dist-exe --overwrite",
     "electron:serve": "electron ."
   },
   "dependencies": {
@@ -26,6 +26,7 @@
     "electron": "^28.3.3",
     "electron-builder": "^24.13.3",
     "electron-packager": "^17.1.2",
+    "electron-squirrel-startup": "^1.0.1",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "mini-css-extract-plugin": "^2.9.4"
@@ -64,9 +65,13 @@
     ],
     "win": {
       "target": [
-        "portable"
+        "squirrel"
       ],
       "sign": false
+    },
+    "squirrelWindows": {
+      "shortcutName": "玄玉逍游",
+      "iconUrl": "public/favicon.ico"
     },
     "electronDownload": {
       "mirror": "https://npm.taobao.org/mirrors/electron/"

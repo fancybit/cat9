@@ -1,21 +1,18 @@
-{
-  "appId": "com.example.cat9",
-  "productName": "玄玉逍游",
-  "directories": {
-    "output": "electron-build"
-  },
-  "files": [
-    "dist/",
-    "background.js",
-    "electron/"
-  ],
-  "win": {
-    "target": "nsis",
-    "icon": "public/favicon.ico",
-    "requestedExecutionLevel": "asInvoker"
-  },
-  "nsis": {
-    "oneClick": false,
-    "allowToChangeInstallationDirectory": true
-  }
-}
+appId: com.cat9.app
+productName: cat9
+files:
+  - 'dist/**/*'
+  - 'electron/**/*'
+  - 'background.js'
+  - 'package.json'
+win:
+  target: portable
+  icon: public/favicon.ico
+  signAndEditExecutable: false
+  rfc3161TimeStampServer: false
+  timeStampServer: false
+signAndEditExecutable: false
+buildDependenciesFromSource: true
+winSignAndEditExecutable: false
+compression: store
+asar: false

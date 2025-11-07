@@ -72,3 +72,4 @@ node_modules
 /electron-build-latest
 /electron-build-new
 /electron-build-trace
+/dist-exe

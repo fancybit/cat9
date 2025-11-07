@@ -42,9 +42,14 @@ try {
   logMessage('Feature modules not found: ' + error.message)
 }
 
-// 处理Windows安装和更新
-if (require('electron-squirrel-startup')) {
-  app.quit()
+// 处理Windows安装和更新 - 添加错误处理以防止模块缺失时崩溃
+try {
+  // 仅在模块存在时才尝试加载和使用
+  if (require('electron-squirrel-startup')) {
+    app.quit()
+  }
+} catch (error) {
+  logMessage('electron-squirrel-startup模块未找到，但应用将继续运行: ' + error.message)
 }
 
 // 创建窗口函数
