@@ -6,17 +6,17 @@
         <div class="logo-container">
           <img src="@/assets/logo.png" alt="玄玉逍游" class="logo-image">
           <div class="logo-text">
-            <h1 style="margin:5px;text-align: center;">玄玉逍游<br/> <span>MetaJadeGaming</span></h1>
+            <h1 style="margin:5px;text-align: center;">玄玉逍游<br /> <span>MetaJadeGaming</span></h1>
           </div>
         </div>
-        
+
         <!-- 移动端汉堡菜单 -->
         <button class="menu-toggle mobile-only" @click="toggleMenu">
           <span class="menu-icon"></span>
           <span class="menu-icon"></span>
           <span class="menu-icon"></span>
         </button>
-        
+
         <!-- 桌面端导航 -->
         <nav :class="desktopNavClasses">
           <ul>
@@ -33,7 +33,7 @@
             <li><a href="#" class="nav-link">{{ $t('navbar.aboutUs') }}</a></li>
           </ul>
         </nav>
-        
+
         <!-- 桌面端用户控件和语言选择器 -->
         <div class="user-controls desktop-only">
           <!-- PC版语言选择器 - 导航栏右侧 -->
@@ -43,18 +43,13 @@
               <span class="dropdown-arrow" :class="{ 'open': languageMenuOpen }">▼</span>
             </button>
             <div class="language-dropdown" v-show="languageMenuOpen">
-              <div 
-                v-for="(name, code) in supportedLanguages" 
-                :key="code" 
-                class="language-option"
-                :class="{ 'active': currentLanguage === code }"
-                @click="changeLanguage(code)"
-              >
+              <div v-for="(name, code) in supportedLanguages" :key="code" class="language-option"
+                :class="{ 'active': currentLanguage === code }" @click="changeLanguage(code)">
                 {{ name }}
               </div>
             </div>
           </div>
-          
+
           <template v-if="isLoggedIn">
             <router-link to="/profile" class="user-profile">
               <div class="user-avatar">{{ userInitial }}</div>
@@ -68,9 +63,9 @@
         </div>
       </div>
     </header>
-    
+
     <!-- 移动端语言选择器已整合到移动菜单中 -->
-    
+
     <!-- 移动端导航菜单 -->
     <div class="mobile-menu" v-show="menuOpen">
       <ul>
@@ -84,29 +79,39 @@
               <span class="dropdown-arrow" :class="mobileLanguageMenuOpen ? 'open' : ''">▼</span>
             </button>
             <div class="language-dropdown mobile-lang-dropdown" :class="mobileLanguageMenuOpen ? 'open' : 'closed'">
-              <div 
-                v-for="(name, code) in supportedLanguages" 
-                :key="code" 
-                class="language-option"
-                :class="{ 'active': currentLanguage === code }"
-                @click="changeLanguage(code)"
-              >
+              <div v-for="(name, code) in supportedLanguages" :key="code" class="language-option"
+                :class="{ 'active': currentLanguage === code }" @click="changeLanguage(code)">
                 {{ name }}
               </div>
             </div>
           </div>
         </li>
-        
-        <li><router-link to="/" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.home') }}</router-link></li>
-        <li><router-link to="/store" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.store') }}</router-link></li>
-        <li><router-link to="/library" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.library') }}</router-link></li>
-        <li><router-link to="/downloads" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.downloads') }}</router-link></li>
-        <li><router-link to="/auction" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.auction') }}</router-link></li>
-        <li><router-link to="/community" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.community') }}</router-link></li>
-        <li><router-link to="/developer" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.developer') }}</router-link></li>
-        <li><router-link to="/audit-team" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.auditTeam') }}</router-link></li>
-        <li v-if="isAdmin"><router-link to="/admin" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.admin') }}</router-link></li>
-        <li v-if="isAdmin"><router-link to="/dht-manager" class="nav-link mobile-link" @click="menuOpen = false">DHT 管理器</router-link></li>
+
+        <li><router-link to="/" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.home')
+            }}</router-link>
+        </li>
+        <li><router-link to="/store" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.store')
+            }}</router-link></li>
+        <li><router-link to="/library" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.library')
+            }}</router-link></li>
+        <li><router-link to="/downloads" class="nav-link mobile-link" @click="menuOpen = false">{{
+          $t('navbar.downloads')
+            }}</router-link></li>
+        <li><router-link to="/auction" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.auction')
+            }}</router-link></li>
+        <li><router-link to="/community" class="nav-link mobile-link" @click="menuOpen = false">{{
+          $t('navbar.community')
+            }}</router-link></li>
+        <li><router-link to="/developer" class="nav-link mobile-link" @click="menuOpen = false">{{
+          $t('navbar.developer')
+            }}</router-link></li>
+        <li><router-link to="/audit-team" class="nav-link mobile-link" @click="menuOpen = false">{{
+          $t('navbar.auditTeam')
+            }}</router-link></li>
+        <li v-if="isAdmin"><router-link to="/admin" class="nav-link mobile-link" @click="menuOpen = false">{{
+          $t('navbar.admin') }}</router-link></li>
+        <li v-if="isAdmin"><router-link to="/dht-manager" class="nav-link mobile-link" @click="menuOpen = false">DHT
+            管理器</router-link></li>
         <li><a href="#" class="nav-link mobile-link">{{ $t('navbar.aboutUs') }}</a></li>
         <li v-if="isLoggedIn">
           <router-link to="/profile" class="nav-link mobile-link" @click="menuOpen = false">
@@ -115,19 +120,21 @@
           </router-link>
         </li>
         <li v-if="!isLoggedIn">
-          <router-link to="/login" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.login') }}</router-link>
+          <router-link to="/login" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.login')
+            }}</router-link>
         </li>
         <li v-if="!isLoggedIn">
-          <router-link to="/register" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.register') }}</router-link>
+          <router-link to="/register" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.register')
+            }}</router-link>
         </li>
       </ul>
     </div>
-    
+
     <!-- 主内容区 -->
     <main class="main-content">
       <router-view />
     </main>
-    
+
     <!-- 页脚 -->
     <footer class="footer">
       <div class="container">
@@ -151,7 +158,8 @@
             <p>{{ $t('footer.email') }}: <a href="mailto:fancybit@qq.com" target="_blank">fancybit@qq.com</a></p>
             <p>{{ $t('footer.qqSpace') }}: <a href="https://148332727.qzone.qq.com" target="_blank">点击进入</a></p>
             <p>{{ $t('footer.qq') }}: <a href="tencent://message/?uin=148332727" target="_blank">148332727</a></p>
-            <p>{{ $t('footer.qqGroup') }}: {{ $t('footer.groupName') }} <a href="https://jq.qq.com/?_wv=1027&k=1025446555" target="_blank">1025446555</a></p>
+            <p>{{ $t('footer.qqGroup') }}: {{ $t('footer.groupName') }} <a
+                href="https://jq.qq.com/?_wv=1027&k=1025446555" target="_blank">1025446555</a></p>
 
           </div>
         </div>
@@ -202,26 +210,34 @@ export default {
     changeLanguage(lang) {
       // 保存语言设置到localStorage
       localStorage.setItem('selectedLanguage', lang)
-      
+
+      if (window.channels && window.channels.LangChannel) {
+        window.channels.LangChannel.postMessage({
+          type: "langChanged",
+          lang: lang,
+          timestamp: new Date().toISOString()
+        });
+      }
+
       // 更新i18n实例的locale，确保格式一致性
       if (this.$i18n) {
         // 将语言代码转换为大写格式以匹配messages对象的键
         const formattedLang = lang.replace(/-([a-z])/g, (match, p1) => p1.toUpperCase())
         this.$i18n.locale = formattedLang
       }
-      
+
       // 更新HTML的lang属性
       if (document && document.documentElement) {
         // 格式化为标准的lang属性值（如en-US, zh-CN）
         const htmlLang = lang.replace(/-([a-z])/g, (match, p1) => '-' + p1.toUpperCase())
         document.documentElement.lang = htmlLang
       }
-      
+
       // 关闭所有菜单
       this.languageMenuOpen = false
       this.mobileLanguageMenuOpen = false
       this.menuOpen = false
-      
+
       // 刷新页面以应用所有翻译
       window.location.reload()
     },
@@ -229,19 +245,19 @@ export default {
     getBrowserLanguage() {
       const lang = navigator.language || navigator.userLanguage || 'zh-CN'
       const langLower = lang.toLowerCase()
-      
+
       // 检查是否为中文环境
       if (langLower.includes('zh')) {
         return langLower.includes('tw') ? 'zh-tw' : 'zh-cn'
       }
-      
+
       // 检查其他支持的语言
       for (const code in this.supportedLanguages) {
         if (langLower.includes(code.split('-')[0])) {
           return code
         }
       }
-      
+
       return 'zh-cn'
     },
     // 监听点击外部关闭语言菜单
@@ -253,7 +269,7 @@ export default {
         // 如果点击的不是语言选择器元素，关闭菜单
         const isClickInsideLanguageSelector = languageSelector && languageSelector.contains(event.target)
         const isClickInsideLogoLanguageSelector = logoLanguageSelector && logoLanguageSelector.contains(event.target)
-        
+
         if (!isClickInsideLanguageSelector && !isClickInsideLogoLanguageSelector) {
           this.languageMenuOpen = false
         }
@@ -292,9 +308,9 @@ export default {
     },
     isAdmin() {
       // 同时检查role字段和roles数组，兼容不同的数据格式
-      return this.isLoggedIn && 
-             (this.user.role === 'admin' || 
-              (this.user.roles && this.user.roles.includes('admin')))
+      return this.isLoggedIn &&
+        (this.user.role === 'admin' ||
+          (this.user.roles && this.user.roles.includes('admin')))
     },
     currentLanguage() {
       // 返回当前的i18n语言设置或默认语言
@@ -320,7 +336,7 @@ export default {
     document.addEventListener('click', this.handleClickOutside)
     // 添加窗口大小变化监听器，确保在屏幕变宽时关闭移动端菜单
     window.addEventListener('resize', this.handleResize)
-    
+
     // 初始化HTML的lang属性
     if (document && document.documentElement) {
       // 使用当前语言设置HTML lang属性
@@ -393,7 +409,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }
 
@@ -412,7 +428,7 @@ body {
 }
 
 .logo-image {
-  width:64px;
+  width: 64px;
   height: 64px;
   margin-right: 8px;
 }
@@ -472,7 +488,8 @@ body {
   background-color: #222;
 }
 
-.login-button, .register-button {
+.login-button,
+.register-button {
   color: white;
   text-decoration: none;
   padding: 8px 15px;
@@ -606,13 +623,16 @@ body {
   .language-selector {
     margin-right: 15px;
   }
-  
+
   /* 调整语言选择按钮位置，使其与导航栏元素对齐 */
   .user-controls .language-selector .language-button {
-    padding: 5px 10px; /* 减小padding使其与导航链接一致 */
-    height: 36px; /* 设置固定高度 */
+    padding: 5px 10px;
+    /* 减小padding使其与导航链接一致 */
+    height: 36px;
+    /* 设置固定高度 */
     vertical-align: middle;
-    margin-top: 20px; /* 将按钮向下移动20像素 */
+    margin-top: 20px;
+    /* 将按钮向下移动20像素 */
   }
 }
 
@@ -713,7 +733,8 @@ body {
   position: absolute;
   top: 100%;
   left: 0;
-  width: 120px; /* 下拉菜单适当加宽以便显示语言名称 */
+  width: 120px;
+  /* 下拉菜单适当加宽以便显示语言名称 */
   background-color: #222;
   border: 1px solid #444;
   border-radius: 4px;
@@ -776,17 +797,17 @@ body {
   .logo-text h1 {
     font-size: 1.5rem;
   }
-  
+
   .footer-content {
     flex-direction: row;
     justify-content: space-between;
   }
-  
+
   .footer-column {
     flex: 1;
   }
-  
-  
+
+
 }
 
 /* 桌面端样式 */
@@ -794,30 +815,30 @@ body {
   .desktop-only {
     display: block;
   }
-  
+
   .mobile-only {
     display: none;
   }
-  
+
   .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  
+
   /* 确保页脚copyright单独一行并居中 */
   .footer .container {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .footer-content {
     display: flex;
     justify-content: space-between;
     width: 100%;
     margin-bottom: 20px;
   }
-  
+
   .copyright {
     width: 100%;
     text-align: center;
@@ -825,28 +846,28 @@ body {
     padding-top: 20px;
     border-top: 1px solid #333;
   }
-  
+
   .main-nav ul {
     flex-direction: row;
   }
-  
+
   .nav-link {
     padding: 20px 15px;
   }
-  
+
   .user-controls {
     background-color: transparent;
     padding: 0;
     display: flex;
     align-items: center;
   }
-  
+
   /* 在平板和桌面端显示语言选择器 */
   .language-selector {
     display: flex;
     margin-right: 15px;
   }
-  
+
   .language-button {
     width: auto;
     background-color: #333;
@@ -859,7 +880,7 @@ body {
     align-items: center;
     justify-content: space-between;
   }
-  
+
   .language-dropdown {
     position: absolute;
     top: 100%;
@@ -871,7 +892,7 @@ body {
     min-width: 150px;
     z-index: 1000;
   }
-  
+
   .language-dropdown {
     min-width: 150px;
   }
@@ -882,7 +903,7 @@ body {
   .footer-content {
     padding: 0 10px;
   }
-  
+
   .footer-column {
     margin-bottom: 20px;
   }
@@ -893,7 +914,7 @@ body {
   .footer-content {
     flex-wrap: wrap;
   }
-  
+
   .footer-column {
     flex: 0 0 48%;
     margin-bottom: 20px;
