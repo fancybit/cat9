@@ -26,6 +26,7 @@
             <li><router-link to="/downloads" class="nav-link">{{ $t('navbar.downloads') }}</router-link></li>
             <li><router-link to="/auction" class="nav-link">{{ $t('navbar.auction') }}</router-link></li>
             <li><router-link to="/community" class="nav-link">{{ $t('navbar.community') }}</router-link></li>
+            <li v-if="isAdmin"><router-link to="/dht-manager" class="nav-link">DHT 管理器</router-link></li>
             <li><router-link to="/developer" class="nav-link">{{ $t('navbar.developer') }}</router-link></li>
             <li><router-link to="/audit-team" class="nav-link">{{ $t('navbar.auditTeam') }}</router-link></li>
             <li v-if="isAdmin"><router-link to="/admin" class="nav-link">{{ $t('navbar.admin') }}</router-link></li>
@@ -105,6 +106,7 @@
         <li><router-link to="/developer" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.developer') }}</router-link></li>
         <li><router-link to="/audit-team" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.auditTeam') }}</router-link></li>
         <li v-if="isAdmin"><router-link to="/admin" class="nav-link mobile-link" @click="menuOpen = false">{{ $t('navbar.admin') }}</router-link></li>
+        <li v-if="isAdmin"><router-link to="/dht-manager" class="nav-link mobile-link" @click="menuOpen = false">DHT 管理器</router-link></li>
         <li><a href="#" class="nav-link mobile-link">{{ $t('navbar.aboutUs') }}</a></li>
         <li v-if="isLoggedIn">
           <router-link to="/profile" class="nav-link mobile-link" @click="menuOpen = false">
@@ -206,6 +208,13 @@ export default {
         // 将语言代码转换为大写格式以匹配messages对象的键
         const formattedLang = lang.replace(/-([a-z])/g, (match, p1) => p1.toUpperCase())
         this.$i18n.locale = formattedLang
+      }
+      
+      // 更新HTML的lang属性
+      if (document && document.documentElement) {
+        // 格式化为标准的lang属性值（如en-US, zh-CN）
+        const htmlLang = lang.replace(/-([a-z])/g, (match, p1) => '-' + p1.toUpperCase())
+        document.documentElement.lang = htmlLang
       }
       
       // 关闭所有菜单
@@ -311,6 +320,14 @@ export default {
     document.addEventListener('click', this.handleClickOutside)
     // 添加窗口大小变化监听器，确保在屏幕变宽时关闭移动端菜单
     window.addEventListener('resize', this.handleResize)
+    
+    // 初始化HTML的lang属性
+    if (document && document.documentElement) {
+      // 使用当前语言设置HTML lang属性
+      const currentLang = this.currentLanguage
+      // 确保格式为标准的lang属性值（如en-US, zh-CN）
+      document.documentElement.lang = currentLang
+    }
   },
   beforeUnmount() {
     // 移除事件监听

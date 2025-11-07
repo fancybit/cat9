@@ -2,12 +2,13 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const { connectDB, disconnectDB } = require('./config/db');
+const dhtService = require('./services/dhtService');
 
 // 加载环境变量
 dotenv.config();
 
 // 导入DAL实例
-const dal = require('./dal');
+//const dal = require('./dal');
 
 // 创建Express应用
 const app = express();
@@ -26,6 +27,7 @@ app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/software', require('./routes/softwareRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/transactions', require('./routes/transactionRoutes'));
+app.use('/api/dht', require('./routes/dhtRoutes'));
 
 // 基本路由
 app.get('/', (req, res) => {
@@ -51,9 +53,21 @@ app.use((error, req, res, next) => {
 
 // 启动服务器
 const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, '0.0.0.0', async () => {
   console.log(`服务器运行在 http://0.0.0.0:${PORT}`);
   console.log(`环境: ${process.env.NODE_ENV}`);
+  
+  // 初始化 DHT 服务
+  try {
+    const dhtPort = process.env.DHT_PORT || 4001;
+    await dhtService.initialize({
+      port: dhtPort,
+      enableRelay: process.env.ENABLE_DHT_RELAY !== 'false'
+    });
+  } catch (error) {
+    console.error('初始化 DHT 服务失败，但继续运行其他服务:', error);
+  }
+  
   console.log('玄玉逍游后端服务已启动');
 });
 
@@ -63,8 +77,11 @@ process.on('SIGINT', async () => {
   try {
     // 断开数据库连接
     await disconnectDB();
+    
+    // 关闭 DHT 服务
+    await dhtService.shutdown();
   } catch (error) {
-    console.error('关闭数据库连接时出错:', error);
+    console.error('关闭服务时出错:', error);
   }
   server.close(() => {
     console.log('服务器已关闭');

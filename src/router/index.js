@@ -14,6 +14,7 @@ const AuctionHouse = () => import('../views/AuctionHouse.vue')
 const Community = () => import('../views/Community.vue')
 const Developer = () => import('../views/Developer.vue')
 const AuditTeam = () => import('../views/AuditTeam.vue')
+const DHTManager = () => import('../views/DHTManager.vue')
 
 const routes = [
   {
@@ -84,6 +85,12 @@ const routes = [
         path: '/audit-team',
         name: 'AuditTeam',
         component: AuditTeam
+      },
+      {
+        path: '/dht-manager',
+        name: 'DHTManager',
+        component: DHTManager,
+        meta: { requiresAuth: true, requiresAdmin: true }
       }
 ]
 
