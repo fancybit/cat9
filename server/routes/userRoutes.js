@@ -3,18 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const userService = require('../services/userService');
-
-// 模拟认证中间件
-const authMiddleware = (req, res, next) => {
-  // 这里应该有实际的JWT认证逻辑
-  // 目前仅作为示例，假设用户已认证
-  const userId = req.headers['x-user-id'];
-  if (!userId) {
-    return res.status(401).json({ success: false, error: '未认证' });
-  }
-  req.userId = userId;
-  next();
-};
+const { authMiddleware, adminMiddleware } = require('../middleware/auth');
 
 // 用户注册
 router.post('/register', async (req, res) => {
@@ -82,6 +71,40 @@ router.get('/:userId', async (req, res) => {
     res.json({ success: true, user: publicInfo });
   } else {
     res.status(404).json({ success: false, error: '用户不存在' });
+  }
+});
+
+// 请求密码重置
+router.post('/forgot-password', async (req, res) => {
+  const { email } = req.body;
+  const result = await userService.requestPasswordReset(email);
+  if (result.success) {
+    res.json(result);
+  } else {
+    res.status(400).json(result);
+  }
+});
+
+// 验证密码重置令牌
+router.get('/reset-password/:token', async (req, res) => {
+  const token = req.params.token;
+  const result = await userService.verifyResetToken(token);
+  if (result.success) {
+    res.json(result);
+  } else {
+    res.status(400).json(result);
+  }
+});
+
+// 重置密码
+router.post('/reset-password/:userId/:token', async (req, res) => {
+  const { userId, token } = req.params;
+  const { newPassword } = req.body;
+  const result = await userService.resetPassword(userId, token, newPassword);
+  if (result.success) {
+    res.json(result);
+  } else {
+    res.status(400).json(result);
   }
 });
 

@@ -2,7 +2,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const { connectDB, disconnectDB } = require('./config/db');
-const dhtService = require('./services/dhtService');
+// 暂时注释掉dhtService，避免ES模块错误
+// const dhtService = require('./services/dhtService');
 
 // 加载环境变量
 dotenv.config();
@@ -27,7 +28,8 @@ app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/software', require('./routes/softwareRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/transactions', require('./routes/transactionRoutes'));
-app.use('/api/dht', require('./routes/dhtRoutes'));
+// 暂时注释掉DHT路由，避免ES模块错误
+// app.use('/api/dht', require('./routes/dhtRoutes'));
 
 // 基本路由
 app.get('/', (req, res) => {
@@ -57,6 +59,8 @@ const server = app.listen(PORT, '0.0.0.0', async () => {
   console.log(`服务器运行在 http://0.0.0.0:${PORT}`);
   console.log(`环境: ${process.env.NODE_ENV}`);
   
+  // 暂时注释掉 DHT 服务初始化，避免模块加载错误
+  /*
   // 初始化 DHT 服务
   try {
     const dhtPort = process.env.DHT_PORT || 4001;
@@ -67,6 +71,7 @@ const server = app.listen(PORT, '0.0.0.0', async () => {
   } catch (error) {
     console.error('初始化 DHT 服务失败，但继续运行其他服务:', error);
   }
+  */
   
   console.log('玄玉逍游后端服务已启动');
 });
@@ -78,8 +83,11 @@ process.on('SIGINT', async () => {
     // 断开数据库连接
     await disconnectDB();
     
+    // 暂时注释掉DHT服务关闭，避免ES模块错误
+    /*
     // 关闭 DHT 服务
     await dhtService.shutdown();
+    */
   } catch (error) {
     console.error('关闭服务时出错:', error);
   }

@@ -12,6 +12,11 @@ const UserSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
+// 添加密码验证方法
+UserSchema.methods.verifyPassword = function(compareFunction, password) {
+  return compareFunction(password, this.passwordHash);
+};
+
 const SoftwareSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },

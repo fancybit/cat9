@@ -15,6 +15,8 @@ const Community = () => import('../views/Community.vue')
 const Developer = () => import('../views/Developer.vue')
 const AuditTeam = () => import('../views/AuditTeam.vue')
 const DHTManager = () => import('../views/DHTManager.vue')
+const ForgotPassword = () => import('../views/ForgotPassword.vue')
+const ResetPassword = () => import('../views/ResetPassword.vue')
 
 const routes = [
   {
@@ -31,6 +33,16 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: ForgotPassword
+  },
+  {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: ResetPassword
   },
   {
     path: '/profile',

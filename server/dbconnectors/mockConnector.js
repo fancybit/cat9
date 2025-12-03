@@ -9,11 +9,29 @@ class MockConnector {
     
     // 模拟数据存储
     this.mockData = {
-      users: [],
+      users: [
+        {
+          id: '1',
+          username: 'admin',
+          email: 'admin@example.com',
+          passwordHash: '$2a$10$9e7JzNtQjK7e5T3b2R1a0s9d8f7g6h5j4k3l2m1n0o9p8q7r6s5t4u3v2w1x0y9z8a7b6c5d4e3f2g1h0',
+          coins: 10000,
+          role: 'admin',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          roles: ['user', 'admin'],
+          displayName: '管理员',
+          avatar: '',
+          wallet: {
+            balance: 10000
+          }
+        }
+      ],
       software: [],
       products: [],
       transactions: [],
-      nextUserId: 1,
+      // 自增ID计数器
+      nextUserId: 2,
       nextSoftwareId: 1,
       nextProductId: 1,
       nextTransactionId: 1
@@ -143,7 +161,15 @@ class MockConnector {
   }
 
   async getUserByUsername(username) {
-    return this.mockData.users.find(user => user.username === username);
+    const user = this.mockData.users.find(user => user.username === username);
+    if (user) {
+      // 添加verifyPassword方法
+      user.verifyPassword = function(compareFunction, password) {
+        // 简单实现：当密码为"password"时返回true
+        return password === 'password';
+      };
+    }
+    return user;
   }
 
   async getUserById(id) {
@@ -162,6 +188,10 @@ class MockConnector {
       return this.mockData.users[index];
     }
     return null;
+  }
+
+  async getUserByResetToken(token) {
+    return this.mockData.users.find(user => user.resetPasswordToken === token && user.resetPasswordExpires > Date.now());
   }
 
   // 软件相关方法

@@ -65,8 +65,32 @@ class UserService {
 
       // 更新最后登录时间
       user.lastLogin = new Date();
+      
+      // 保存用户信息（兼容不同类型的用户对象）
+      let updatedUser = user;
+      if (typeof user.save === 'function') {
+        updatedUser = await user.save();
+      }
 
-      return { success: true, user: user.toJSON() };
+      // 生成JWT令牌
+      const { generateToken } = require('../utils/jwt');
+      const userId = user._id || user.id; // 兼容不同类型的用户ID
+      const token = generateToken({ userId });
+
+      // 转换用户信息为JSON格式（兼容不同类型的用户对象）
+      const userJson = typeof user.toJSON === 'function' ? user.toJSON() : {
+        ...user,
+        // 移除敏感信息
+        passwordHash: undefined,
+        resetPasswordToken: undefined,
+        resetPasswordExpires: undefined
+      };
+
+      return { 
+        success: true, 
+        user: userJson,
+        token 
+      };
     } catch (error) {
       console.error('用户登录失败:', error);
       return { success: false, error: '登录失败，请稍后重试' };
@@ -138,6 +162,102 @@ class UserService {
     } catch (error) {
       console.error('获取用户交易记录失败:', error);
       return [];
+    }
+  }
+
+  /**
+   * 请求重置密码
+   * @param {string} email - 用户邮箱
+   * @returns {Promise<Object>} 重置密码请求结果
+   */
+  async requestPasswordReset(email) {
+    try {
+      // 查找用户
+      const user = await dal.getUserByEmail(email);
+      if (!user) {
+        return { success: false, error: '该邮箱未注册' };
+      }
+
+      // 生成重置令牌（这里简单实现，实际应该更复杂）
+      const resetToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      const resetTokenExpires = new Date(Date.now() + 3600000); // 1小时后过期
+
+      // 保存重置令牌到用户记录
+      user.resetPasswordToken = resetToken;
+      user.resetPasswordExpires = resetTokenExpires;
+      await user.save();
+
+      // 这里应该发送邮件给用户，包含重置链接
+      // 由于是演示，我们只返回成功信息
+      console.log(`密码重置请求：用户 ${user.username} (${user.email}) 生成的重置令牌：${resetToken}`);
+
+      return { success: true, message: '密码重置链接已发送到您的邮箱' };
+    } catch (error) {
+      console.error('请求密码重置失败:', error);
+      return { success: false, error: '请求密码重置失败，请稍后重试' };
+    }
+  }
+
+  /**
+   * 验证密码重置令牌
+   * @param {string} token - 重置令牌
+   * @returns {Promise<Object>} 验证结果
+   */
+  async verifyResetToken(token) {
+    try {
+      // 查找有有效重置令牌的用户
+      const user = await dal.getUserByResetToken(token);
+      if (!user) {
+        return { success: false, error: '无效的重置令牌' };
+      }
+
+      // 检查令牌是否过期
+      if (user.resetPasswordExpires < Date.now()) {
+        return { success: false, error: '重置令牌已过期' };
+      }
+
+      return { success: true, userId: user._id };
+    } catch (error) {
+      console.error('验证重置令牌失败:', error);
+      return { success: false, error: '验证重置令牌失败，请稍后重试' };
+    }
+  }
+
+  /**
+   * 重置密码
+   * @param {string} userId - 用户ID
+   * @param {string} token - 重置令牌
+   * @param {string} newPassword - 新密码
+   * @returns {Promise<Object>} 重置密码结果
+   */
+  async resetPassword(userId, token, newPassword) {
+    try {
+      // 验证令牌
+      const verifyResult = await this.verifyResetToken(token);
+      if (!verifyResult.success || verifyResult.userId !== userId) {
+        return { success: false, error: '无效的重置令牌' };
+      }
+
+      // 查找用户
+      const user = await dal.getUser(userId);
+      if (!user) {
+        return { success: false, error: '用户不存在' };
+      }
+
+      // 加密新密码
+      const salt = await bcrypt.genSalt(10);
+      const passwordHash = await bcrypt.hash(newPassword, salt);
+
+      // 更新密码并清除重置令牌
+      user.passwordHash = passwordHash;
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpires = undefined;
+      await user.save();
+
+      return { success: true, message: '密码重置成功' };
+    } catch (error) {
+      console.error('重置密码失败:', error);
+      return { success: false, error: '重置密码失败，请稍后重试' };
     }
   }
 }

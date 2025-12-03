@@ -43,7 +43,7 @@
             <input type="checkbox" v-model="form.remember">
             <span>{{ $t('login.rememberMe') }}</span>
           </label>
-          <router-link to="#" class="forgot-password">{{ $t('login.forgotPassword') }}</router-link>
+          <router-link to="/forgot-password" class="forgot-password">{{ $t('login.forgotPassword') }}</router-link>
         </div>
         
         <button 
@@ -79,6 +79,8 @@
 </template>
 
 <script>
+import userService from '@/services/userService';
+
 export default {
   name: 'LoginView',
   data() {
@@ -93,7 +95,7 @@ export default {
     }
   },
   methods: {
-    handleLogin() {
+    async handleLogin() {
       // 简单验证
       if (!this.form.username || !this.form.password) {
         this.error = '请输入用户名和密码'
@@ -103,30 +105,30 @@ export default {
       this.loading = true
       this.error = ''
       
-      // 模拟登录请求
-      setTimeout(() => {
-        // 模拟登录成功，根据用户名判断是否为管理员
-        const isAdminUser = this.form.username === 'admin'
-        const mockUser = {
-          id: isAdminUser ? 'admin1' : '1',
-          username: this.form.username,
-          displayName: this.form.username,
-          email: `${this.form.username}@example.com`,
-          avatar: '',
-          wallet: {
-            balance: 1000
-          },
-          roles: isAdminUser ? ['user', 'admin'] : ['user']
+      try {
+        // 调用真实登录API
+        const response = await userService.login(this.form.username, this.form.password);
+        
+        if (response.success) {
+          // 保存用户信息和token到localStorage
+          localStorage.setItem('user', JSON.stringify(response.user));
+          if (response.token) {
+            localStorage.setItem('token', response.token);
+          }
+          
+          this.loading = false;
+          
+          // 登录成功跳转
+          this.$router.push('/profile');
+        } else {
+          this.loading = false;
+          this.error = response.error || '登录失败';
         }
-        
-        // 保存用户信息到localStorage
-        localStorage.setItem('user', JSON.stringify(mockUser))
-        
-        this.loading = false
-        
-        // 登录成功后跳转
-        this.$router.push('/profile')
-      }, 1000)
+      } catch (error) {
+        this.loading = false;
+        this.error = error.response?.data?.error || '网络错误，请稍后重试';
+        console.error('登录错误:', error);
+      }
     },
     goToRegister() {
       this.$router.push('/register')
