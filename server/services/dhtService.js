@@ -1,4 +1,5 @@
-const { MetaJadeHome } = require('../../metajade/p2p');
+// 使用 C# 版玄玉区块链核心库
+const { MetaJadeHome } = require('../../metajade-csharp/nodejs');
 
 class DHTService {
   constructor() {
@@ -16,20 +17,20 @@ class DHTService {
     }
 
     try {
-      // 创建 MetaJadeHome 实例
-      this.dhtServer = new MetaJadeHome({
+      // 创建 C# 版 MetaJadeHome 实例
+      this.dhtServer = new MetaJadeHome();
+
+      // 启动 DHT 服务器
+      await this.dhtServer.start({
         port: options.port || 4001,
         enableRelay: options.enableRelay !== false
       });
-
-      // 启动 DHT 服务器
-      await this.dhtServer.start();
       this.isInitialized = true;
       
-      console.log('DHT 服务已成功初始化');
+      console.log('C# 版 DHT 服务已成功初始化');
       return this;
     } catch (error) {
-      console.error('初始化 DHT 服务失败:', error);
+      console.error('初始化 C# 版 DHT 服务失败:', error);
       throw error;
     }
   }
@@ -45,9 +46,9 @@ class DHTService {
     try {
       await this.dhtServer.stop();
       this.isInitialized = false;
-      console.log('DHT 服务已关闭');
+      console.log('C# 版 DHT 服务已关闭');
     } catch (error) {
-      console.error('关闭 DHT 服务时出错:', error);
+      console.error('关闭 C# 版 DHT 服务时出错:', error);
     }
   }
 

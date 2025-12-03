@@ -1,0 +1,129 @@
+syntax = "proto3";
+
+option csharp_namespace = "MetaJadeBridge.Protos";
+option java_multiple_files = true;
+option java_package = "io.metajade.bridge";
+option java_outer_classname = "MetaJadeProto";
+
+package metajade;
+
+// 玄玉区块链核心服务
+service MetaJadeService {
+  // 初始化并启动DHT服务器
+  rpc Initialize (InitializeRequest) returns (InitializeResponse);
+  
+  // 停止DHT服务器
+  rpc Shutdown (ShutdownRequest) returns (ShutdownResponse);
+  
+  // 获取DHT服务器状态
+  rpc GetStatus (GetStatusRequest) returns (GetStatusResponse);
+  
+  // 存储数据到DHT
+  rpc StoreData (StoreDataRequest) returns (StoreDataResponse);
+  
+  // 从DHT检索数据
+  rpc RetrieveData (RetrieveDataRequest) returns (RetrieveDataResponse);
+  
+  // 查找提供特定键的节点
+  rpc FindProviders (FindProvidersRequest) returns (FindProvidersResponse);
+  
+  // 查找特定ID的节点
+  rpc FindPeer (FindPeerRequest) returns (FindPeerResponse);
+  
+  // 提供当前节点作为指定键的数据提供者
+  rpc Provide (ProvideRequest) returns (ProvideResponse);
+}
+
+// 初始化请求
+message InitializeRequest {
+  int32 port = 1;         // 端口号
+  bool enable_relay = 2;  // 是否启用中继
+}
+
+// 初始化响应
+message InitializeResponse {
+  bool success = 1;       // 是否成功
+  string error = 2;        // 错误信息（如果有）
+}
+
+// 关闭请求
+message ShutdownRequest {
+}
+
+// 关闭响应
+message ShutdownResponse {
+  bool success = 1;       // 是否成功
+  string error = 2;        // 错误信息（如果有）
+}
+
+// 获取状态请求
+message GetStatusRequest {
+}
+
+// 获取状态响应
+message GetStatusResponse {
+  string status = 1;                  // 状态（running/stopped）
+  bool initialized = 2;               // 是否已初始化
+  string peer_id = 3;                 // 节点ID
+  repeated string multiaddrs = 4;      // 监听地址
+  int32 connection_count = 5;         // 连接数量
+  int32 routing_table_size = 6;       // 路由表大小
+}
+
+// 存储数据请求
+message StoreDataRequest {
+  string key = 1;        // 数据键
+  string value = 2;      // 数据值
+}
+
+// 存储数据响应
+message StoreDataResponse {
+  bool success = 1;      // 是否成功
+  string error = 2;      // 错误信息（如果有）
+}
+
+// 检索数据请求
+message RetrieveDataRequest {
+  string key = 1;        // 数据键
+}
+
+// 检索数据响应
+message RetrieveDataResponse {
+  bool success = 1;      // 是否成功
+  string value = 2;      // 数据值
+  string error = 3;      // 错误信息（如果有）
+}
+
+// 查找提供者请求
+message FindProvidersRequest {
+  string key = 1;        // 数据键
+}
+
+// 查找提供者响应
+message FindProvidersResponse {
+  repeated string providers = 1;  // 提供者节点ID列表
+  string error = 2;               // 错误信息（如果有）
+}
+
+// 查找节点请求
+message FindPeerRequest {
+  string peer_id = 1;    // 节点ID
+}
+
+// 查找节点响应
+message FindPeerResponse {
+  string peer_id = 1;    // 节点ID
+  repeated string addresses = 2;  // 节点地址
+  string error = 3;       // 错误信息（如果有）
+}
+
+// 提供数据请求
+message ProvideRequest {
+  string key = 1;        // 数据键
+}
+
+// 提供数据响应
+message ProvideResponse {
+  bool success = 1;      // 是否成功
+  string error = 2;      // 错误信息（如果有）
+}

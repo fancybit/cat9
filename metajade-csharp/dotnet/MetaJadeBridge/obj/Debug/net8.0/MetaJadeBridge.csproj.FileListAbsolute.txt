@@ -1,0 +1,8 @@
+F:\Works\web\Cat9\metajade-csharp\dotnet\MetaJadeBridge\obj\Debug\net8.0\MetaJadeBridge.csproj.AssemblyReference.cache
+F:\Works\web\Cat9\metajade-csharp\dotnet\MetaJadeBridge\obj\Debug\net8.0\rpswa.dswa.cache.json
+F:\Works\web\Cat9\metajade-csharp\dotnet\MetaJadeBridge\obj\Debug\net8.0\MetaJadeBridge.GeneratedMSBuildEditorConfig.editorconfig
+F:\Works\web\Cat9\metajade-csharp\dotnet\MetaJadeBridge\obj\Debug\net8.0\MetaJadeBridge.AssemblyInfoInputs.cache
+F:\Works\web\Cat9\metajade-csharp\dotnet\MetaJadeBridge\obj\Debug\net8.0\MetaJadeBridge.AssemblyInfo.cs
+F:\Works\web\Cat9\metajade-csharp\dotnet\MetaJadeBridge\obj\Debug\net8.0\MetaJadeBridge.csproj.CoreCompileInputs.cache
+F:\Works\web\Cat9\metajade-csharp\dotnet\MetaJadeBridge\obj\Debug\net8.0\MetaJadeBridge.MvcApplicationPartsAssemblyInfo.cache
+F:\Works\web\Cat9\metajade-csharp\dotnet\MetaJadeBridge\obj\Debug\net8.0\MetaJadeBridge.sourcelink.json
