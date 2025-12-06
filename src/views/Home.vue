@@ -4,18 +4,18 @@
     <section class="hero">
       <div class="container">
         <h2>
-          探索 独立游戏的未来
+          {{ $t('home.heroTitle') }}
         </h2>
         <div>
-        <p>让利开发者，无需版号申请，没有平台拿走一半广告收入,不许买断内购的条款。</p>
-        <p>香港公司运营，中国的全球自由贸易港，0关税，无需担心美国的关税波动问题。</p>
-        <p>支持支付宝，微信，银联，visa，paypal，区块链技术赋能，保障玩家充值的账目安全。</p>
-        <p>新平台限时优惠，只收取开发者10%的销售收入，免费上架，提供SDK接入技术支持。</p>
-        <p>为独立游戏开发者开辟新的盈利通道。期待您的加入！</p>
+        <p>{{ $t('home.heroSubtitle1') }}</p>
+        <p>{{ $t('home.heroSubtitle2') }}</p>
+        <p>{{ $t('home.heroSubtitle3') }}</p>
+        <p>{{ $t('home.heroSubtitle4') }}</p>
+        <p>{{ $t('home.heroSubtitle5') }}</p>
         </div>
         <div class="cta-buttons">
-          <router-link to="/store" class="btn btn-primary">探索游戏</router-link>
-          <a href="#" class="btn btn-secondary">了解更多</a>
+          <router-link to="/store" class="btn btn-primary">{{ $t('home.heroBtnExplore') }}</router-link>
+          <a href="#" class="btn btn-secondary">{{ $t('home.heroBtnLearnMore') }}</a>
         </div>
       </div>
     </section>
@@ -23,7 +23,7 @@
     <!-- 特色游戏 -->
     <section class="featured-games">
       <div class="container">
-        <h3>特色游戏</h3>
+        <h3>{{ $t('home.featuredGamesTitle') }}</h3>
         <div class="games-grid">
           <div class="game-card">
             <div class="game-video-container">
@@ -31,17 +31,17 @@
                 src="//player.bilibili.com/player.html?isOutside=true&aid=115354231639204&bvid=BV15o4cz7EJc&cid=32987809148&p=1&muted=true"
                 scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
             </div>
-            <h4>醒梦</h4>
-            <p>灾厄的预兆，偏僻的小镇，母亲的秘密。13层梦中梦，一起走出梦魇，重新沐浴在自由的阳光之下。只要5美元，小品级游戏，万圣节礼物，为您的好友带来惊喜。</p>
-            <a href="#" class="play-now">立即体验</a>
+            <h4>{{ $t('home.game1Title') }}</h4>
+            <p>{{ $t('home.game1Desc') }}</p>
+            <a href="#" class="play-now">{{ $t('home.btnPlayNow') }}</a>
           </div>
           <div class="game-card">
             <div class="game-video-container">
               <iframe class="game-video" src="//player.bilibili.com/player.html?isOutside=true&aid=115354399410787&bvid=BV1TG4wzTEid&cid=32988596284&p=1&muted=true" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
             </div>
-            <h4>午夜巫女</h4>
-            <p>类似吸血鬼幸存者的MOBA游戏，支持PVE,PVP联机。</p>
-            <a href="#" class="play-now">立即体验</a>
+            <h4>{{ $t('home.game2Title') }}</h4>
+            <p>{{ $t('home.game2Desc') }}</p>
+            <a href="#" class="play-now">{{ $t('home.btnPlayNow') }}</a>
           </div>
           <div class="game-card">
             <div class="game-video-container">
@@ -49,9 +49,9 @@
                 src="//player.bilibili.com/player.html?isOutside=true&aid=871527902&bvid=BV1mV4y1q7T6&cid=1216399540&p=1&muted=true"
                 scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
             </div>
-            <h4>元武林</h4>
-            <p>传统武术主题的3D横版格斗游戏</p>
-            <a href="#" class="play-now">立即体验</a>
+            <h4>{{ $t('home.game3Title') }}</h4>
+            <p>{{ $t('home.game3Desc') }}</p>
+            <a href="#" class="play-now">{{ $t('home.btnPlayNow') }}</a>
           </div>
         </div>
       </div>
@@ -61,12 +61,8 @@
     <section class="web3-info">
       <div class="container">
         <div class="info-content">
-          <h3>新手独立游戏开发者路在何方？</h3>
-          <div>玄玉逍游创始人九命狸花猫，原本的网名是fancybit,幻。<br/>
-          2016年左右在B站最赚钱的自研手游《机动战姬》初代项目组担任服务端负责人，全栈程序。经过无数个不眠的日夜，项目成功上线，盈利，随后有了《机动战姬-聚变》，《重装战姬》2个著名二刺猿项目。然而随着项目成功上线，随之而来的是卸磨杀驴，团队分裂。<br/>
-          离开B站和闪翼后，九命狸花猫又在北京，郑州，石家庄的几家手游公司任职，最后回到家乡加入了独立游戏开发者的行列。在游戏行业沉浮了十多年，九命狸花猫深知独立游戏开发者组队和盈利，宣发的不易。在创乐坊结识了许多独立游戏开发者朋友和团队，公司之后。九命狸花猫决定创办一家类似steam的独立游戏发行平台，同时支持PC,游戏机,手游等平台。<br/>
-          美国关税战的开打似乎也影响到了游戏行业，国内独立游戏开发者普遍遇到了注册和身份验证的问题，原本独立游戏发行平台最后的净土steam也变得开始对中国独游开发者不那么友好。为了解决这些问题，九命狸花猫决定成立一家新的独立游戏发行平台，取名为玄玉逍游。结合创乐坊的人脉和社区，服务全国和全世界的独立游戏开发者，为他们开辟一个新的廉价，方便的游戏发行平台。<br/>
-          </div>
+          <h3>{{ $t('home.web3Title') }}</h3>
+          <div>{{ $t('home.web3Content') }}</div>
         </div>
         <div class="info-image"></div>
       </div>
@@ -75,12 +71,12 @@
     <!-- 最新资讯 -->
     <section class="news">
       <div class="container">
-        <h3>最新资讯</h3>
+        <h3>{{ $t('home.newsTitle') }}</h3>
         <div class="news-grid">
           <div class="news-card">
             <div class="news-img"></div>
-            <h4>《玄玉逍游》上线测试中</h4>
-            <p>免费独立游戏发行平台，为独立游戏开发者提供一站式服务。</p>
+            <h4>{{ $t('home.news1Title') }}</h4>
+            <p>{{ $t('home.news1Desc') }}</p>
           </div>
         </div>
       </div>

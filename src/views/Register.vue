@@ -42,37 +42,37 @@
             required
           >
           <small v-if="form.email" :class="{ valid: isValidEmail, invalid: !isValidEmail }">
-            {{ isValidEmail ? '✓ 邮箱格式正确' : '✗ 邮箱格式不正确' }}
+            {{ isValidEmail ? $t('register.emailValid') : $t('register.emailInvalid') }}
           </small>
         </div>
         
         <div class="form-group">
-          <label for="password">密码</label>
+          <label for="password">{{ $t('register.password') }}</label>
           <input 
             type="password" 
             id="password" 
             v-model="form.password"
             class="form-control"
-            placeholder="至少8个字符，包含字母和数字"
+            :placeholder="$t('register.placeholderPassword')"
             required
           >
           <small v-if="form.password" :class="{ valid: isValidPassword, invalid: !isValidPassword }">
-            {{ isValidPassword ? '✓ 密码强度符合要求' : '✗ 密码太弱' }}
+            {{ isValidPassword ? $t('register.passwordValid') : $t('register.passwordInvalid') }}
           </small>
         </div>
         
         <div class="form-group">
-          <label for="confirmPassword">确认密码</label>
+          <label for="confirmPassword">{{ $t('register.confirmPassword') }}</label>
           <input 
             type="password" 
             id="confirmPassword" 
             v-model="form.confirmPassword"
             class="form-control"
-            placeholder="请再次输入密码"
+            :placeholder="$t('register.placeholderPassword')"
             required
           >
           <small v-if="form.confirmPassword" :class="{ valid: passwordsMatch, invalid: !passwordsMatch }">
-            {{ passwordsMatch ? '✓ 密码一致' : '✗ 密码不一致' }}
+            {{ passwordsMatch ? $t('register.passwordsMatchValid') : $t('register.passwordsMatchInvalid') }}
           </small>
         </div>
         
