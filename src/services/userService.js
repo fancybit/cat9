@@ -144,7 +144,7 @@ class UserService {
   getCurrentUserFromStorage() {
     const userStr = localStorage.getItem('user');
     return userStr ? JSON.parse(userStr) : null;
-  },
+  }
 
   /**
    * 请求密码重置
@@ -159,7 +159,7 @@ class UserService {
       console.error('请求密码重置失败:', error);
       throw error;
     }
-  },
+  }
 
   /**
    * 验证密码重置令牌
@@ -174,7 +174,7 @@ class UserService {
       console.error('验证重置令牌失败:', error);
       throw error;
     }
-  },
+  }
 
   /**
    * 重置密码
