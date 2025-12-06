@@ -1,13 +1,8 @@
 // C#版玄玉区块链核心库Node.js客户端
 
-import grpc from '@grpc/grpc-js';
-import protoLoader from '@grpc/proto-loader';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-// 获取当前文件的目录路径
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const grpc = require('@grpc/grpc-js');
+const protoLoader = require('@grpc/proto-loader');
+const path = require('path');
 
 // 加载proto文件
 const PROTO_PATH = path.join(__dirname, 'protos', 'metajade.proto');
@@ -25,7 +20,7 @@ const metajadeProto = grpc.loadPackageDefinition(packageDefinition).metajade;
 /**
  * C#版玄玉区块链核心库Node.js客户端
  */
-export class MetaJadeHome {
+class MetaJadeHome {
   constructor() {
     // gRPC客户端配置
     this.client = new metajadeProto.MetaJadeService(
@@ -228,8 +223,8 @@ export class MetaJadeHome {
 }
 
 /**
- * 导出默认实例
+ * 导出类和默认实例
  */
-export default {
+module.exports = {
   MetaJadeHome
 };

@@ -1,9 +1,9 @@
-const Game = require('../models/Game');
+const dal = require('../dal');
 
 // 获取所有游戏
 exports.getAllGames = async (req, res) => {
   try {
-    const games = await Game.find({});
+    const games = await dal.getAllGames();
     res.status(200).json({
       success: true,
       count: games.length,
@@ -21,7 +21,7 @@ exports.getAllGames = async (req, res) => {
 // 获取特色游戏
 exports.getFeaturedGames = async (req, res) => {
   try {
-    const games = await Game.find({ isFeatured: true });
+    const games = await dal.getFeaturedGames();
     res.status(200).json({
       success: true,
       count: games.length,
@@ -39,7 +39,7 @@ exports.getFeaturedGames = async (req, res) => {
 // 获取单个游戏
 exports.getGameById = async (req, res) => {
   try {
-    const game = await Game.findById(req.params.id);
+    const game = await dal.getGameById(req.params.id);
 
     if (!game) {
       return res.status(404).json({
@@ -64,7 +64,7 @@ exports.getGameById = async (req, res) => {
 // 创建新游戏
 exports.createGame = async (req, res) => {
   try {
-    const game = await Game.create(req.body);
+    const game = await dal.createGame(req.body);
 
     res.status(201).json({
       success: true,
@@ -82,10 +82,7 @@ exports.createGame = async (req, res) => {
 // 更新游戏
 exports.updateGame = async (req, res) => {
   try {
-    const game = await Game.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const game = await dal.updateGame(req.params.id, req.body);
 
     if (!game) {
       return res.status(404).json({
@@ -110,9 +107,9 @@ exports.updateGame = async (req, res) => {
 // 删除游戏
 exports.deleteGame = async (req, res) => {
   try {
-    const game = await Game.findByIdAndDelete(req.params.id);
+    const success = await dal.deleteGame(req.params.id);
 
-    if (!game) {
+    if (!success) {
       return res.status(404).json({
         success: false,
         error: '游戏不存在',
