@@ -232,8 +232,8 @@ class DataAccessLayer {
       createdAt: new Date(),
       lastLogin: null,
       wallet: {
-        balance: 0,
-        address: this.generateId('wallet')
+        balance: userData.wallet?.balance || 0,
+        address: userData.wallet?.address || this.generateId('wallet')
       },
       // 添加方法模拟MongoDB模型的行为
       toJSON: function() {
