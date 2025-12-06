@@ -282,6 +282,13 @@ export default {
         this.menuOpen = false
         this.mobileLanguageMenuOpen = false
       }
+    },
+    // 处理localStorage变化
+    handleStorageChange(event) {
+      if (event.key === 'user') {
+        // 强制重新渲染组件
+        this.$forceUpdate()
+      }
     }
   },
   computed: {
@@ -304,7 +311,7 @@ export default {
       return userStr ? JSON.parse(userStr) : { username: '', groups: [] }
     },
     userInitial() {
-      return this.user.username.charAt(0).toUpperCase()
+      return this.user.username ? this.user.username.charAt(0).toUpperCase() : 'U'
     },
     isAdmin() {
       // 同时检查role字段和roles数组，兼容不同的数据格式
@@ -336,6 +343,8 @@ export default {
     document.addEventListener('click', this.handleClickOutside)
     // 添加窗口大小变化监听器，确保在屏幕变宽时关闭移动端菜单
     window.addEventListener('resize', this.handleResize)
+    // 添加localStorage变化监听器，确保登录状态变化时界面能实时更新
+    window.addEventListener('storage', this.handleStorageChange)
 
     // 初始化HTML的lang属性
     if (document && document.documentElement) {
@@ -350,7 +359,9 @@ export default {
     document.removeEventListener('click', this.handleClickOutside)
     // 移除窗口大小变化监听器
     window.removeEventListener('resize', this.handleResize)
-  },
+    // 移除localStorage变化监听器
+    window.removeEventListener('storage', this.handleStorageChange)
+  }
 }
 </script>
 
@@ -513,17 +524,26 @@ body {
   align-items: center;
   color: white;
   text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.user-profile:hover {
+  background-color: #333;
 }
 
 .user-avatar {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   background-color: var(--button-primary);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 10px;
+  margin-right: 8px;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 /* 主内容区样式 */
