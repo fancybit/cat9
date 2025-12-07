@@ -264,10 +264,11 @@ class UserService {
   /**
    * 上传用户头像
    * @param {string} userId - 用户ID
-   * @param {Object} file - 上传的文件对象
+   * @param {Object} file - 上传的文件对象（multer处理后）或头像数据
+   * @param {Object} [avatarData] - 可选的头像数据对象（用于JSON格式上传）
    * @returns {Promise<Object>} 上传结果
    */
-  async uploadAvatar(userId, file) {
+  async uploadAvatar(userId, file, avatarData = null) {
     try {
       // 查找用户
       const user = await dal.getUser(userId);
@@ -280,14 +281,32 @@ class UserService {
       
       // 模拟玄玉区块链存储
       const avatarKey = `avatar_${userId}`;
-      await dal.storeData(avatarKey, {
-        userId,
-        avatarId,
-        fileName: file.originalname,
-        mimeType: file.mimetype,
-        size: file.size,
-        uploadedAt: new Date()
-      });
+      
+      // 处理两种上传方式：multer文件上传和JSON数据上传
+      let storedData;
+      if (file && file.originalname) {
+        // 传统文件上传方式
+        storedData = {
+          userId,
+          avatarId,
+          fileName: file.originalname,
+          mimeType: file.mimetype,
+          size: file.size,
+          uploadedAt: new Date()
+        };
+      } else {
+        // JSON数据上传方式
+        storedData = {
+          userId,
+          avatarId,
+          fileName: `${avatarId}.svg`,
+          mimeType: 'image/svg+xml',
+          size: avatarData ? avatarData.length || 0 : 0,
+          uploadedAt: new Date()
+        };
+      }
+      
+      await dal.storeData(avatarKey, storedData);
 
       // 使用数据URL作为头像占位符，避免依赖外部服务，解决DNS解析问题
       // 生成一个简单的SVG数据URL，显示用户名首字母

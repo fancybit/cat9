@@ -108,11 +108,31 @@ router.post('/reset-password/:userId/:token', async (req, res) => {
   }
 });
 
-// 头像上传
+// 头像上传支持两种方式：multipart/form-data文件上传和JSON数据上传
 const upload = require('../middleware/upload');
-router.post('/avatar', authMiddleware, upload.single('avatar'), async (req, res) => {
+
+// 中间件，用于检测请求类型并决定是否使用multer
+function dynamicUploadMiddleware(req, res, next) {
+  // 检查Content-Type头
+  const contentType = req.headers['content-type'];
+  if (contentType && contentType.includes('multipart/form-data')) {
+    // 传统文件上传，使用multer
+    return upload.single('avatar')(req, res, next);
+  }
+  // JSON数据上传，直接通过
+  next();
+}
+
+router.post('/avatar', authMiddleware, dynamicUploadMiddleware, async (req, res) => {
   try {
-    const result = await userService.uploadAvatar(req.userId, req.file);
+    let result;
+    if (req.file) {
+      // 传统文件上传方式
+      result = await userService.uploadAvatar(req.userId, req.file);
+    } else {
+      // JSON数据上传方式
+      result = await userService.uploadAvatar(req.userId, null, req.body.avatarData);
+    }
     if (result.success) {
       res.json(result);
     } else {

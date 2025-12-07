@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 class UserService {
-  constructor(baseURL = 'http://localhost:5000/api/users') {
+  constructor() {
+    // 动态获取当前页面的主机地址，保持5000端口
+    const baseURL = `${window.location.protocol}//${window.location.hostname}:5000/api/users`;
     this.api = axios.create({
       baseURL,
       timeout: 10000
@@ -219,7 +221,9 @@ export const uploadAvatar = async (file) => {
   
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:5000/api/users/avatar', {
+    // 动态获取当前页面的主机地址，保持5000端口
+    const apiUrl = `${window.location.protocol}//${window.location.hostname}:5000/api/users/avatar`;
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`
