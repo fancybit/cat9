@@ -6,20 +6,11 @@
     "test": "vue-cli-service serve --host 0.0.0.0 --production --no-hot",
     "serve": "vue-cli-service serve --host 0.0.0.0",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "electron:build": "npm run build && electron-packager . cat9 --platform=win32 --arch=x64 --out=dist-exe --overwrite",
-    "electron:serve": "electron ."
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@libp2p/kad-dht": "^16.1.0",
-    "@libp2p/mdns": "^12.0.8",
-    "@libp2p/mplex": "^12.0.8",
-    "@libp2p/noise": "^1.0.1",
-    "@libp2p/tcp": "^11.0.7",
-    "@libp2p/websockets": "^10.1.0",
     "axios": "^1.6.0",
     "core-js": "^3.8.3",
-    "libp2p": "^3.1.0",
     "vue": "^3.2.13",
     "vue-i18n": "^v11.1.4",
     "vue-router": "^4.6.3"
@@ -30,10 +21,6 @@
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
-    "electron": "^28.3.3",
-    "electron-builder": "^24.13.3",
-    "electron-packager": "^17.1.2",
-    "electron-squirrel-startup": "^1.0.1",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "mini-css-extract-plugin": "^2.9.4"
@@ -57,33 +44,5 @@
     "last 2 versions",
     "not dead",
     "not ie 11"
-  ],
-  "main": "background.js",
-  "build": {
-    "appId": "com.cat9.entertainment",
-    "productName": "玄玉逍游",
-    "directories": {
-      "output": "electron-build"
-    },
-    "files": [
-      "background.js",
-      "dist/**/*",
-      "public/favicon.ico"
-    ],
-    "win": {
-      "target": [
-        "squirrel"
-      ],
-      "sign": false
-    },
-    "squirrelWindows": {
-      "shortcutName": "玄玉逍游",
-      "iconUrl": "public/favicon.ico"
-    },
-    "electronDownload": {
-      "mirror": "https://npm.taobao.org/mirrors/electron/"
-    },
-    "compression": "store",
-    "buildDependenciesFromSource": true
-  }
+  ]
 }
