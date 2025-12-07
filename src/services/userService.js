@@ -2,8 +2,8 @@ import axios from 'axios';
 
 class UserService {
   constructor() {
-    // 使用HTTPS协议和固定的后端子域名
-    const baseURL = `https://server.metajade.online/api/users`;
+    // 使用相对路径，通过当前域名的API代理访问后端
+    const baseURL = `/api/users`;
     this.api = axios.create({
       baseURL,
       timeout: 10000
@@ -221,8 +221,8 @@ export const uploadAvatar = async (file) => {
   
   try {
     const token = localStorage.getItem('token');
-    // 使用HTTPS协议和固定的后端子域名
-    const apiUrl = `https://server.metajade.online/api/users/avatar`;
+    // 使用相对路径，通过当前域名的API代理访问后端
+    const apiUrl = `/api/users/avatar`;
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
