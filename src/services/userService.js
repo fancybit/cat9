@@ -2,8 +2,8 @@ import axios from 'axios';
 
 class UserService {
   constructor() {
-    // 固定使用HTTP协议，因为服务器5000端口只支持HTTP
-    const baseURL = `http://${window.location.hostname}:5000/api/users`;
+    // 使用HTTPS协议，避免混合内容问题
+    const baseURL = `https://${window.location.hostname}/api/users`;
     this.api = axios.create({
       baseURL,
       timeout: 10000
@@ -221,8 +221,8 @@ export const uploadAvatar = async (file) => {
   
   try {
     const token = localStorage.getItem('token');
-    // 固定使用HTTP协议，因为服务器5000端口只支持HTTP
-    const apiUrl = `http://${window.location.hostname}:5000/api/users/avatar`;
+    // 使用HTTPS协议，避免混合内容问题
+    const apiUrl = `https://${window.location.hostname}/api/users/avatar`;
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
