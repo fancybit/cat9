@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MetaJadeBridge")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bd49441ba88567dc1636977a4dc4d5846181f387")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1e8d874403cfac05cf452ca0656279fd7d75d995")]
 [assembly: System.Reflection.AssemblyProductAttribute("MetaJadeBridge")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MetaJadeBridge")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

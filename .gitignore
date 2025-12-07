@@ -23,7 +23,16 @@ dist-ssr
 *.sln
 *.sw?
 
-# 部署脚本
+# Electron files
+electron/*
+electron-build-new/
+electron-build-trace/
+electron-build-*/
+
+# Generated files
+node_cat9.conf
+server/.env
+server/package-lock.json部署脚本
 deploy*.bat
 deploy*.ps1
 
