@@ -11,17 +11,17 @@ module.exports = {
   MySQLConnector,
   MetaJadeConnector,
   // 根据环境变量或配置选择合适的连接器
-  getConnector(type = 'mock') {
+  getConnector(type = 'metajade') {
     switch (type.toLowerCase()) {
       case 'mongodb':
         return new MongoDBConnector();
       case 'mysql':
         return new MySQLConnector();
-      case 'metajade':
-        return new MetaJadeConnector();
       case 'mock':
-      default:
         return new MockConnector();
+      case 'metajade':
+      default:
+        return new MetaJadeConnector();
     }
   }
 };
