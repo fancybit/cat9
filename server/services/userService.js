@@ -289,9 +289,11 @@ class UserService {
         uploadedAt: new Date()
       });
 
-      // 生成安全的头像URL，使用via.placeholder.com占位符服务，避免ORB阻止
-      // 格式：https://via.placeholder.com/120x120?text=用户名首字母
-      const avatarUrl = `https://via.placeholder.com/120x120?text=${encodeURIComponent(user.username.charAt(0).toUpperCase())}`;
+      // 使用数据URL作为头像占位符，避免依赖外部服务，解决DNS解析问题
+      // 生成一个简单的SVG数据URL，显示用户名首字母
+      const initial = user.username.charAt(0).toUpperCase();
+      // 生成SVG数据URL，圆形背景，白色文字
+      const avatarUrl = `data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%22120%22 height%3D%22120%22 viewBox%3D%220 0 120 120%22%3E%3Ccircle cx%3D%2260%22 cy%3D%2260%22 r%3D%2255%22 fill%3D%22%2366c0f4%22%2F%3E%3Ctext x%3D%2260%22 y%3D%2275%22 font-size%3D%2260%22 text-anchor%3D%22middle%22 fill%3D%22white%22 font-weight%3D%22bold%22%3E${initial}%3C%2Ftext%3E%3C%2Fsvg%3E`;
       
       // 更新用户头像URL
       user.avatar = avatarUrl;
