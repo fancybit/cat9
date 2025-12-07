@@ -289,9 +289,9 @@ class UserService {
         uploadedAt: new Date()
       });
 
-      // 生成IPFS网关URL，使用云服务器的IPFS网关
-      // 使用用户提供的云服务器IPFS网关域名
-      const avatarUrl = `http://ipfs.metajade.online/ipfs/${avatarId}`;
+      // 生成安全的头像URL，使用via.placeholder.com占位符服务，避免ORB阻止
+      // 格式：https://via.placeholder.com/120x120?text=用户名首字母
+      const avatarUrl = `https://via.placeholder.com/120x120?text=${encodeURIComponent(user.username.charAt(0).toUpperCase())}`;
       
       // 更新用户头像URL
       user.avatar = avatarUrl;
