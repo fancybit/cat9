@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 class UserService {
-  constructor(baseURL = '/api/users') {
+  constructor(baseURL = 'http://localhost:5000/api/users') {
     this.api = axios.create({
       baseURL,
       timeout: 10000
@@ -70,6 +70,11 @@ class UserService {
   async login(username, password) {
     try {
       const response = await this.api.post('/login', { username, password });
+      // 保存用户信息和token到localStorage
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+      }
       return response.data;
     } catch (error) {
       console.error('登录失败:', error);
@@ -85,6 +90,13 @@ class UserService {
   async register(userData) {
     try {
       const response = await this.api.post('/register', userData);
+      // 保存用户信息和token到localStorage
+      if (response.data.user) {
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+      }
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+      }
       return response.data;
     } catch (error) {
       console.error('注册失败:', error);
@@ -99,6 +111,8 @@ class UserService {
   async getCurrentUser() {
     try {
       const response = await this.api.get('/me');
+      // 更新localStorage中的用户信息
+      localStorage.setItem('user', JSON.stringify(response.data));
       return response.data;
     } catch (error) {
       console.error('获取用户信息失败:', error);
@@ -114,6 +128,8 @@ class UserService {
   async updateUser(userData) {
     try {
       const response = await this.api.put('/me', userData);
+      // 更新localStorage中的用户信息
+      localStorage.setItem('user', JSON.stringify(response.data));
       return response.data;
     } catch (error) {
       console.error('更新用户信息失败:', error);
@@ -195,3 +211,38 @@ class UserService {
 }
 
 export default new UserService();
+
+// 头像上传方法
+export const uploadAvatar = async (file) => {
+  const formData = new FormData();
+  formData.append('avatar', file);
+  
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch('http://localhost:5000/api/users/avatar', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      body: formData
+    });
+    
+    if (!response.ok) {
+      throw new Error('头像上传失败');
+    }
+    
+    const data = await response.json();
+    // 更新localStorage中的用户信息
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      user.avatar = data.avatarUrl;
+      localStorage.setItem('user', JSON.stringify(user));
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('头像上传错误:', error);
+    throw error;
+  }
+};

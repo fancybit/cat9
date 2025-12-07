@@ -173,6 +173,8 @@
 </template>
 
 <script>
+import userService from '@/services/userService'
+
 export default {
   name: 'AuctionHouse',
   data() {
@@ -287,7 +289,7 @@ export default {
   },
   computed: {
     isLoggedIn() {
-      return localStorage.getItem('user') !== null
+      return userService.isLoggedIn()
     },
     filteredItems() {
       let items = [...this.auctionItems]

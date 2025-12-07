@@ -174,6 +174,8 @@
 <!-- 移除未使用的组合式API代码 -->
 
 <script>
+import userService from './services/userService.js'
+
 export default {
   name: 'App',
   data() {
@@ -293,7 +295,7 @@ export default {
   },
   computed: {
     isLoggedIn() {
-      return localStorage.getItem('user') !== null
+      return userService.isLoggedIn()
     },
     navbarClasses() {
       return {
@@ -307,8 +309,7 @@ export default {
       }
     },
     user() {
-      const userStr = localStorage.getItem('user')
-      return userStr ? JSON.parse(userStr) : { username: '', groups: [] }
+      return userService.getCurrentUserFromStorage() || { username: '', groups: [] }
     },
     userInitial() {
       return this.user.username ? this.user.username.charAt(0).toUpperCase() : 'U'

@@ -188,6 +188,8 @@
 </template>
 
 <script>
+import userService from '@/services/userService'
+
 export default {
   name: 'AdminToolsView',
   data() {
@@ -223,7 +225,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     // 路由进入前检查权限
-    const user = JSON.parse(localStorage.getItem('user'))
+    const user = userService.getCurrentUserFromStorage()
     if (!user || !user.roles || !user.roles.includes('admin')) {
       next({ name: 'Login' })
     } else {
@@ -232,17 +234,17 @@ export default {
   },
   methods: {
     checkAdminPermission() {
-      const user = JSON.parse(localStorage.getItem('user'))
+      const user = userService.getCurrentUserFromStorage()
       if (!user || !user.roles || !user.roles.includes('admin')) {
         this.$router.push('/login')
       }
     },
     loadUserData() {
-      const user = JSON.parse(localStorage.getItem('user'))
+      const user = userService.getCurrentUserFromStorage()
       this.currentUser = user
     },
     handleLogout() {
-      localStorage.removeItem('user')
+      userService.logout()
       this.$router.push('/login')
     },
     generateHash() {

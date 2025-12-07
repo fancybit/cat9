@@ -199,6 +199,8 @@
 </template>
 
 <script>
+import userService from '@/services/userService'
+
 export default {
   name: 'StoreView',
   data() {
@@ -440,7 +442,7 @@ export default {
     },
     buyGameNow(game) {
       // 检查用户是否登录
-      const user = localStorage.getItem('user')
+      const user = userService.getCurrentUserFromStorage()
       if (!user) {
         if (confirm('请先登录以购买游戏，是否前往登录页面？')) {
           this.$router.push('/login')
@@ -449,8 +451,7 @@ export default {
       }
       
       // 模拟购买
-      const userData = JSON.parse(user)
-      if (userData.wallet.balance >= game.price) {
+      if (user.wallet && user.wallet.balance >= game.price) {
         alert(`购买成功！您已成功购买 ${game.name}`)
         // 这里应该调用后端API进行购买
       } else {

@@ -5,11 +5,18 @@
       <div class="profile-sidebar">
         <div class="profile-header">
           <div class="avatar-container">
-            <div class="avatar" :style="{ backgroundImage: `url(${user?.avatar || defaultAvatar})` }"></div>
-            <button class="avatar-edit">
-              <span>+</span>
-            </button>
-          </div>
+          <div class="avatar" :style="{ backgroundImage: `url(${user?.avatar || defaultAvatar})` }"></div>
+          <input 
+            type="file" 
+            id="avatar-input" 
+            accept="image/*" 
+            style="display: none" 
+            @change="handleAvatarUpload"
+          >
+          <button class="avatar-edit" @click="triggerAvatarUpload">
+            <span>+</span>
+          </button>
+        </div>
           <h2>{{ user?.displayName || '用户' }}</h2>
           <p class="username">{{ user?.username }}</p>
           <div class="wallet-info">
@@ -329,6 +336,9 @@
 </template>
 
 <script>
+import userService from '@/services/userService';
+import { uploadAvatar } from '@/services/userService';
+
 export default {
   name: 'UserProfile',
   data() {
@@ -379,10 +389,12 @@ export default {
   },
   methods: {
     loadUserInfo() {
-      // 从localStorage加载用户信息
-      const userStr = localStorage.getItem('user')
-      if (userStr) {
-        this.user = JSON.parse(userStr)
+      // 从userService加载用户信息
+      const user = userService.getCurrentUserFromStorage()
+      console.log('加载的用户信息:', user)
+      if (user) {
+        this.user = user
+        console.log('用户头像URL:', this.user.avatar)
         // 初始化编辑表单
         this.editForm = {
           displayName: this.user.displayName,
@@ -408,19 +420,24 @@ export default {
       // 提示用户刷新页面以应用所有翻译
       alert(this.$t('profile.languageChanged'))
     },
-    saveProfile() {
+    async saveProfile() {
       // 保存个人资料
       if (this.user) {
-        this.user.displayName = this.editForm.displayName
-        this.user.bio = this.editForm.bio
-        this.user.country = this.editForm.country
-        this.user.showOnlineStatus = this.editForm.showOnlineStatus
-        
-        // 保存到localStorage
-        localStorage.setItem('user', JSON.stringify(this.user))
-        
-        // 显示成功提示
-        alert('个人资料已更新')
+        try {
+          const updatedUser = await userService.updateUser({
+            displayName: this.editForm.displayName,
+            bio: this.editForm.bio,
+            country: this.editForm.country,
+            showOnlineStatus: this.editForm.showOnlineStatus
+          })
+          // 更新本地用户信息
+          this.user = updatedUser
+          // 显示成功提示
+          alert('个人资料已更新')
+        } catch (error) {
+          console.error('保存个人资料失败:', error)
+          alert(error.message || '保存个人资料失败')
+        }
       }
     },
     cancelEdit() {
@@ -435,8 +452,53 @@ export default {
     },
     handleLogout() {
       // 清除用户信息并跳转登录页
-      localStorage.removeItem('user')
+      userService.logout()
       this.$router.push('/login')
+    },
+    triggerAvatarUpload() {
+      // 触发文件选择对话框
+      document.getElementById('avatar-input').click()
+    },
+    async handleAvatarUpload(event) {
+      const file = event.target.files[0]
+      if (!file) return
+      
+      // 验证文件类型
+      if (!file.type.startsWith('image/')) {
+        alert('请选择图片文件')
+        return
+      }
+      
+      // 验证文件大小（限制为5MB）
+      if (file.size > 5 * 1024 * 1024) {
+        alert('图片大小不能超过5MB')
+        return
+      }
+      
+      try {
+        // 使用uploadAvatar函数上传头像
+        console.log('开始上传头像...')
+        const data = await uploadAvatar(file)
+        console.log('上传响应数据:', data)
+        
+        if (data.success) {
+          // 更新用户头像，确保触发Vue响应式
+          if (this.user) {
+            // 创建新的用户对象，确保Vue能检测到变化
+            this.user = {
+              ...this.user,
+              avatar: data.avatarUrl
+            }
+            alert('头像上传成功')
+          }
+        } else {
+          console.error('上传失败:', data.error)
+          alert(data.error || '头像上传失败')
+        }
+      } catch (error) {
+        console.error('头像上传错误:', error)
+        alert(error.message || '网络错误，请稍后重试')
+      }
     }
   }
 }

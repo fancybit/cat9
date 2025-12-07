@@ -112,6 +112,8 @@
 </template>
 
 <script>
+import userService from '@/services/userService';
+
 export default {
   name: 'AdminView',
   data() {
@@ -154,9 +156,8 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     // 路由进入前检查权限
-    const txtData = localStorage.getItem('user');
-    console.log("user info:"+txtData);
-    const user = JSON.parse(txtData)
+    const user = userService.getCurrentUserFromStorage();
+    console.log("user info:"+JSON.stringify(user));
     if (!user || !user.roles || !user.roles.includes('admin')) {
       next({ name: 'Login' })
     } else {
@@ -165,19 +166,18 @@ export default {
   },
   methods: {
     checkAdminPermission() {
-      const txtData = localStorage.getItem('user');
-      console.log("user info:"+txtData);
-      const user = JSON.parse(txtData)
+      const user = userService.getCurrentUserFromStorage();
+      console.log("user info:"+JSON.stringify(user));
       if (!user || !user.roles || !user.roles.includes('admin')) {
         this.$router.push('/login')
       }
     },
     loadUserData() {
-      const user = JSON.parse(localStorage.getItem('user'))
+      const user = userService.getCurrentUserFromStorage()
       this.currentUser = user
     },
     handleLogout() {
-      localStorage.removeItem('user')
+      userService.logout()
       this.$router.push('/login')
     },
     startTimeSync() {

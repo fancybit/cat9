@@ -116,6 +116,8 @@
 </template>
 
 <script>
+import userService from '@/services/userService';
+
 export default {
   name: 'RegisterView',
   data() {
@@ -150,7 +152,7 @@ export default {
     }
   },
   methods: {
-    handleRegister() {
+    async handleRegister() {
       if (!this.isFormValid) {
         this.error = '请确保所有必填项填写正确'
         return
@@ -160,31 +162,32 @@ export default {
       this.error = ''
       this.success = ''
       
-      // 模拟注册请求
-      setTimeout(() => {
-        // 模拟注册成功
-        const mockUser = {
-          id: Date.now().toString(),
+      try {
+        // 调用真实注册API
+        const response = await userService.register({
           username: this.form.username,
-          displayName: this.form.username,
           email: this.form.email,
-          avatar: '',
-          wallet: {
-            balance: 500 // 新用户赠送500 Cat9Coins
-          }
+          password: this.form.password,
+          displayName: this.form.username
+        });
+        
+        if (response.success) {
+          this.loading = false
+          this.success = '注册成功！正在跳转...'
+          
+          // 注册成功后延迟跳转
+          setTimeout(() => {
+            this.$router.push('/login')
+          }, 1500)
+        } else {
+          this.loading = false
+          this.error = response.error || '注册失败'
         }
-        
-        // 保存用户信息到localStorage
-        localStorage.setItem('user', JSON.stringify(mockUser))
-        
+      } catch (error) {
         this.loading = false
-        this.success = '注册成功！正在跳转...'
-        
-        // 注册成功后延迟跳转
-        setTimeout(() => {
-          this.$router.push('/profile')
-        }, 1500)
-      }, 1500)
+        this.error = error.message || '网络错误，请稍后重试'
+        console.error('注册错误:', error)
+      }
     },
     goToLogin() {
       this.$router.push('/login')

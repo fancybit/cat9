@@ -110,12 +110,6 @@ export default {
         const response = await userService.login(this.form.username, this.form.password);
         
         if (response.success) {
-          // 保存用户信息和token到localStorage
-          localStorage.setItem('user', JSON.stringify(response.user));
-          if (response.token) {
-            localStorage.setItem('token', response.token);
-          }
-          
           this.loading = false;
           
           // 登录成功跳转

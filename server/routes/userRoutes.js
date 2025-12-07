@@ -108,4 +108,20 @@ router.post('/reset-password/:userId/:token', async (req, res) => {
   }
 });
 
+// 头像上传
+const upload = require('../middleware/upload');
+router.post('/avatar', authMiddleware, upload.single('avatar'), async (req, res) => {
+  try {
+    const result = await userService.uploadAvatar(req.userId, req.file);
+    if (result.success) {
+      res.json(result);
+    } else {
+      res.status(400).json(result);
+    }
+  } catch (error) {
+    console.error('头像上传错误:', error);
+    res.status(500).json({ success: false, error: '服务器错误，请稍后重试' });
+  }
+});
+
 module.exports = router;

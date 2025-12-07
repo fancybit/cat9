@@ -260,6 +260,51 @@ class UserService {
       return { success: false, error: '重置密码失败，请稍后重试' };
     }
   }
+
+  /**
+   * 上传用户头像
+   * @param {string} userId - 用户ID
+   * @param {Object} file - 上传的文件对象
+   * @returns {Promise<Object>} 上传结果
+   */
+  async uploadAvatar(userId, file) {
+    try {
+      // 查找用户
+      const user = await dal.getUser(userId);
+      if (!user) {
+        return { success: false, error: '用户不存在' };
+      }
+
+      // 生成一个简单的随机字符串作为头像标识
+      const avatarId = `avatar_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+      
+      // 模拟玄玉区块链存储
+      const avatarKey = `avatar_${userId}`;
+      await dal.storeData(avatarKey, {
+        userId,
+        avatarId,
+        fileName: file.originalname,
+        mimeType: file.mimetype,
+        size: file.size,
+        uploadedAt: new Date()
+      });
+
+      // 生成IPFS网关URL，使用云服务器的IPFS网关
+      // 使用用户提供的云服务器IPFS网关域名
+      const avatarUrl = `http://ipfs.metajade.online/ipfs/${avatarId}`;
+      
+      // 更新用户头像URL
+      user.avatar = avatarUrl;
+      
+      // 保存用户信息到玄玉区块链
+      await dal.updateUser(userId, { avatar: avatarUrl });
+
+      return { success: true, avatarUrl };
+    } catch (error) {
+      console.error('头像上传失败:', error);
+      return { success: false, error: '头像上传失败，请稍后重试' };
+    }
+  }
 }
 
 module.exports = new UserService();

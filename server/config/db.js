@@ -1,8 +1,8 @@
 // 数据库连接配置
 const { getConnector } = require('../dbconnectors');
 
-// 获取数据库类型，默认为mock
-const DB_TYPE = process.env.DB_TYPE || 'mock';
+// 获取数据库类型，默认为metajade
+const DB_TYPE = process.env.DB_TYPE || 'metajade';
 
 // 数据库配置
 const dbConfig = {
@@ -22,6 +22,9 @@ const dbConfig = {
     password: process.env.MYSQL_PASSWORD || '',
     database: process.env.MYSQL_DATABASE || 'cat9',
     port: process.env.MYSQL_PORT || 3306
+  },
+  metajade: {
+    // 玄玉区块链不需要额外配置
   }
 };
 
@@ -37,11 +40,25 @@ const connectDB = async () => {
     // 连接数据库
     await dbConnector.connect(dbConfig[DB_TYPE]);
     
-    console.log(`${DB_TYPE === 'mock' ? 'Mock' : 
-                 DB_TYPE === 'mongodb' ? 'MongoDB' : 'MySQL'} 数据库连接成功`);
+    // 获取数据库类型名称
+    const dbTypeName = {
+      'mock': 'Mock',
+      'mongodb': 'MongoDB',
+      'mysql': 'MySQL',
+      'metajade': '玄玉区块链'
+    }[DB_TYPE] || DB_TYPE;
+    
+    console.log(`${dbTypeName} 数据库连接成功`);
   } catch (error) {
-    console.error(`${DB_TYPE === 'mock' ? 'Mock' : 
-                 DB_TYPE === 'mongodb' ? 'MongoDB' : 'MySQL'} 数据库连接失败: ${error.message}`);
+    // 获取数据库类型名称
+    const dbTypeName = {
+      'mock': 'Mock',
+      'mongodb': 'MongoDB',
+      'mysql': 'MySQL',
+      'metajade': '玄玉区块链'
+    }[DB_TYPE] || DB_TYPE;
+    
+    console.error(`${dbTypeName} 数据库连接失败: ${error.message}`);
     // 开发环境下不退出进程，以便继续调试
     if (process.env.NODE_ENV !== 'development') {
       process.exit(1);
@@ -55,8 +72,16 @@ const disconnectDB = async () => {
   if (dbConnector) {
     try {
       await dbConnector.disconnect();
-      console.log(`${DB_TYPE === 'mock' ? 'Mock' : 
-                 DB_TYPE === 'mongodb' ? 'MongoDB' : 'MySQL'} 数据库连接已断开`);
+      
+      // 获取数据库类型名称
+      const dbTypeName = {
+        'mock': 'Mock',
+        'mongodb': 'MongoDB',
+        'mysql': 'MySQL',
+        'metajade': '玄玉区块链'
+      }[DB_TYPE] || DB_TYPE;
+      
+      console.log(`${dbTypeName} 数据库连接已断开`);
     } catch (error) {
       console.error(`断开数据库连接失败: ${error.message}`);
     }

@@ -291,6 +291,7 @@
 
 <script>
 import { ref, computed } from 'vue'
+import userService from '@/services/userService'
 
 export default {
   name: 'CommunityPage',
@@ -521,7 +522,7 @@ export default {
     
     // 计算属性
     const isLoggedIn = computed(() => {
-      return localStorage.getItem('user') !== null
+      return userService.isLoggedIn()
     })
     
     const filteredMods = computed(() => {
