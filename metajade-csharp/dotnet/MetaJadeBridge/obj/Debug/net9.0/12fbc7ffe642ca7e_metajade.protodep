@@ -1,2 +1,0 @@
-obj\Debug\net9.0\Protos/Metajade.cs \
-obj\Debug\net9.0\Protos/MetajadeGrpc.cs: Protos/metajade.proto

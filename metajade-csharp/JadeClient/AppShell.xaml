@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="JadeClient.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:sf="clr-namespace:Syncfusion.Maui.Toolkit.SegmentedControl;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:pages="clr-namespace:JadeClient.Pages"
+    xmlns:resx="clr-namespace:JadeClient.Resources.Strings;assembly=JadeClient"
+    xmlns:sfItems="clr-namespace:Syncfusion.Maui.Toolkit.SegmentedControl;assembly=Syncfusion.Maui.Toolkit"
+    Shell.FlyoutBehavior="Flyout"
+    Title="{x:Static resx:Loc.AppTitle}">
+
+    <!-- Game Library - Default Page -->
+    <ShellContent
+        Title="{x:Static resx:Loc.GameLibrary}"
+        Icon="{StaticResource IconProjects}"
+        ContentTemplate="{DataTemplate pages:GameLibraryPage}"
+        Route="gamelibrary" />
+
+    <ShellContent
+        Title="{x:Static resx:Loc.Dashboard}"
+        Icon="{StaticResource IconDashboard}"
+        ContentTemplate="{DataTemplate pages:MainPage}"
+        Route="main" />
+
+    <ShellContent
+        Title="{x:Static resx:Loc.Projects}"
+        Icon="{StaticResource IconProjects}"
+        ContentTemplate="{DataTemplate pages:ProjectListPage}"
+        Route="projects" />
+
+    <ShellContent
+        Title="{x:Static resx:Loc.Options}"
+        Icon="{StaticResource IconMeta}"
+        ContentTemplate="{DataTemplate pages:OptionsPage}"
+        Route="manage" />
+
+    <Shell.FlyoutFooter>
+        <Grid Padding="15">
+            <sf:SfSegmentedControl x:Name="ThemeSegmentedControl" 
+                VerticalOptions="Center" HorizontalOptions="Center" SelectionChanged="SfSegmentedControl_SelectionChanged"
+                SegmentWidth="40" SegmentHeight="40">
+                <sf:SfSegmentedControl.ItemsSource>
+                    <x:Array Type="{x:Type sfItems:SfSegmentItem}">
+                        <sfItems:SfSegmentItem ImageSource="{StaticResource IconLight}"/>
+                        <sfItems:SfSegmentItem ImageSource="{StaticResource IconDark}"/>
+                    </x:Array>
+                </sf:SfSegmentedControl.ItemsSource>
+            </sf:SfSegmentedControl>
+        </Grid>
+    </Shell.FlyoutFooter>
+
+</Shell>

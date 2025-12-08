@@ -58,8 +58,10 @@ class MongoDBConnector {
   }
 
   // 连接到MongoDB
-  async connect(uri = 'mongodb://localhost:27017/cat9') {
+  async connect(config = {}) {
     try {
+      // 如果config是字符串，直接使用作为uri
+      const uri = typeof config === 'string' ? config : config.uri || 'mongodb://localhost:27017/cat9';
       this.connection = await mongoose.connect(uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true

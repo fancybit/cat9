@@ -1,0 +1,11 @@
+global using Fonts;
+global using JadeClient.Data;
+global using JadeClient.PageModels;
+global using JadeClient.Pages;
+global using JadeClient.Services;
+global using JadeClient.Utilities;
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Threading.Tasks;
+global using Microsoft.Maui.Controls;

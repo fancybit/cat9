@@ -1,0 +1,19 @@
+syntax = "proto3";
+package metajade;
+import "google/protobuf/timestamp.proto";
+option csharp_namespace = "LibMetaJade.Protos";
+
+message ProtoMetaJadeBlock{
+	repeated string relation_cids = 1;
+	google.protobuf.Timestamp timestamp = 2;
+	bytes hash = 3;
+	bytes data = 4;
+}
+
+message ProtoMetaJadeData{
+	repeated ProtoMetaJadeBlock blocks = 1;
+}
+
+message ProtoMetaJadeNode{
+	ProtoMetaJadeData Data = 1;
+}

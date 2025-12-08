@@ -6,9 +6,6 @@ const DB_TYPE = process.env.DB_TYPE || 'metajade';
 
 // 数据库配置
 const dbConfig = {
-  mock: {
-    // Mock数据库不需要额外配置
-  },
   mongodb: {
     uri: process.env.MONGO_URI || 'mongodb://localhost:27017/cat9',
     options: {
@@ -24,7 +21,11 @@ const dbConfig = {
     port: process.env.MYSQL_PORT || 3306
   },
   metajade: {
-    // 玄玉区块链不需要额外配置
+    // 玄玉区块链网络配置选项 - 只保留桥服务的必要配置
+    // 因为它只是对cs版玄玉区块链桥服务的封装
+    bridgeHost: process.env.METAJADE_BRIDGE_HOST || 'localhost',
+    bridgePort: process.env.METAJADE_BRIDGE_PORT || 5000
+    // DHT相关配置已移至server.js中
   }
 };
 
@@ -34,25 +35,31 @@ let dbConnector = null;
 // 连接数据库
 const connectDB = async () => {
   try {
-    // 获取对应类型的数据库连接器
-    dbConnector = getConnector(DB_TYPE);
+    // 获取数据库配置
+    const config = dbConfig[DB_TYPE];
+    
+    // 获取对应类型的数据库连接器，传递配置选项
+    dbConnector = getConnector(DB_TYPE, config);
     
     // 连接数据库
-    await dbConnector.connect(dbConfig[DB_TYPE]);
+    await dbConnector.connect(config);
     
     // 获取数据库类型名称
     const dbTypeName = {
-      'mock': 'Mock',
       'mongodb': 'MongoDB',
       'mysql': 'MySQL',
       'metajade': '玄玉区块链'
     }[DB_TYPE] || DB_TYPE;
     
     console.log(`${dbTypeName} 数据库连接成功`);
+    
+    // 如果是玄玉区块链，显示连接信息
+    if (DB_TYPE === 'metajade') {
+      console.log(`玄玉区块链配置: 桥服务=${config.bridgeHost}:${config.bridgePort}`);
+    }
   } catch (error) {
     // 获取数据库类型名称
     const dbTypeName = {
-      'mock': 'Mock',
       'mongodb': 'MongoDB',
       'mysql': 'MySQL',
       'metajade': '玄玉区块链'
@@ -75,7 +82,6 @@ const disconnectDB = async () => {
       
       // 获取数据库类型名称
       const dbTypeName = {
-        'mock': 'Mock',
         'mongodb': 'MongoDB',
         'mysql': 'MySQL',
         'metajade': '玄玉区块链'

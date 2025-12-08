@@ -1,64 +1,18 @@
 // 数据访问层(DAL) - 为cat9库提供统一的数据访问接口，基于玄玉区块链网络
 
+// 导入数据库连接器
+const MetaJadeConnector = require('../dbconnectors/metajadeConnector');
+
 // 导入MongoDB模型（暂时保留，用于兼容）
 const Game = require('../models/Game');
 const mongoose = require('mongoose');
 
-// 模拟玄玉区块链客户端类
-class MockMetaJadeHome {
-  constructor() {
-    this.isInitialized = false;
-    this.dataStore = new Map(); // 模拟玄玉区块链存储
-  }
-
-  async start(options = {}) {
-    this.isInitialized = true;
-    console.log('模拟玄玉区块链DHT服务初始化成功');
-  }
-
-  async stop() {
-    this.isInitialized = false;
-    console.log('模拟玄玉区块链DHT服务停止成功');
-  }
-
-  async store(key, value) {
-    this.dataStore.set(key, value);
-    console.log(`模拟玄玉区块链存储数据成功: ${key}`);
-  }
-
-  async retrieve(key) {
-    return this.dataStore.get(key);
-  }
-
-  async findProviders(key) {
-    return [];
-  }
-
-  async findPeer(peerId) {
-    return null;
-  }
-
-  async provide(key) {
-    // 模拟提供数据
-  }
-
-  async _getStatus() {
-    return {
-      peer_id: 'mock_peer_id',
-      multiaddrs: ['/ip4/127.0.0.1/tcp/4001'],
-      connection_count: 0,
-      routing_table_size: 0
-    };
-  }
-}
-
 // 数据访问层类
 class DataAccessLayer {
   constructor(dbType = 'blockchain') {
-    // 初始化玄玉区块链客户端（使用模拟实现）
-    this.metaJadeHome = new MockMetaJadeHome();
+    // 初始化玄玉区块链连接器
+    this.connector = new MetaJadeConnector();
     this.isInitialized = false;
-    this.dataCache = new Map(); // 本地缓存，提高性能
   }
 
   /**
@@ -68,8 +22,8 @@ class DataAccessLayer {
     if (this.isInitialized) return;
     
     try {
-      // 启动玄玉区块链DHT服务
-      await this.metaJadeHome.start();
+      // 连接到玄玉区块链网络
+      await this.connector.connect();
       console.log('数据访问层初始化完成，使用玄玉区块链网络');
       this.isInitialized = true;
     } catch (error) {
@@ -96,9 +50,7 @@ class DataAccessLayer {
   async storeData(key, data) {
     await this.initialize();
     const serializedData = JSON.stringify(data);
-    await this.metaJadeHome.store(key, serializedData);
-    // 更新本地缓存
-    this.dataCache.set(key, data);
+    await this.connector.metaJadeHome.store(key, serializedData);
   }
 
   /**
@@ -108,16 +60,10 @@ class DataAccessLayer {
    */
   async retrieveData(key) {
     await this.initialize();
-    // 先从本地缓存获取
-    if (this.dataCache.has(key)) {
-      return this.dataCache.get(key);
-    }
     try {
-      const serializedData = await this.metaJadeHome.retrieve(key);
+      const serializedData = await this.connector.metaJadeHome.retrieve(key);
       if (serializedData) {
         const data = JSON.parse(serializedData);
-        // 更新本地缓存
-        this.dataCache.set(key, data);
         return data;
       }
       return null;
@@ -859,7 +805,8 @@ class DataAccessLayer {
    */
   async close() {
     if (this.isInitialized) {
-      // 玄玉区块链客户端不需要关闭连接
+      // 调用连接器的disconnect方法关闭连接
+      await this.connector.disconnect();
       this.isInitialized = false;
     }
   }

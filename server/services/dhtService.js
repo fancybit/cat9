@@ -18,7 +18,9 @@ class DHTService {
 
     try {
       // 创建 C# 版 MetaJadeHome 实例
-      this.dhtServer = new MetaJadeHome();
+      this.dhtServer = new MetaJadeHome({
+        port: options.bridgePort || 5001
+      });
 
       // 启动 DHT 服务器
       await this.dhtServer.start({

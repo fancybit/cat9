@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="JadeClient.Pages.GameLibraryPage"
+             Title="Game Library">
+
+    <VerticalStackLayout Padding="20" Spacing="20">
+    
+ <Label Text="My Game Library"
+          FontSize="24"
+   FontAttributes="Bold"/>
+        
+  <HorizontalStackLayout Spacing="10">
+            <Button Text="Refresh"
+ Command="{Binding RefreshCommand}"/>
+     <Button Text="Settings"
+                    Command="{Binding SettingsCommand}"/>
+        </HorizontalStackLayout>
+        
+        <ScrollView>
+<CollectionView ItemsSource="{Binding GameLibrary}">
+          <CollectionView.ItemTemplate>
+     <DataTemplate>
+    <VerticalStackLayout Padding="10" Spacing="5">
+          <Label Text="{Binding GameName}"
+           FontSize="18"
+             FontAttributes="Bold"/>
+     <Label Text="{Binding GameID}"
+      FontSize="12"
+          TextColor="Gray"/>
+           <HorizontalStackLayout Spacing="10">
+             <Button Text="Launch"
+   Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.LaunchGameCommand}"
+         CommandParameter="{Binding .}"
+       BackgroundColor="Green"
+  TextColor="White"/>
+       <Button Text="Details"
+        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ShowDetailsCommand}"
+   CommandParameter="{Binding .}"/>
+           </HorizontalStackLayout>
+      <BoxView HeightRequest="1" Color="LightGray"/>
+ </VerticalStackLayout>
+          </DataTemplate>
+     </CollectionView.ItemTemplate>
+            </CollectionView>
+ </ScrollView>
+        
+        <Label Text="{Binding ClientStatusText}"
+      FontSize="12"/>
+        
+    </VerticalStackLayout>
+
+</ContentPage>
