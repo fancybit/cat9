@@ -7,7 +7,13 @@ module.exports = defineConfig({
     port: 8080,
     allowedHosts: "all",    // 允许所有主机访问（Vue CLI 3+）
     hot: false,
-    liveReload: false
+    liveReload: false,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true
+      }
+    }
   },
   transpileDependencies: true,
   css: {
