@@ -1,14 +1,11 @@
-// 使用 C# 版玄玉区块链核心库
-const { MetaJadeHome } = require('../../metajade-csharp/nodejs');
-
+// DHT 服务 - 与玄玉节点解耦，独立运行
 class DHTService {
   constructor() {
-    this.dhtServer = null;
     this.isInitialized = false;
   }
 
   /**
-   * 初始化并启动 DHT 服务器
+   * 初始化 DHT 服务
    */
   async initialize(options = {}) {
     if (this.isInitialized) {
@@ -17,40 +14,30 @@ class DHTService {
     }
 
     try {
-      // 创建 C# 版 MetaJadeHome 实例
-      this.dhtServer = new MetaJadeHome({
-        port: options.bridgePort || 5001
-      });
-
-      // 启动 DHT 服务器
-      await this.dhtServer.start({
-        port: options.port || 4001,
-        enableRelay: options.enableRelay !== false
-      });
+      // DHT 服务已与玄玉节点解耦，不再依赖MetaJadeHome
       this.isInitialized = true;
-      
-      console.log('C# 版 DHT 服务已成功初始化');
+      console.log('DHT 服务已成功初始化（与玄玉节点解耦）');
       return this;
     } catch (error) {
-      console.error('初始化 C# 版 DHT 服务失败:', error);
+      console.error('初始化 DHT 服务失败:', error);
       throw error;
     }
   }
 
   /**
-   * 停止 DHT 服务器
+   * 停止 DHT 服务
    */
   async shutdown() {
-    if (!this.isInitialized || !this.dhtServer) {
+    if (!this.isInitialized) {
       return;
     }
 
     try {
-      await this.dhtServer.stop();
+      // DHT 服务已与玄玉节点解耦，不再需要停止MetaJadeNode
       this.isInitialized = false;
-      console.log('C# 版 DHT 服务已关闭');
+      console.log('DHT 服务已关闭');
     } catch (error) {
-      console.error('关闭 C# 版 DHT 服务时出错:', error);
+      console.error('关闭 DHT 服务时出错:', error);
     }
   }
 
@@ -58,20 +45,9 @@ class DHTService {
    * 获取 DHT 服务器状态
    */
   getStatus() {
-    if (!this.isInitialized || !this.dhtServer) {
-      return {
-        status: 'stopped',
-        initialized: false
-      };
-    }
-
     return {
-      status: 'running',
-      initialized: true,
-      peerId: this.dhtServer.getPeerId(),
-      multiaddrs: this.dhtServer.getMultiaddrs(),
-      connectionCount: this.dhtServer.getConnectionCount(),
-      routingTableSize: this.dhtServer.getRoutingTableSize()
+      status: this.isInitialized ? 'running' : 'stopped',
+      initialized: this.isInitialized
     };
   }
 
@@ -79,55 +55,60 @@ class DHTService {
    * 存储数据到 DHT
    */
   async storeData(key, value) {
-    if (!this.isInitialized || !this.dhtServer) {
+    if (!this.isInitialized) {
       throw new Error('DHT 服务未初始化');
     }
 
-    return this.dhtServer.store(key, value);
+    console.log('DHT 服务已与玄玉节点解耦，存储数据功能暂时不可用');
+    return Promise.resolve();
   }
 
   /**
    * 从 DHT 检索数据
    */
   async retrieveData(key) {
-    if (!this.isInitialized || !this.dhtServer) {
+    if (!this.isInitialized) {
       throw new Error('DHT 服务未初始化');
     }
 
-    return this.dhtServer.retrieve(key);
+    console.log('DHT 服务已与玄玉节点解耦，检索数据功能暂时不可用');
+    return Promise.resolve(null);
   }
 
   /**
    * 查找提供特定键的节点
    */
   async findProviders(key) {
-    if (!this.isInitialized || !this.dhtServer) {
+    if (!this.isInitialized) {
       throw new Error('DHT 服务未初始化');
     }
 
-    return this.dhtServer.findProviders(key);
+    console.log('DHT 服务已与玄玉节点解耦，查找提供者功能暂时不可用');
+    return Promise.resolve([]);
   }
 
   /**
    * 查找特定 ID 的节点
    */
   async findPeer(peerId) {
-    if (!this.isInitialized || !this.dhtServer) {
+    if (!this.isInitialized) {
       throw new Error('DHT 服务未初始化');
     }
 
-    return this.dhtServer.findPeer(peerId);
+    console.log('DHT 服务已与玄玉节点解耦，查找节点功能暂时不可用');
+    return Promise.resolve({ peerId: peerId, addresses: [] });
   }
 
   /**
    * 提供当前节点作为指定键的数据提供者
    */
   async provide(key) {
-    if (!this.isInitialized || !this.dhtServer) {
+    if (!this.isInitialized) {
       throw new Error('DHT 服务未初始化');
     }
 
-    return this.dhtServer.provide(key);
+    console.log('DHT 服务已与玄玉节点解耦，提供数据功能暂时不可用');
+    return Promise.resolve();
   }
 }
 

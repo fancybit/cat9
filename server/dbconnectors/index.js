@@ -10,12 +10,16 @@ module.exports = {
   MetaJadeConnector,
   // 根据环境变量或配置选择合适的连接器
   getConnector(type = 'metajade', config = {}) {
-    switch (type.toLowerCase()) {
+    // 默认使用metajade（玄玉链）作为数据存储
+    const dbType = type.toLowerCase();
+    
+    switch (dbType) {
+      case 'metajade':
+        return new MetaJadeConnector(config);
       case 'mongodb':
         return new MongoDBConnector(config);
       case 'mysql':
         return new MySQLConnector(config);
-      case 'metajade':
       default:
         return new MetaJadeConnector(config);
     }

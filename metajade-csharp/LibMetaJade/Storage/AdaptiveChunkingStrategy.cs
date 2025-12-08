@@ -3,106 +3,106 @@ using System;
 namespace LibMetaJade.Storage
 {
     /// <summary>
-    /// IPFS ×ÔÊÊÓ¦·Ö¿é²ßÂÔ
-    /// ¸ù¾İÎÄ¼ş´óĞ¡¶¯Ì¬µ÷Õû·Ö¿é³ß´ç£¬ÓÅ»¯´æ´¢Ğ§ÂÊºÍ´«ÊäĞÔÄÜ
+    /// IPFS è‡ªé€‚åº”åˆ†å—ç­–ç•¥
+    /// æ ¹æ®æ–‡ä»¶å¤§å°åŠ¨æ€è°ƒæ•´åˆ†å—å°ºå¯¸ï¼Œä¼˜åŒ–å­˜å‚¨æ•ˆç‡å’Œä¼ è¾“æ€§èƒ½
     /// </summary>
     public class AdaptiveChunkingStrategy
     {
-    /// <summary>×îĞ¡·Ö¿é´óĞ¡£¨64KB£©</summary>
+        /// <summary>æœ€å°åˆ†å—å¤§å°ï¼ˆ64KBï¼‰</summary>
         private const int MinChunkSize = 64 * 1024;
-   
-        /// <summary>Ä¬ÈÏ·Ö¿é´óĞ¡£¨256KB£©</summary>
+
+        /// <summary>é»˜è®¤åˆ†å—å¤§å°ï¼ˆ256KBï¼‰</summary>
         private const int DefaultChunkSize = 256 * 1024;
-        
-        /// <summary>´óÎÄ¼ş·Ö¿é´óĞ¡£¨2MB£©</summary>
+
+        /// <summary>å¤§æ–‡ä»¶åˆ†å—å¤§å°ï¼ˆ2MBï¼‰</summary>
         private const int LargeChunkSize = 2 * 1024 * 1024;
-        
-/// <summary>Ğ¡ÎÄ¼şãĞÖµ£¨1MB£©</summary>
+
+        /// <summary>å°æ–‡ä»¶é˜ˆå€¼ï¼ˆ1MBï¼‰</summary>
         private const long SmallFileThreshold = 1 * 1024 * 1024;
-        
-        /// <summary>ÖĞÎÄ¼şãĞÖµ£¨100MB£©</summary>
+
+        /// <summary>ä¸­æ–‡ä»¶é˜ˆå€¼ï¼ˆ100MBï¼‰</summary>
         private const long MediumFileThreshold = 100 * 1024 * 1024;
 
-     /// <summary>
-     /// ¸ù¾İÎÄ¼ş´óĞ¡¼ÆËã×îÓÅ·Ö¿é´óĞ¡
-  /// </summary>
-        /// <param name="fileSize">ÎÄ¼ş´óĞ¡£¨×Ö½Ú£©</param>
-  /// <returns>ÍÆ¼öµÄ·Ö¿é´óĞ¡£¨×Ö½Ú£©</returns>
-     public int CalculateOptimalChunkSize(long fileSize)
+        /// <summary>
+        /// æ ¹æ®æ–‡ä»¶å¤§å°è®¡ç®—æœ€ä¼˜åˆ†å—å¤§å°
+        /// </summary>
+        /// <param name="fileSize">æ–‡ä»¶å¤§å°ï¼ˆå­—èŠ‚ï¼‰</param>
+        /// <returns>æ¨èçš„åˆ†å—å¤§å°ï¼ˆå­—èŠ‚ï¼‰</returns>
+        public int CalculateOptimalChunkSize(long fileSize)
         {
             return fileSize switch
             {
-    // Ğ¡ÓÚ1MB£º²»·Ö¿é£¬Ö±½Ó´æ´¢
-    < SmallFileThreshold => (int)fileSize,
+                // å°äº1MBï¼šä¸åˆ†å—ï¼Œç›´æ¥å­˜å‚¨
+                < SmallFileThreshold => (int)fileSize,
 
-     // 1MB-100MB£ºÊ¹ÓÃ256KB·Ö¿é
-         < MediumFileThreshold => DefaultChunkSize,
-  
-        // 100MB-1GB£ºÊ¹ÓÃ2MB·Ö¿é
-          < 1024L * 1024 * 1024 => LargeChunkSize,
-           
-       // ³¬´óÎÄ¼ş£ºÊ¹ÓÃ4MB·Ö¿é
-      _ => 4 * 1024 * 1024
-       };
+                // 1MB-100MBï¼šä½¿ç”¨256KBåˆ†å—
+                < MediumFileThreshold => DefaultChunkSize,
+
+                // 100MB-1GBï¼šä½¿ç”¨2MBåˆ†å—
+                < 1024L * 1024 * 1024 => LargeChunkSize,
+
+                // è¶…å¤§æ–‡ä»¶ï¼šä½¿ç”¨4MBåˆ†å—
+                _ => 4 * 1024 * 1024
+            };
         }
 
         /// <summary>
-        /// ¼ÆËãÎÄ¼şµÄ·Ö¿éÊıÁ¿
+        /// è®¡ç®—æ–‡ä»¶çš„åˆ†å—æ•°é‡
         /// </summary>
         public int CalculateChunkCount(long fileSize)
         {
-    if (fileSize < SmallFileThreshold)
-     return 1; // Ğ¡ÎÄ¼ş²»·Ö¿é
+            if (fileSize < SmallFileThreshold)
+                return 1; // å°æ–‡ä»¶ä¸åˆ†å—
 
-   var chunkSize = CalculateOptimalChunkSize(fileSize);
-   return (int)Math.Ceiling((double)fileSize / chunkSize);
+            var chunkSize = CalculateOptimalChunkSize(fileSize);
+            return (int)Math.Ceiling((double)fileSize / chunkSize);
         }
 
         /// <summary>
-      /// »ñÈ¡·Ö¿é²ßÂÔÃèÊö
-   /// </summary>
-  public string GetStrategyDescription(long fileSize)
+        /// è·å–åˆ†å—ç­–ç•¥æè¿°
+        /// </summary>
+        public string GetStrategyDescription(long fileSize)
         {
-   var chunkSize = CalculateOptimalChunkSize(fileSize);
-     var chunkCount = CalculateChunkCount(fileSize);
-   
-      return $"FileSize: {FormatBytes(fileSize)}, " +
-         $"ChunkSize: {FormatBytes(chunkSize)}, " +
-         $"ChunkCount: {chunkCount}";
-     }
+            var chunkSize = CalculateOptimalChunkSize(fileSize);
+            var chunkCount = CalculateChunkCount(fileSize);
+
+            return $"FileSize: {FormatBytes(fileSize)}, " +
+               $"ChunkSize: {FormatBytes(chunkSize)}, " +
+               $"ChunkCount: {chunkCount}";
+        }
 
         private static string FormatBytes(long bytes)
-    {
-   string[] sizes = { "B", "KB", "MB", "GB", "TB" };
-   double len = bytes;
+        {
+            string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+            double len = bytes;
             int order = 0;
-         while (len >= 1024 && order < sizes.Length - 1)
-   {
- order++;
-    len /= 1024;
-   }
-  return $"{len:0.##} {sizes[order]}";
+            while (len >= 1024 && order < sizes.Length - 1)
+            {
+                order++;
+                len /= 1024;
+            }
+            return $"{len:0.##} {sizes[order]}";
         }
     }
 
     /// <summary>
-    /// ·Ö¿éÔªÊı¾İ
+    /// åˆ†å—å…ƒæ•°æ®
     /// </summary>
     public class ChunkMetadata
     {
-        /// <summary>·Ö¿éË÷Òı</summary>
-  public int Index { get; set; }
-        
-        /// <summary>·Ö¿éCID</summary>
+        /// <summary>åˆ†å—ç´¢å¼•</summary>
+        public int Index { get; set; }
+
+        /// <summary>åˆ†å—CID</summary>
         public string CID { get; set; } = string.Empty;
-        
-     /// <summary>·Ö¿é´óĞ¡</summary>
- public int Size { get; set; }
-   
-        /// <summary>·Ö¿é¹şÏ£</summary>
+
+        /// <summary>åˆ†å—å¤§å°</summary>
+        public int Size { get; set; }
+
+        /// <summary>åˆ†å—å“ˆå¸Œ</summary>
         public byte[] Hash { get; set; } = Array.Empty<byte>();
- 
-        /// <summary>ÔÚÔ­Ê¼ÎÄ¼şÖĞµÄÆ«ÒÆÁ¿</summary>
-      public long Offset { get; set; }
+
+        /// <summary>åœ¨åŸå§‹æ–‡ä»¶ä¸­çš„åç§»é‡</summary>
+        public long Offset { get; set; }
     }
 }

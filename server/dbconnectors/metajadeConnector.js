@@ -1,5 +1,4 @@
 // 玄玉区块链连接器 - 用于连接玄玉区块链网络
-const { MetaJadeHome } = require('../../metajade-csharp/nodejs');
 const { spawn } = require('child_process');
 const path = require('path');
 
@@ -12,11 +11,6 @@ class MetaJadeConnector {
    */
   constructor(options = {}) {
     this.connected = false;
-    // 使用bridgeHost和bridgePort作为REST服务器连接参数
-    this.metaJadeHome = new MetaJadeHome({
-      host: options.bridgeHost || 'localhost',
-      port: options.bridgePort || 5001
-    });
     this.dataCache = new Map(); // 本地缓存，提高性能
     this.bridgeProcess = null;
     this.options = options;
@@ -49,44 +43,39 @@ class MetaJadeConnector {
   async connect(options = {}) {
     console.log('玄玉区块链正在连接...');
     try {
-      // 获取用户指定的DHT服务器配置，DHT端口默认为6666，避免和其他端口冲突
+      // 4001
       const dhtOptions = {
-        port: options.dhtPort || 6666,
+        port: options.dhtPort || 4001,
         ip: options.dhtIp || '0.0.0.0', // 允许配置DHT服务器IP
         enableRelay: options.enableRelay || true
       };
-      
       // 检测指定端口是否被占用
       const isPortUsed = await this.isPortInUse(dhtOptions.port);
-      
       if (isPortUsed) {
         console.error(`玄玉DHT服务器端口 ${dhtOptions.port} 已被占用，无法启动新的DHT服务器`);
         return Promise.reject(new Error(`玄玉DHT服务器端口 ${dhtOptions.port} 已被占用`));
       }
-      
-      // 启动MetaJadeBridge
-      console.log('启动MetaJadeBridge...');
-      // 使用dotnet run命令启动MetaJadeBridge服务
+      console.log('启动MetaJadeNode...');
+      // 使用dotnet run命令启动MetaJadeNode服务
       try {
-        this.bridgeProcess = spawn('dotnet', ['run'], {
-          cwd: path.join(__dirname, '../../metajade-csharp/dotnet/MetaJadeBridge'),
-          detached: true,
-          stdio: 'ignore'
-        });
-        
-        // 等待2秒钟让bridge启动
-        await new Promise(resolve => setTimeout(resolve, 2000));
-      } catch (bridgeError) {
-        console.error('启动MetaJadeBridge失败:', bridgeError.message);
-        // 继续执行，不中断连接过程
+        // 检查MetaJadeNode项目是否存在
+        const metaJadeNodePath = path.join(__dirname, '../../metajade-csharp/MetaJadeNode');
+        const fs = require('fs');
+        if (fs.existsSync(metaJadeNodePath)) throw new Error('MetaJadeNode不存在');
+          this.bridgeProcess = spawn('dotnet', ['run'], {
+            cwd: metaJadeNodePath,
+            detached: true,
+            stdio: 'ignore'
+          });
+          // 等待3秒钟让node启动
+          await new Promise(resolve => setTimeout(resolve, 3000));
+          console.log('MetaJadeNode启动成功');
+      } catch (nodeError) {
+        console.error('启动MetaJadeNode失败:', nodeError.message);
+        await this.disconnect();
+        return;
       }
-      
-      // 初始化并启动DHT服务器
-      console.log(`初始化并启动DHT服务器，使用IP: ${dhtOptions.ip}，端口: ${dhtOptions.port}...`);
-      await this.metaJadeHome.start(dhtOptions);
-      
       this.connected = true;
-      console.log(`玄玉区块链已连接，DHT服务器IP: ${dhtOptions.ip}，端口: ${dhtOptions.port}`);
       return Promise.resolve(true);
     } catch (error) {
       console.error('玄玉区块链连接失败:', error.message);
@@ -98,18 +87,6 @@ class MetaJadeConnector {
   async disconnect() {
     console.log('玄玉区块链正在断开连接...');
     try {
-      // 停止DHT服务器
-      if (this.metaJadeHome) {
-        await this.metaJadeHome.stop();
-      }
-      
-      // 关闭MetaJadeBridge进程
-      if (this.bridgeProcess) {
-        console.log('关闭MetaJadeBridge...');
-        this.bridgeProcess.kill();
-        this.bridgeProcess = null;
-      }
-      
       this.connected = false;
       this.dataCache.clear();
       console.log('玄玉区块链已断开连接');
@@ -143,7 +120,6 @@ class MetaJadeConnector {
     try {
       // 生成唯一用户ID
       const userId = this.generateId('user');
-      
       // 创建用户对象
       const user = {
         ...userData,
@@ -159,17 +135,17 @@ class MetaJadeConnector {
       
       // 存储用户数据到玄玉区块链
       const userKey = this.getUserKey(userId);
-      await this.metaJadeHome.store(userKey, JSON.stringify(user));
+      await this.metaJadeNode.store(userKey, JSON.stringify(user));
       this.dataCache.set(userKey, user);
       
       // 创建用户名索引
       const usernameIndexKey = this.getUsernameIndexKey(userData.username);
-      await this.metaJadeHome.store(usernameIndexKey, userId);
+      await this.metaJadeNode.store(usernameIndexKey, userId);
       this.dataCache.set(usernameIndexKey, userId);
       
       // 创建邮箱索引
       const emailIndexKey = this.getEmailIndexKey(userData.email);
-      await this.metaJadeHome.store(emailIndexKey, userId);
+      await this.metaJadeNode.store(emailIndexKey, userId);
       this.dataCache.set(emailIndexKey, userId);
       
       // 添加verifyPassword方法
@@ -191,7 +167,7 @@ class MetaJadeConnector {
       let userId = this.dataCache.get(usernameIndexKey);
       
       if (!userId) {
-        userId = await this.metaJadeHome.retrieve(usernameIndexKey);
+        userId = await this.metaJadeNode.retrieve(usernameIndexKey);
         if (userId) {
           this.dataCache.set(usernameIndexKey, userId);
         } else {
@@ -214,7 +190,7 @@ class MetaJadeConnector {
       let user = this.dataCache.get(userKey);
       
       if (!user) {
-        const userData = await this.metaJadeHome.retrieve(userKey);
+        const userData = await this.metaJadeNode.retrieve(userKey);
         if (userData) {
           user = JSON.parse(userData);
           this.dataCache.set(userKey, user);
@@ -252,7 +228,7 @@ class MetaJadeConnector {
       
       // 存储更新后的用户数据到玄玉区块链
       const userKey = this.getUserKey(id);
-      await this.metaJadeHome.store(userKey, JSON.stringify(updatedUser));
+      await this.metaJadeNode.store(userKey, JSON.stringify(updatedUser));
       this.dataCache.set(userKey, updatedUser);
       
       return updatedUser;
@@ -294,7 +270,7 @@ class MetaJadeConnector {
       
       // 存储软件数据到玄玉区块链
       const softwareKey = this.getSoftwareKey(softwareId);
-      await this.metaJadeHome.store(softwareKey, JSON.stringify(software));
+      await this.metaJadeNode.store(softwareKey, JSON.stringify(software));
       this.dataCache.set(softwareKey, software);
       
       return software;
@@ -311,7 +287,7 @@ class MetaJadeConnector {
       let software = this.dataCache.get(softwareKey);
       
       if (!software) {
-        const softwareData = await this.metaJadeHome.retrieve(softwareKey);
+        const softwareData = await this.metaJadeNode.retrieve(softwareKey);
         if (softwareData) {
           software = JSON.parse(softwareData);
           this.dataCache.set(softwareKey, software);
@@ -355,7 +331,7 @@ class MetaJadeConnector {
       
       // 存储更新后的软件数据到玄玉区块链
       const softwareKey = this.getSoftwareKey(id);
-      await this.metaJadeHome.store(softwareKey, JSON.stringify(updatedSoftware));
+      await this.metaJadeNode.store(softwareKey, JSON.stringify(updatedSoftware));
       this.dataCache.set(softwareKey, updatedSoftware);
       
       return updatedSoftware;
@@ -386,7 +362,7 @@ class MetaJadeConnector {
       
       // 存储商品数据到玄玉区块链
       const productKey = this.getProductKey(productId);
-      await this.metaJadeHome.store(productKey, JSON.stringify(product));
+      await this.metaJadeNode.store(productKey, JSON.stringify(product));
       this.dataCache.set(productKey, product);
       
       return product;
@@ -403,7 +379,7 @@ class MetaJadeConnector {
       let product = this.dataCache.get(productKey);
       
       if (!product) {
-        const productData = await this.metaJadeHome.retrieve(productKey);
+        const productData = await this.metaJadeNode.retrieve(productKey);
         if (productData) {
           product = JSON.parse(productData);
           this.dataCache.set(productKey, product);
@@ -447,7 +423,7 @@ class MetaJadeConnector {
       
       // 存储更新后的商品数据到玄玉区块链
       const productKey = this.getProductKey(id);
-      await this.metaJadeHome.store(productKey, JSON.stringify(updatedProduct));
+      await this.metaJadeNode.store(productKey, JSON.stringify(updatedProduct));
       this.dataCache.set(productKey, updatedProduct);
       
       return updatedProduct;
@@ -478,7 +454,7 @@ class MetaJadeConnector {
       
       // 存储交易数据到玄玉区块链
       const transactionKey = this.getTransactionKey(transactionId);
-      await this.metaJadeHome.store(transactionKey, JSON.stringify(transaction));
+      await this.metaJadeNode.store(transactionKey, JSON.stringify(transaction));
       this.dataCache.set(transactionKey, transaction);
       
       return transaction;
@@ -495,7 +471,7 @@ class MetaJadeConnector {
       let transaction = this.dataCache.get(transactionKey);
       
       if (!transaction) {
-        const transactionData = await this.metaJadeHome.retrieve(transactionKey);
+        const transactionData = await this.metaJadeNode.retrieve(transactionKey);
         if (transactionData) {
           transaction = JSON.parse(transactionData);
           this.dataCache.set(transactionKey, transaction);
@@ -537,7 +513,7 @@ class MetaJadeConnector {
       
       // 存储更新后的用户数据到玄玉区块链
       const userKey = this.getUserKey(userId);
-      await this.metaJadeHome.store(userKey, JSON.stringify(user));
+      await this.metaJadeNode.store(userKey, JSON.stringify(user));
       this.dataCache.set(userKey, user);
       
       return user;
