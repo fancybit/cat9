@@ -125,7 +125,7 @@ namespace MetaJadeNode.Controllers
                 {
                     return Ok(new { success = false, error = "服务未初始化" });
                 }
-
+                _metaJadeNode.StoreData(request.Key, request.Value);
                 // 当前API不支持直接存储数据到本地玄玉节点，返回模拟成功
                 return Ok(new { success = true });
             }
