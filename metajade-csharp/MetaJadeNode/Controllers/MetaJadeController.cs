@@ -14,7 +14,7 @@ namespace MetaJadeNode.Controllers
         private static IP2pService? _p2pService;
         private static string _userCid = "default-user-cid"; // 默认用户CID
 
-        // 初始化并启动DHT服务器
+        // 初始化并启动本地玄玉节点
         [HttpPost("initialize")]
         public async Task<IActionResult> Initialize([FromBody] InitializeRequest request)
         {
@@ -41,7 +41,7 @@ namespace MetaJadeNode.Controllers
             }
         }
 
-        // 停止DHT服务器
+        // 停止本地玄玉节点
         [HttpPost("shutdown")]
         public async Task<IActionResult> Shutdown()
         {
@@ -71,7 +71,7 @@ namespace MetaJadeNode.Controllers
             }
         }
 
-        // 获取DHT服务器状态
+        // 获取本地玄玉节点状态
         [HttpGet("status")]
         public IActionResult GetStatus()
         {
@@ -114,7 +114,7 @@ namespace MetaJadeNode.Controllers
             }
         }
 
-        // 存储数据到DHT
+        // 存储数据到本地玄玉节点
         [HttpPost("store")]
         public async Task<IActionResult> StoreData([FromBody] StoreDataRequest request)
         {
@@ -126,7 +126,7 @@ namespace MetaJadeNode.Controllers
                     return Ok(new { success = false, error = "服务未初始化" });
                 }
 
-                // 当前API不支持直接存储数据到DHT，返回模拟成功
+                // 当前API不支持直接存储数据到本地玄玉节点，返回模拟成功
                 return Ok(new { success = true });
             }
             catch (Exception ex)
@@ -135,7 +135,7 @@ namespace MetaJadeNode.Controllers
             }
         }
 
-        // 从DHT检索数据
+        // 从本地玄玉节点检索数据
         [HttpGet("retrieve/{key}")]
         public async Task<IActionResult> RetrieveData(string key)
         {
@@ -147,7 +147,7 @@ namespace MetaJadeNode.Controllers
                     return Ok(new { success = false, error = "服务未初始化" });
                 }
 
-                // 当前API不支持直接从DHT检索数据，返回模拟数据
+                // 当前API不支持直接从本地玄玉节点检索数据，返回模拟数据
                 return Ok(new { success = true, value = "模拟数据" });
             }
             catch (Exception ex)

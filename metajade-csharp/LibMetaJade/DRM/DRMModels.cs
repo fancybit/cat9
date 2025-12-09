@@ -4,47 +4,47 @@ using System.Collections.Generic;
 namespace LibMetaJade.DRM
 {
     /// <summary>
-    /// ÓÎÏ·ËùÓĞÈ¨ÀàĞÍ
+    /// æ¸¸æˆæ‰€æœ‰æƒç±»å‹
     /// </summary>
     public enum OwnershipType
     {
-        Purchased,      // ÒÑ¹ºÂò£¨ÓÀ¾Ã£©
-        Subscription,// ¶©ÔÄÖÆ
-        Trial,      // ÊÔÍæ°æ
-        Free, // Ãâ·ÑÓÎÏ·
-        Family,   // ¼ÒÍ¥¹²Ïí
-        Refunded // ÒÑÍË¿î£¨Ê§Ğ§£©
+        Purchased,      // å·²è´­ä¹°ï¼ˆæ°¸ä¹…ï¼‰
+        Subscription,// è®¢é˜…åˆ¶
+        Trial,      // è¯•ç©ç‰ˆ
+        Free, // å…è´¹æ¸¸æˆ
+        Family,   // å®¶åº­å…±äº«
+        Refunded // å·²é€€æ¬¾ï¼ˆå¤±æ•ˆï¼‰
     }
 
     /// <summary>
-    /// ÓÎÏ·Æô¶¯×´Ì¬
+    /// æ¸¸æˆå¯åŠ¨çŠ¶æ€
     /// </summary>
     public enum GameLaunchStatus
     {
-        Success,             // Æô¶¯³É¹¦
-        NotOwned,          // Î´ÓµÓĞ
-        NotAuthenticated,       // Î´ÈÏÖ¤
-        Offline,  // ÀëÏßÄ£Ê½£¨ĞèÑéÖ¤£©
-        Expired,// ¶©ÔÄ¹ıÆÚ
-        Suspended,  // ÕË»§ÔİÍ£
-        RegionLocked, // ÇøÓòËø¶¨
-        ClientNotRunning,       // ¿Í»§¶ËÎ´ÔËĞĞ
-        LicenseRevoked,  // Ğí¿ÉÖ¤ÒÑ³·Ïú
-        MaxDevicesExceeded    // ³¬³öÉè±¸ÊıÁ¿ÏŞÖÆ
+        Success,             // å¯åŠ¨æˆåŠŸ
+        NotOwned,          // æœªæ‹¥æœ‰
+        NotAuthenticated,       // æœªè®¤è¯
+        Offline,  // ç¦»çº¿æ¨¡å¼ï¼ˆéœ€éªŒè¯ï¼‰
+        Expired,// è®¢é˜…è¿‡æœŸ
+        Suspended,  // è´¦æˆ·æš‚åœ
+        RegionLocked, // åŒºåŸŸé”å®š
+        ClientNotRunning,       // å®¢æˆ·ç«¯æœªè¿è¡Œ
+        LicenseRevoked,  // è®¸å¯è¯å·²æ’¤é”€
+        MaxDevicesExceeded    // è¶…å‡ºè®¾å¤‡æ•°é‡é™åˆ¶
     }
 
     /// <summary>
-    /// DRM ÑéÖ¤Ä£Ê½
+    /// DRM éªŒè¯æ¨¡å¼
     /// </summary>
     public enum DRMMode
     {
-        AlwaysOnline,   // Ê¼ÖÕÔÚÏßÑéÖ¤
-        Offline, // ÀëÏßÄ£Ê½£¨¶¨ÆÚÑéÖ¤£©
-        Hybrid          // »ìºÏÄ£Ê½
+        AlwaysOnline,   // å§‹ç»ˆåœ¨çº¿éªŒè¯
+        Offline, // ç¦»çº¿æ¨¡å¼ï¼ˆå®šæœŸéªŒè¯ï¼‰
+        Hybrid          // æ··åˆæ¨¡å¼
     }
 
     /// <summary>
-    /// ÓÎÏ·Ğí¿ÉÖ¤
+    /// æ¸¸æˆè®¸å¯è¯
     /// </summary>
     public class GameLicense
     {
@@ -53,44 +53,44 @@ namespace LibMetaJade.DRM
         public string GameID { get; set; } = string.Empty;
         public string GameName { get; set; } = string.Empty;
 
-        // ËùÓĞÈ¨ĞÅÏ¢
+        // æ‰€æœ‰æƒä¿¡æ¯
         public OwnershipType OwnershipType { get; set; }
         public DateTimeOffset PurchaseDate { get; set; }
-        public DateTimeOffset? ExpiryDate { get; set; }  // ¶©ÔÄ/ÊÔÍæ¹ıÆÚÊ±¼ä
+        public DateTimeOffset? ExpiryDate { get; set; }  // è®¢é˜…/è¯•ç©è¿‡æœŸæ—¶é—´
 
-        // Ğí¿ÉÖ¤×´Ì¬
+        // è®¸å¯è¯çŠ¶æ€
         public bool IsActive { get; set; } = true;
         public bool IsRevoked { get; set; }
         public string? RevocationReason { get; set; }
 
-        // Éè±¸°ó¶¨
+        // è®¾å¤‡ç»‘å®š
         public List<string> AuthorizedDevices { get; set; } = new();
-        public int MaxDevices { get; set; } = 5;  // ×î¶à5Ì¨Éè±¸
+        public int MaxDevices { get; set; } = 5;  // æœ€å¤š5å°è®¾å¤‡
 
-        // ÇøÓòÏŞÖÆ
-        public List<string> AllowedRegions { get; set; } = new();  // ¿Õ=È«Çò
+        // åŒºåŸŸé™åˆ¶
+        public List<string> AllowedRegions { get; set; } = new();  // ç©º=å…¨çƒ
         public List<string> BlockedRegions { get; set; } = new();
 
-        // ¼ÒÍ¥¹²Ïí
+        // å®¶åº­å…±äº«
         public bool AllowFamilySharing { get; set; }
         public string? FamilyGroupID { get; set; }
 
-        // DRM ÅäÖÃ
+        // DRM é…ç½®
         public DRMMode DRMMode { get; set; } = DRMMode.Hybrid;
-        public int OfflineGracePeriodHours { get; set; } = 72;  // ÀëÏß¿íÏŞÆÚ72Ğ¡Ê±
+        public int OfflineGracePeriodHours { get; set; } = 72;  // ç¦»çº¿å®½é™æœŸ72å°æ—¶
 
-        // ÑéÖ¤ĞÅÏ¢
+        // éªŒè¯ä¿¡æ¯
         public DateTimeOffset LastVerified { get; set; }
         public string? LicenseSignature { get; set; }
         public string? EncryptedKey { get; set; }
 
-        // IPFS ±¸·İ
+        // IPFS å¤‡ä»½
         public string? LicenseCID { get; set; }
         public int BackupHops { get; set; } = 3;
     }
 
     /// <summary>
-    /// ÓÎÏ·»á»°
+    /// æ¸¸æˆä¼šè¯
     /// </summary>
     public class GameSession
     {
@@ -99,7 +99,7 @@ namespace LibMetaJade.DRM
         public string GameID { get; set; } = string.Empty;
         public string DeviceID { get; set; } = string.Empty;
 
-        // »á»°×´Ì¬
+        // ä¼šè¯çŠ¶æ€
         public bool IsActive { get; set; } = true;
         public DateTimeOffset StartTime { get; set; } = DateTimeOffset.UtcNow;
         public DateTimeOffset? EndTime { get; set; }
@@ -107,24 +107,24 @@ namespace LibMetaJade.DRM
             ? EndTime.Value - StartTime
             : DateTimeOffset.UtcNow - StartTime;
 
-        // ÑéÖ¤ĞÅÏ¢
+        // éªŒè¯ä¿¡æ¯
         public string SessionToken { get; set; } = string.Empty;
         public DateTimeOffset LastHeartbeat { get; set; }
-        public int HeartbeatIntervalSeconds { get; set; } = 60;  // 60ÃëĞÄÌø
+        public int HeartbeatIntervalSeconds { get; set; } = 60;  // 60ç§’å¿ƒè·³
 
-        // ¿Í»§¶ËĞÅÏ¢
+        // å®¢æˆ·ç«¯ä¿¡æ¯
         public bool ClientRunning { get; set; } = true;
         public string? ClientVersion { get; set; }
         public string? GameVersion { get; set; }
 
-        // »á»°Í³¼Æ
+        // ä¼šè¯ç»Ÿè®¡
         public int SaveCount { get; set; }
         public int AchievementCount { get; set; }
         public Dictionary<string, object> SessionData { get; set; } = new();
     }
 
     /// <summary>
-    /// Éè±¸ĞÅÏ¢
+    /// è®¾å¤‡ä¿¡æ¯
     /// </summary>
     public class DeviceInfo
     {
@@ -132,31 +132,31 @@ namespace LibMetaJade.DRM
         public string DeviceName { get; set; } = string.Empty;
         public string UserID { get; set; } = string.Empty;
 
-        // Éè±¸Ê¶±ğ
-        public string? HardwareID { get; set; }  // Ó²¼şÖ¸ÎÆ
+        // è®¾å¤‡è¯†åˆ«
+        public string? HardwareID { get; set; }  // ç¡¬ä»¶æŒ‡çº¹
         public string? MACAddress { get; set; }
         public string? CPUSerial { get; set; }
         public string? DiskSerial { get; set; }
 
-        // Éè±¸ĞÅÏ¢
+        // è®¾å¤‡ä¿¡æ¯
         public string Platform { get; set; } = string.Empty;  // Windows, macOS, Linux
         public string OSVersion { get; set; } = string.Empty;
         public string? IPAddress { get; set; }
         public string? Region { get; set; }
 
-        // ÊÚÈ¨×´Ì¬
+        // æˆæƒçŠ¶æ€
         public bool IsAuthorized { get; set; } = true;
         public DateTimeOffset AuthorizedAt { get; set; }
         public DateTimeOffset LastActive { get; set; }
 
-        // ĞÅÈÎÆÀ·Ö
+        // ä¿¡ä»»è¯„åˆ†
         public double TrustScore { get; set; } = 1.0;
         public int LoginCount { get; set; }
         public int SuspiciousActivityCount { get; set; }
     }
 
     /// <summary>
-    /// DRM ÑéÖ¤ÇëÇó
+    /// DRM éªŒè¯è¯·æ±‚
     /// </summary>
     public class DRMVerificationRequest
     {
@@ -164,23 +164,23 @@ namespace LibMetaJade.DRM
         public string GameID { get; set; } = string.Empty;
         public string DeviceID { get; set; } = string.Empty;
 
-        // ¿Í»§¶ËĞÅÏ¢
+        // å®¢æˆ·ç«¯ä¿¡æ¯
         public bool ClientRunning { get; set; }
         public string? ClientVersion { get; set; }
         public string? ClientProcessID { get; set; }
 
-        // ÑéÖ¤Êı¾İ
+        // éªŒè¯æ•°æ®
         public string? LicenseSignature { get; set; }
         public string? SessionToken { get; set; }
         public bool IsOffline { get; set; }
 
-        // Ê±¼ä´Á
+        // æ—¶é—´æˆ³
         public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.UtcNow;
-        public string? Nonce { get; set; }  // ·ÀÖØ·Å¹¥»÷
+        public string? Nonce { get; set; }  // é˜²é‡æ”¾æ”»å‡»
     }
 
     /// <summary>
-    /// DRM ÑéÖ¤ÏìÓ¦
+    /// DRM éªŒè¯å“åº”
     /// </summary>
     public class DRMVerificationResponse
     {
@@ -189,25 +189,25 @@ namespace LibMetaJade.DRM
         public string? Message { get; set; }
         public string? ErrorCode { get; set; }
 
-        // »á»°ĞÅÏ¢
+        // ä¼šè¯ä¿¡æ¯
         public string? SessionToken { get; set; }
         public string? GameExecutable { get; set; }
-        public string? DecryptionKey { get; set; }  // ÓÎÏ·½âÃÜÃÜÔ¿
+        public string? DecryptionKey { get; set; }  // æ¸¸æˆè§£å¯†å¯†é’¥
 
-        // ÏÂ´ÎÑéÖ¤Ê±¼ä
+        // ä¸‹æ¬¡éªŒè¯æ—¶é—´
         public DateTimeOffset NextVerification { get; set; }
         public int HeartbeatInterval { get; set; } = 60;
 
-        // Ğí¿ÉÖ¤ĞÅÏ¢
+        // è®¸å¯è¯ä¿¡æ¯
         public GameLicense? License { get; set; }
 
-        // Ê±¼ä´Á
+        // æ—¶é—´æˆ³
         public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.UtcNow;
         public string? Signature { get; set; }
     }
 
     /// <summary>
-    /// ·´×÷±×¼ì²â
+    /// åä½œå¼Šæ£€æµ‹
     /// </summary>
     public class AntiCheatDetection
     {
@@ -216,24 +216,24 @@ namespace LibMetaJade.DRM
         public string GameID { get; set; } = string.Empty;
         public string SessionID { get; set; } = string.Empty;
 
-        // ¼ì²âÀàĞÍ
+        // æ£€æµ‹ç±»å‹
         public string DetectionType { get; set; } = string.Empty;  // Memory, Process, File, Network
         public string Description { get; set; } = string.Empty;
         public int SeverityLevel { get; set; }  // 1-10
 
-        // ¼ì²â½á¹û
+        // æ£€æµ‹ç»“æœ
         public bool IsSuspicious { get; set; }
         public bool IsConfirmed { get; set; }
         public string? Evidence { get; set; }
 
-        // ´¦Àí
+        // å¤„ç†
         public string? Action { get; set; }  // Warning, Suspend, Ban
         public DateTimeOffset DetectedAt { get; set; } = DateTimeOffset.UtcNow;
         public bool IsResolved { get; set; }
     }
 
     /// <summary>
-    /// ÓÎÏ·Æô¶¯²ÎÊı
+    /// æ¸¸æˆå¯åŠ¨å‚æ•°
     /// </summary>
     public class GameLaunchParameters
     {
@@ -241,22 +241,22 @@ namespace LibMetaJade.DRM
         public string UserID { get; set; } = string.Empty;
         public string SessionToken { get; set; } = string.Empty;
 
-        // Æô¶¯ÅäÖÃ
+        // å¯åŠ¨é…ç½®
         public string? GameExecutable { get; set; }
         public List<string> LaunchArguments { get; set; } = new();
         public Dictionary<string, string> Environment { get; set; } = new();
 
-        // DRM ²ÎÊı
+        // DRM å‚æ•°
         public string? DecryptionKey { get; set; }
         public string? ActivationCode { get; set; }
 
-        // ¿Í»§¶ËÍ¨ĞÅ
-        public string? IPCEndpoint { get; set; }  // ¿Í»§¶Ë½ø³Ì¼äÍ¨ĞÅ¶Ëµã
+        // å®¢æˆ·ç«¯é€šä¿¡
+        public string? IPCEndpoint { get; set; }  // å®¢æˆ·ç«¯è¿›ç¨‹é—´é€šä¿¡ç«¯ç‚¹
         public int HeartbeatPort { get; set; }
     }
 
     /// <summary>
-    /// ĞÄÌø°ü
+    /// å¿ƒè·³åŒ…
     /// </summary>
     public class Heartbeat
     {
@@ -264,57 +264,57 @@ namespace LibMetaJade.DRM
         public string SessionToken { get; set; } = string.Empty;
         public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.UtcNow;
 
-        // ÓÎÏ·×´Ì¬
+        // æ¸¸æˆçŠ¶æ€
         public bool GameRunning { get; set; } = true;
         public bool ClientRunning { get; set; } = true;
         public string? GameProcessID { get; set; }
         public string? ClientProcessID { get; set; }
 
-        // ÍêÕûĞÔ¼ì²é
+        // å®Œæ•´æ€§æ£€æŸ¥
         public string? GameHashChecksum { get; set; }
         public bool IntegrityValid { get; set; } = true;
 
-        // ĞÔÄÜÊı¾İ£¨¿ÉÑ¡£©
+        // æ€§èƒ½æ•°æ®ï¼ˆå¯é€‰ï¼‰
         public double? FPS { get; set; }
         public long? MemoryUsage { get; set; }
     }
 
     /// <summary>
-    /// DRM Í³¼ÆÊı¾İ
+    /// DRM ç»Ÿè®¡æ•°æ®
     /// </summary>
     public class DRMStatistics
     {
         public string GameID { get; set; } = string.Empty;
 
-        // Ğí¿ÉÖ¤Í³¼Æ
+        // è®¸å¯è¯ç»Ÿè®¡
         public int TotalLicenses { get; set; }
         public int ActiveLicenses { get; set; }
         public int RevokedLicenses { get; set; }
 
-        // »á»°Í³¼Æ
+        // ä¼šè¯ç»Ÿè®¡
         public int ActiveSessions { get; set; }
         public int TotalSessions { get; set; }
         public TimeSpan TotalPlayTime { get; set; }
         public TimeSpan AverageSessionDuration { get; set; }
 
-        // Éè±¸Í³¼Æ
+        // è®¾å¤‡ç»Ÿè®¡
         public int UniqueDevices { get; set; }
         public int AuthorizedDevices { get; set; }
 
-        // Î¥¹æÍ³¼Æ
+        // è¿è§„ç»Ÿè®¡
         public int TotalViolations { get; set; }
         public int SuspendedAccounts { get; set; }
         public int BannedAccounts { get; set; }
 
-        // ÇøÓòÍ³¼Æ
+        // åŒºåŸŸç»Ÿè®¡
         public Dictionary<string, int> RegionalDistribution { get; set; } = new();
 
-        // ¸üĞÂÊ±¼ä
+        // æ›´æ–°æ—¶é—´
         public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.UtcNow;
     }
 
     /// <summary>
-    /// ¿Í»§¶Ë×´Ì¬
+    /// å®¢æˆ·ç«¯çŠ¶æ€
     /// </summary>
     public class ClientStatus
     {
@@ -324,12 +324,12 @@ namespace LibMetaJade.DRM
         public DateTimeOffset StartTime { get; set; }
         public DateTimeOffset LastHeartbeat { get; set; }
 
-        // ¿Í»§¶Ë¹¦ÄÜ
+        // å®¢æˆ·ç«¯åŠŸèƒ½
         public bool DRMEnabled { get; set; } = true;
         public bool AntiCheatEnabled { get; set; } = true;
         public bool CloudSaveEnabled { get; set; } = true;
 
-        // Á¬½Ó×´Ì¬
+        // è¿æ¥çŠ¶æ€
         public bool IsOnline { get; set; }
         public string? IPAddress { get; set; }
         public int ActiveGames { get; set; }
