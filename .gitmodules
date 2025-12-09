@@ -1,0 +1,3 @@
+[submodule "metajade-csharp"]
+	path = metajade-csharp
+	url = https://github.com/fancybit/MetaJade.git
