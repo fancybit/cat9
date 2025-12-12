@@ -1,97 +1,90 @@
-const express = require('express');
+﻿const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const { connectDB, disconnectDB } = require('./config/db');
-// 导入服务端配置
-const serverConfig = require('./config/server');
-// 导入DHT服务
+// 瀵煎叆鏈嶅姟绔厤缃?const serverConfig = require('./config/server');
+// 瀵煎叆DHT鏈嶅姟
 const dhtService = require('./services/dhtService');
 
-// 加载环境变量
+// 鍔犺浇鐜鍙橀噺
 dotenv.config();
 
-// 导入DAL实例
+// 瀵煎叆DAL瀹炰緥
 //const dal = require('./dal');
 
-// 创建Express应用
+// 鍒涘缓Express搴旂敤
 const app = express();
 
-// 连接数据库
-connectDB();
+// 杩炴帴鏁版嵁搴?connectDB();
 
-// 中间件配置
-app.use(cors());
+// 涓棿浠堕厤缃?app.use(cors());
 app.use(express.json());
 
-// 路由配置
+// 璺敱閰嶇疆
 app.use('/api/games', require('./routes/gameRoutes'));
 app.use('/api/news', require('./routes/newsRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/software', require('./routes/softwareRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/transactions', require('./routes/transactionRoutes'));
-// 启用DHT路由
+// 鍚敤DHT璺敱
 app.use('/api/dht', require('./routes/dhtRoutes'));
 
-// 基本路由
+// 鍩烘湰璺敱
 app.get('/', (req, res) => {
-  res.send('玄玉逍游后端服务运行中');
+  res.send('鐜勭帀閫嶆父鍚庣鏈嶅姟杩愯涓?);
 });
 
-// 404 路由处理
+// 404 璺敱澶勭悊
 app.use((req, res, next) => {
-  const error = new Error('请求的路由不存在');
+  const error = new Error('璇锋眰鐨勮矾鐢变笉瀛樺湪');
   error.status = 404;
   next(error);
 });
 
-// 错误处理中间件
-app.use((error, req, res, next) => {
+// 閿欒澶勭悊涓棿浠?app.use((error, req, res, next) => {
   console.error(error);
   res.status(error.status || 500).json({
     success: false,
-    error: error.message || '服务器错误',
+    error: error.message || '鏈嶅姟鍣ㄩ敊璇?,
   });
   next(error);
 });
 
-// 启动服务器
-const PORT = serverConfig.port || 5000;
+// 鍚姩鏈嶅姟鍣?const PORT = serverConfig.port || 5000;
 const server = app.listen(PORT, serverConfig.host || '0.0.0.0', async () => {
-  console.log(`服务器运行在 http://${serverConfig.host || '0.0.0.0'}:${PORT}`);
-  console.log(`环境: ${process.env.NODE_ENV}`);
+  console.log(`鏈嶅姟鍣ㄨ繍琛屽湪 http://${serverConfig.host || '0.0.0.0'}:${PORT}`);
+  console.log(`鐜: ${process.env.NODE_ENV}`);
   
-  // 初始化 DHT 服务（如果配置为自动启动）
-  if (serverConfig.dht.autoStart) {
+  // 鍒濆鍖?DHT 鏈嶅姟锛堝鏋滈厤缃负鑷姩鍚姩锛?  if (serverConfig.dht.autoStart) {
     try {
       await dhtService.initialize({
         port: serverConfig.dht.port,
         ip: serverConfig.dht.ip,
         enableRelay: serverConfig.dht.enableRelay
       });
-      console.log(`DHT 服务已成功初始化，使用端口: ${serverConfig.dht.port}`);
+      console.log(`DHT 鏈嶅姟宸叉垚鍔熷垵濮嬪寲锛屼娇鐢ㄧ鍙? ${serverConfig.dht.port}`);
     } catch (error) {
-      console.error('初始化 DHT 服务失败，但继续运行其他服务:', error);
+      console.error('鍒濆鍖?DHT 鏈嶅姟澶辫触锛屼絾缁х画杩愯鍏朵粬鏈嶅姟:', error);
     }
   }
   
-  console.log('玄玉逍游后端服务已启动');
+  console.log('鐜勭帀閫嶆父鍚庣鏈嶅姟宸插惎鍔?);
 });
 
-// 优雅关闭处理
+// 浼橀泤鍏抽棴澶勭悊
 process.on('SIGINT', async () => {
-  console.log('正在关闭服务器...');
+  console.log('姝ｅ湪鍏抽棴鏈嶅姟鍣?..');
   try {
-    // 断开数据库连接
-    await disconnectDB();
+    // 鏂紑鏁版嵁搴撹繛鎺?    await disconnectDB();
     
-    // 关闭 DHT 服务
+    // 鍏抽棴 DHT 鏈嶅姟
     await dhtService.shutdown();
   } catch (error) {
-    console.error('关闭服务时出错:', error);
+    console.error('鍏抽棴鏈嶅姟鏃跺嚭閿?', error);
   }
   server.close(() => {
-    console.log('服务器已关闭');
+    console.log('鏈嶅姟鍣ㄥ凡鍏抽棴');
     process.exit(0);
   });
 });

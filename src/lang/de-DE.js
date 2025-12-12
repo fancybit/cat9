@@ -1,6 +1,5 @@
-export default {
-  // 导航栏
-  navbar: {
+﻿export default {
+  // 瀵艰埅鏍?  navbar: {
     home: 'Startseite',
     store: 'Shop',
     library: 'Bibliothek',
@@ -8,17 +7,17 @@ export default {
     auction: 'Auktionshaus',
     community: 'Community',
     developer: 'Entwickler',
-    auditTeam: 'Prüferteam',
+    auditTeam: 'Pr眉ferteam',
     admin: 'Admin',
-    aboutUs: 'Über Uns',
+    aboutUs: '脺ber Uns',
     login: 'Anmelden',
     register: 'Registrieren'
   },
   
-  // 页脚
+  // 椤佃剼
   footer: {
-    aboutUs: 'Über Uns',
-    aboutText: 'Cat9 Entertainment ist eine Plattform, die sich auf die Veröffentlichung unabhängiger Spiele spezialisiert hat. Sie bietet Entwicklern bequeme Spieleveröffentlichungskanäle und den Spielern qualitativ hochwertige Spielerlebnisse.',
+    aboutUs: '脺ber Uns',
+    aboutText: 'Cat9 Entertainment ist eine Plattform, die sich auf die Ver枚ffentlichung unabh盲ngiger Spiele spezialisiert hat. Sie bietet Entwicklern bequeme Spielever枚ffentlichungskan盲le und den Spielern qualitativ hochwertige Spielerlebnisse.',
     quickLinks: 'Schnelllinks',
     gameStore: 'Spieleshop',
     myLibrary: 'Meine Bibliothek',
@@ -29,19 +28,19 @@ export default {
     email: 'E-Mail',
     wechat: 'WeChat',
     officialAccount: 'Offizielles Konto',
-    copyright: '© {year} Hong Kong Huameng Company Cat9 Entertainment. Alle Rechte vorbehalten.'
+    copyright: '漏 {year} Hong Kong Huameng Company Cat9 Entertainment. Alle Rechte vorbehalten.'
   },
   
-  // 通用
+  // 閫氱敤
   common: {
     language: 'Sprache',
     search: 'Suchen',
     submit: 'Einreichen',
     cancel: 'Abbrechen',
-    confirm: 'Bestätigen',
-    delete: 'Löschen',
+    confirm: 'Best盲tigen',
+    delete: 'L枚schen',
     edit: 'Bearbeiten',
-    add: 'Hinzufügen',
+    add: 'Hinzuf眉gen',
     save: 'Speichern',
     loading: 'Laden...',
     success: 'Erfolg',
@@ -50,18 +49,18 @@ export default {
     info: 'Information',
     yes: 'Ja',
     no: 'Nein',
-    close: 'Schließen',
+    close: 'Schlie脽en',
     next: 'Weiter',
-    previous: 'Zurück',
-    back: 'Zurück',
+    previous: 'Zur眉ck',
+    back: 'Zur眉ck',
     more: 'Mehr'
   },
   
-  // 登录/注册
+  // 鐧诲綍/娉ㄥ唽
   auth: {
     username: 'Benutzername',
     password: 'Passwort',
-    confirmPassword: 'Passwort bestätigen',
+    confirmPassword: 'Passwort best盲tigen',
     email: 'E-Mail',
     login: 'Anmelden',
     register: 'Registrieren',
@@ -75,20 +74,20 @@ export default {
     registerFailed: 'Registrierung fehlgeschlagen'
   },
   
-  // 首页
+  // 棣栭〉
   home: {
     welcome: 'Willkommen bei Cat9 Entertainment',
     popularGames: 'Beliebte Spiele',
-    newReleases: 'Neue Veröffentlichungen',
-    recommendedForYou: 'Empfohlen für Sie',
+    newReleases: 'Neue Ver枚ffentlichungen',
+    recommendedForYou: 'Empfohlen f眉r Sie',
     browseAll: 'Alle anzeigen',
     playNow: 'Jetzt spielen',
     buyNow: 'Jetzt kaufen',
     discount: 'Begrenzte Zeitangebot',
-    comingSoon: 'Bald verfügbar'
+    comingSoon: 'Bald verf眉gbar'
   },
   
-  // 商店
+  // 鍟嗗簵
   store: {
     allGames: 'Alle Spiele',
     categories: 'Kategorien',
@@ -96,18 +95,17 @@ export default {
     priceRange: 'Preisspanne',
     onSale: 'Angebot',
     topSellers: 'Bestenliste',
-    recentlyAdded: 'Kürzlich hinzugefügt',
+    recentlyAdded: 'K眉rzlich hinzugef眉gt',
     freeToPlay: 'Kostenlos spielen',
     wishlist: 'Wunschliste',
     addToCart: 'In den Warenkorb legen',
-    addToWishlist: 'Zur Wunschliste hinzufügen',
+    addToWishlist: 'Zur Wunschliste hinzuf眉gen',
     removeFromWishlist: 'Von der Wunschliste entfernen'
   },
   
-  // 游戏库
-  library: {
+  // 娓告垙搴?  library: {
     yourGames: 'Ihre Spiele',
-    recentlyPlayed: 'Kürzlich gespielt',
+    recentlyPlayed: 'K眉rzlich gespielt',
     allGames: 'Alle Spiele',
     install: 'Installieren',
     update: 'Aktualisieren',
@@ -116,8 +114,7 @@ export default {
     gameDetails: 'Spieledetails'
   },
   
-  // 开发者
-  developer: {
+  // 寮€鍙戣€?  developer: {
     welcomeDevelopers: 'Willkommen Entwickler',
     documentation: 'Dokumentation',
     apiReference: 'API-Referenz',
@@ -127,13 +124,13 @@ export default {
     gameAnalytics: 'Spielanalytik'
   },
   
-  // 审核团队
+  // 瀹℃牳鍥㈤槦
   auditTeam: {
-    aboutTeam: 'Über das Prüferteam',
+    aboutTeam: '脺ber das Pr眉ferteam',
     responsibilities: 'Kernverantwortlichkeiten',
-    process: 'Prüfprozess',
+    process: 'Pr眉fprozess',
     members: 'Teammitglieder',
-    faq: 'Häufig gestellte Fragen',
+    faq: 'H盲ufig gestellte Fragen',
     contact: 'Kontaktieren Sie uns'
   }
 }

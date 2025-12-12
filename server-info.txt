@@ -1,30 +1,26 @@
-# 云服务器信息
+﻿# 浜戞湇鍔″櫒淇℃伅
 
-## 基本信息
-- 操作系统: Ubuntu
-- 位置: 加拿大
+## 鍩烘湰淇℃伅
+- 鎿嶄綔绯荤粺: Ubuntu
+- 浣嶇疆: 鍔犳嬁澶?
+## 鍩熷悕淇℃伅
+- 涓诲煙鍚? www.metajade.online
+- IPFS缃戝叧鍩熷悕: ipfs.metajade.online
 
-## 域名信息
-- 主域名: www.metajade.online
-- IPFS网关域名: ipfs.metajade.online
+## SSH鐧诲綍淇℃伅
+- 璐﹀彿: root
+- 瀵嗙爜: jf6pWBZQ76Ch5n
 
-## SSH登录信息
-- 账号: root
-- 密码: jf6pWBZQ76Ch5n
+## SSH瀵嗛挜淇℃伅
+- 鐢熸垚鏃ユ湡: 2025-12-07
+- 瀵嗛挜鐢ㄩ€? 鐢ㄤ簬鑷姩鐧诲綍浜戞湇鍔″櫒锛屾棤闇€杈撳叆瀵嗙爜
+- 瀵嗛挜绫诲瀷: RSA-4096
+- 绉侀挜璺緞: ./id_rsa
+- 鍏挜璺緞: ./id_rsa.pub
+- 鍏挜鍐呭: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCxSx80HqXJz5VZgK4uT76V4sN1zJLyR8hVM1o61FbYWaex2w44Cdd8XnKB/0FCs95t3I8J5KMMnlocsBobfZYZFIOrAv6vKQ93Tk6/8UoqUYddRhfEGXVqqyTRo1JmkhIOePi2Nvo0Aem/i70E3y5BDakTYsUaGuKBzVGq9NtpDbBwR2S/m4rea8susnJ8a/txjSANbz1O3NbptPfFwLSYIUDcNwvBfcn9rlB8c6sxfd07OIAtXiBWg+phrBaic3O0PrGxsizFHZixx6soIMJV5UrDQxIMqEFoqU4n+pBRRDNY9MdiiXV45BLV3XYAy1eM35yVpdyV5C15B2Nlekh5yVV+HaqC1bNRhY9m954Qjd4UwbgvU8wNxTx6q6pO5HyKV5TpYY1rQz7MWB9px/xs3MNWt6PiJqLJlPAu7U06vj4tr4KAFL9CtSzqykdj3iIiabLleaKFhFacyvfEZfjrqPDVhaM6dqeWktEYVx6lc5dwMfB2krLcmdp27sTEkBgJnuwnJ4lTfOWidcZ62oOOeBEWr/xkX466jw1YWnOnanrWoLRGFc+pXOXcDHy1rK5cpnp27hMSQGGnuxkniVT856JnRlzkqg54nERXr/FkX466jw1YWnOnanrWoLRGFc+pXOXcDHy1rK5cpnp27hMSQGGnuxkniVT856JnRlzkqg54nERXr/FkX466jw1YWnOnanrWoLRGFc+pXOXcDHy1rK5cpnp27hMSQGGnuxkniVT856JnRlzkqg54nERXr/FkX466jw1YWnOnanrWoLRGFc+pXOXcDHy1rK5cpnp27hMSQGGnuxknicC0mCFA3DcLwX3J/a5AfHOrMX3dOziALV4gVoYPqYKwaonNztD6xsbIk3R2YsCerKCDCVeVKw0MSDKhBqKlOJ/qQUUQzWPTHYhl1eOQS1zV2AMtXjN+clancZeQteQdjZXpIeclVvh2pgtWzUYWPubeeEI3eFMG4L1PMDcU8equqTuR8il+U6WGNa0M+zFgfacf8bNzDUrej4iaiyZTwLu1NOr4+LauCgBS/QrUs6spHY94iImti5XmihYRWnO3xGUlTeDOWA0tnssRlIAIGe7CSeJU3zlonGXOtqDingRFev8ZF+Ouo8NWFpzp2p61qS0RhXPqVzl3Ax8HaSulyandbuExJAYieXnWp3nIO/+FMlVNfJvprl+hOKSDfsbVVrivVQUWYPLgPbdBEBiZdduHnZi4HkqUTQgYX/goN8uRO2iuNpGfMWWOQ== cat9@metajade.online
 
-## SSH密钥信息
-- 生成日期: 2025-12-07
-- 密钥用途: 用于自动登录云服务器，无需输入密码
-- 密钥类型: RSA-4096
-- 私钥路径: ./id_rsa
-- 公钥路径: ./id_rsa.pub
-- 公钥内容: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCxSx80HqXJz5VZgK4uT76V4sN1zJLyR8hVM1o61FbYWaex2w44Cdd8XnKB/0FCs95t3I8J5KMMnlocsBobfZYZFIOrAv6vKQ93Tk6/8UoqUYddRhfEGXVqqyTRo1JmkhIOePi2Nvo0Aem/i70E3y5BDakTYsUaGuKBzVGq9NtpDbBwR2S/m4rea8susnJ8a/txjSANbz1O3NbptPfFwLSYIUDcNwvBfcn9rlB8c6sxfd07OIAtXiBWg+phrBaic3O0PrGxsizFHZixx6soIMJV5UrDQxIMqEFoqU4n+pBRRDNY9MdiiXV45BLV3XYAy1eM35yVpdyV5C15B2Nlekh5yVV+HaqC1bNRhY9m954Qjd4UwbgvU8wNxTx6q6pO5HyKV5TpYY1rQz7MWB9px/xs3MNWt6PiJqLJlPAu7U06vj4tr4KAFL9CtSzqykdj3iIiabLleaKFhFacyvfEZfjrqPDVhaM6dqeWktEYVx6lc5dwMfB2krLcmdp27sTEkBgJnuwnJ4lTfOWidcZ62oOOeBEWr/xkX466jw1YWnOnanrWoLRGFc+pXOXcDHy1rK5cpnp27hMSQGGnuxkniVT856JnRlzkqg54nERXr/FkX466jw1YWnOnanrWoLRGFc+pXOXcDHy1rK5cpnp27hMSQGGnuxkniVT856JnRlzkqg54nERXr/FkX466jw1YWnOnanrWoLRGFc+pXOXcDHy1rK5cpnp27hMSQGGnuxkniVT856JnRlzkqg54nERXr/FkX466jw1YWnOnanrWoLRGFc+pXOXcDHy1rK5cpnp27hMSQGGnuxknicC0mCFA3DcLwX3J/a5AfHOrMX3dOziALV4gVoYPqYKwaonNztD6xsbIk3R2YsCerKCDCVeVKw0MSDKhBqKlOJ/qQUUQzWPTHYhl1eOQS1zV2AMtXjN+clancZeQteQdjZXpIeclVvh2pgtWzUYWPubeeEI3eFMG4L1PMDcU8equqTuR8il+U6WGNa0M+zFgfacf8bNzDUrej4iaiyZTwLu1NOr4+LauCgBS/QrUs6spHY94iImti5XmihYRWnO3xGUlTeDOWA0tnssRlIAIGe7CSeJU3zlonGXOtqDingRFev8ZF+Ouo8NWFpzp2p61qS0RhXPqVzl3Ax8HaSulyandbuExJAYieXnWp3nIO/+FMlVNfJvprl+hOKSDfsbVVrivVQUWYPLgPbdBEBiZdduHnZi4HkqUTQgYX/goN8uRO2iuNpGfMWWOQ== cat9@metajade.online
+## Git璺緞淇℃伅
+- 椤圭洰璺緞: /www/wwwroot/cat9/
 
-## Git路径信息
-- 项目路径: /www/wwwroot/cat9/
-
-## 注意事项
-- 请妥善保管此文件，避免泄露敏感信息
-- 建议定期更改SSH密码以保证安全性
-- 在生产环境中，建议使用密钥登录代替密码登录
-- 使用Git更新代码时，请确保云服务器上的服务已停止或可以热更新
+## 娉ㄦ剰浜嬮」
+- 璇峰Ε鍠勪繚绠℃鏂囦欢锛岄伩鍏嶆硠闇叉晱鎰熶俊鎭?- 寤鸿瀹氭湡鏇存敼SSH瀵嗙爜浠ヤ繚璇佸畨鍏ㄦ€?- 鍦ㄧ敓浜х幆澧冧腑锛屽缓璁娇鐢ㄥ瘑閽ョ櫥褰曚唬鏇垮瘑鐮佺櫥褰?- 浣跨敤Git鏇存柊浠ｇ爜鏃讹紝璇风‘淇濅簯鏈嶅姟鍣ㄤ笂鐨勬湇鍔″凡鍋滄鎴栧彲浠ョ儹鏇存柊

@@ -1,6 +1,5 @@
-export default {
-  // 导航栏
-  navbar: {
+﻿export default {
+  // 瀵艰埅鏍?  navbar: {
     home: 'Inicio',
     store: 'Tienda',
     library: 'Biblioteca',
@@ -8,35 +7,35 @@ export default {
     auction: 'Casa de Subastas',
     community: 'Comunidad',
     developer: 'Desarrollador',
-    auditTeam: 'Equipo de Auditoría',
-    admin: 'Administración',
+    auditTeam: 'Equipo de Auditor铆a',
+    admin: 'Administraci贸n',
     aboutUs: 'Sobre Nosotros',
-    login: 'Iniciar Sesión',
+    login: 'Iniciar Sesi贸n',
     register: 'Registrarse'
   },
   
-  // 页脚
+  // 椤佃剼
   footer: {
     aboutUs: 'Sobre Nosotros',
-    aboutText: 'Cat9 Entertainment es una plataforma especializada en la publicación de juegos independientes, que ofrece canales convenientes de lanzamiento de juegos para desarrolladores y experiencias de juego de alta calidad para los jugadores.',
-    quickLinks: 'Enlaces Rápidos',
+    aboutText: 'Cat9 Entertainment es una plataforma especializada en la publicaci贸n de juegos independientes, que ofrece canales convenientes de lanzamiento de juegos para desarrolladores y experiencias de juego de alta calidad para los jugadores.',
+    quickLinks: 'Enlaces R谩pidos',
     gameStore: 'Tienda de Juegos',
     myLibrary: 'Mi Biblioteca',
     downloadClients: 'Descargar Clientes',
     developerResources: 'Recursos para Desarrolladores',
     supportCenter: 'Centro de Soporte',
-    contactUs: 'Contáctenos',
-    email: 'Correo Electrónico',
+    contactUs: 'Cont谩ctenos',
+    email: 'Correo Electr贸nico',
     wechat: 'WeChat',
     officialAccount: 'Cuenta Oficial',
     qqSpace: 'QQ Space',
-    qq: 'Número de QQ',
+    qq: 'N煤mero de QQ',
     qqGroup: 'Grupo de QQ',
-    groupName: 'Unión Jiuyi',
-    copyright: '© {year} Hong Kong Huameng Company Cat9 Entertainment. Todos los derechos reservados.'
+    groupName: 'Uni贸n Jiuyi',
+    copyright: '漏 {year} Hong Kong Huameng Company Cat9 Entertainment. Todos los derechos reservados.'
   },
   
-  // 通用
+  // 閫氱敤
   common: {
     language: 'Idioma',
     search: 'Buscar',
@@ -45,41 +44,41 @@ export default {
     confirm: 'Confirmar',
     delete: 'Eliminar',
     edit: 'Editar',
-    add: 'Añadir',
+    add: 'A帽adir',
     save: 'Guardar',
     loading: 'Cargando...',
-    success: 'Éxito',
+    success: '脡xito',
     error: 'Error',
     warning: 'Advertencia',
-    info: 'Información',
-    yes: 'Sí',
+    info: 'Informaci贸n',
+    yes: 'S铆',
     no: 'No',
     close: 'Cerrar',
     next: 'Siguiente',
     previous: 'Anterior',
     back: 'Volver',
-    more: 'Más'
+    more: 'M谩s'
   },
   
-  // 登录/注册
+  // 鐧诲綍/娉ㄥ唽
   auth: {
     username: 'Nombre de Usuario',
-    password: 'Contraseña',
-    confirmPassword: 'Confirmar Contraseña',
-    email: 'Correo Electrónico',
-    login: 'Iniciar Sesión',
+    password: 'Contrase帽a',
+    confirmPassword: 'Confirmar Contrase帽a',
+    email: 'Correo Electr贸nico',
+    login: 'Iniciar Sesi贸n',
     register: 'Registrarse',
-    forgotPassword: '¿Olvidaste tu contraseña?',
-    noAccount: '¿No tienes una cuenta?',
-    haveAccount: '¿Ya tienes una cuenta?',
-    logout: 'Cerrar Sesión',
-    loginSuccess: 'Inicio de Sesión Exitoso',
+    forgotPassword: '驴Olvidaste tu contrase帽a?',
+    noAccount: '驴No tienes una cuenta?',
+    haveAccount: '驴Ya tienes una cuenta?',
+    logout: 'Cerrar Sesi贸n',
+    loginSuccess: 'Inicio de Sesi贸n Exitoso',
     registerSuccess: 'Registro Exitoso',
-    loginFailed: 'Inicio de Sesión Fallido',
+    loginFailed: 'Inicio de Sesi贸n Fallido',
     registerFailed: 'Registro Fallido'
   },
   
-  // 首页
+  // 棣栭〉
   home: {
     welcome: 'Bienvenido a Cat9 Entertainment',
     popularGames: 'Juegos Populares',
@@ -89,27 +88,26 @@ export default {
     playNow: 'Jugar Ahora',
     buyNow: 'Comprar Ahora',
     discount: 'Oferta por Tiempo Limitado',
-    comingSoon: 'Próximamente'
+    comingSoon: 'Pr贸ximamente'
   },
   
-  // 商店
+  // 鍟嗗簵
   store: {
     allGames: 'Todos los Juegos',
-    categories: 'Categorías',
+    categories: 'Categor铆as',
     tags: 'Etiquetas',
     priceRange: 'Rango de Precios',
     onSale: 'En Oferta',
-    topSellers: 'Más Vendidos',
-    recentlyAdded: 'Recientemente Añadidos',
+    topSellers: 'M谩s Vendidos',
+    recentlyAdded: 'Recientemente A帽adidos',
     freeToPlay: 'Gratis para Jugar',
     wishlist: 'Lista de Deseos',
-    addToCart: 'Añadir al Carrito',
-    addToWishlist: 'Añadir a la Lista de Deseos',
+    addToCart: 'A帽adir al Carrito',
+    addToWishlist: 'A帽adir a la Lista de Deseos',
     removeFromWishlist: 'Quitar de la Lista de Deseos'
   },
   
-  // 游戏库
-  library: {
+  // 娓告垙搴?  library: {
     yourGames: 'Tus Juegos',
     recentlyPlayed: 'Jugados Recientemente',
     allGames: 'Todos los Juegos',
@@ -120,24 +118,23 @@ export default {
     gameDetails: 'Detalles del Juego'
   },
   
-  // 开发者
-  developer: {
+  // 寮€鍙戣€?  developer: {
     welcomeDevelopers: 'Bienvenidos Desarrolladores',
-    documentation: 'Documentación',
+    documentation: 'Documentaci贸n',
     apiReference: 'Referencia API',
     submitGame: 'Enviar Juego',
     developerConsole: 'Consola de Desarrollador',
-    revenueStats: 'Estadísticas de Ingresos',
-    gameAnalytics: 'Análisis de Juegos'
+    revenueStats: 'Estad铆sticas de Ingresos',
+    gameAnalytics: 'An谩lisis de Juegos'
   },
   
-  // 审核团队
+  // 瀹℃牳鍥㈤槦
   auditTeam: {
-    aboutTeam: 'Acerca del Equipo de Auditoría',
+    aboutTeam: 'Acerca del Equipo de Auditor铆a',
     responsibilities: 'Responsabilidades Principales',
-    process: 'Proceso de Auditoría',
+    process: 'Proceso de Auditor铆a',
     members: 'Miembros del Equipo',
     faq: 'Preguntas Frecuentes',
-    contact: 'Contáctenos'
+    contact: 'Cont谩ctenos'
   }
 }

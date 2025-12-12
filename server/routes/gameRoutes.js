@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const router = express.Router();
 const {
   getAllGames,
@@ -9,7 +9,7 @@ const {
   deleteGame,
 } = require('../controllers/gameController');
 
-// 定义游戏路由
+// 瀹氫箟娓告垙璺敱
 router
   .route('/')
   .get(getAllGames)

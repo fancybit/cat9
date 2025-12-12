@@ -1,4 +1,4 @@
-// MySQL数据库连接器
+﻿// MySQL鏁版嵁搴撹繛鎺ュ櫒
 const mysql = require('mysql2/promise');
 
 class MySQLConnector {
@@ -6,7 +6,7 @@ class MySQLConnector {
     this.pool = null;
   }
 
-  // 连接到MySQL
+  // 杩炴帴鍒癕ySQL
   async connect(config = {
     host: 'localhost',
     user: 'root',
@@ -19,25 +19,22 @@ class MySQLConnector {
     try {
       this.pool = mysql.createPool(config);
       
-      // 测试连接
+      // 娴嬭瘯杩炴帴
       const [rows] = await this.pool.query('SELECT 1 + 1 AS solution');
-      console.log('MySQL数据库已连接，测试结果:', rows[0].solution);
+      console.log('MySQL鏁版嵁搴撳凡杩炴帴锛屾祴璇曠粨鏋?', rows[0].solution);
       
-      // 初始化表结构（如果不存在）
-      await this._initTables();
+      // 鍒濆鍖栬〃缁撴瀯锛堝鏋滀笉瀛樺湪锛?      await this._initTables();
       
       return true;
     } catch (error) {
-      console.error('MySQL连接失败:', error.message);
+      console.error('MySQL杩炴帴澶辫触:', error.message);
       throw error;
     }
   }
 
-  // 初始化数据库表结构
-  async _initTables() {
+  // 鍒濆鍖栨暟鎹簱琛ㄧ粨鏋?  async _initTables() {
     try {
-      // 创建用户表
-      await this.pool.query(`
+      // 鍒涘缓鐢ㄦ埛琛?      await this.pool.query(`
         CREATE TABLE IF NOT EXISTS users (
           id INT AUTO_INCREMENT PRIMARY KEY,
           username VARCHAR(50) NOT NULL UNIQUE,
@@ -50,8 +47,7 @@ class MySQLConnector {
         );
       `);
 
-      // 创建软件表
-      await this.pool.query(`
+      // 鍒涘缓杞欢琛?      await this.pool.query(`
         CREATE TABLE IF NOT EXISTS software (
           id INT AUTO_INCREMENT PRIMARY KEY,
           name VARCHAR(100) NOT NULL,
@@ -66,8 +62,7 @@ class MySQLConnector {
         );
       `);
 
-      // 创建商品表
-      await this.pool.query(`
+      // 鍒涘缓鍟嗗搧琛?      await this.pool.query(`
         CREATE TABLE IF NOT EXISTS products (
           id INT AUTO_INCREMENT PRIMARY KEY,
           name VARCHAR(100) NOT NULL,
@@ -80,8 +75,7 @@ class MySQLConnector {
         );
       `);
 
-      // 创建交易表
-      await this.pool.query(`
+      // 鍒涘缓浜ゆ槗琛?      await this.pool.query(`
         CREATE TABLE IF NOT EXISTS transactions (
           id INT AUTO_INCREMENT PRIMARY KEY,
           userId INT NOT NULL,
@@ -95,29 +89,29 @@ class MySQLConnector {
         );
       `);
 
-      console.log('MySQL表结构初始化完成');
+      console.log('MySQL琛ㄧ粨鏋勫垵濮嬪寲瀹屾垚');
     } catch (error) {
-      console.error('MySQL表结构初始化失败:', error.message);
+      console.error('MySQL琛ㄧ粨鏋勫垵濮嬪寲澶辫触:', error.message);
       throw error;
     }
   }
 
-  // 断开连接
+  // 鏂紑杩炴帴
   async disconnect() {
     try {
       if (this.pool) {
         await this.pool.end();
-        console.log('MySQL数据库已断开连接');
+        console.log('MySQL鏁版嵁搴撳凡鏂紑杩炴帴');
         return true;
       }
       return false;
     } catch (error) {
-      console.error('MySQL断开连接失败:', error.message);
+      console.error('MySQL鏂紑杩炴帴澶辫触:', error.message);
       throw error;
     }
   }
 
-  // 用户相关方法
+  // 鐢ㄦ埛鐩稿叧鏂规硶
   async createUser(userData) {
     const { username, email, passwordHash, coins = 0, role = 'user' } = userData;
     const [result] = await this.pool.query(
@@ -166,7 +160,7 @@ class MySQLConnector {
     return await this.getUserById(id);
   }
 
-  // 软件相关方法
+  // 杞欢鐩稿叧鏂规硶
   async createSoftware(softwareData) {
     const { name, description, version, price, publisherId, isFeatured = false } = softwareData;
     const [result] = await this.pool.query(
@@ -216,7 +210,7 @@ class MySQLConnector {
     return await this.getSoftwareById(id);
   }
 
-  // 商品相关方法
+  // 鍟嗗搧鐩稿叧鏂规硶
   async createProduct(productData) {
     const { name, description, price, stock = 0, category } = productData;
     const [result] = await this.pool.query(
@@ -265,7 +259,7 @@ class MySQLConnector {
     return await this.getProductById(id);
   }
 
-  // 交易相关方法
+  // 浜ゆ槗鐩稿叧鏂规硶
   async createTransaction(transactionData) {
     const { userId, type, amount, itemId, itemType, status = 'completed' } = transactionData;
     const [result] = await this.pool.query(
@@ -295,7 +289,7 @@ class MySQLConnector {
     return rows;
   }
 
-  // 更新用户余额
+  // 鏇存柊鐢ㄦ埛浣欓
   async updateUserCoins(userId, amount) {
     await this.pool.query(
       'UPDATE users SET coins = coins + ? WHERE id = ?',

@@ -1,73 +1,64 @@
-// 服务端配置
-
-// 服务端基本配置
-const serverConfig = {
-  // 服务端IP地址
+﻿// 鏈嶅姟绔厤缃?
+// 鏈嶅姟绔熀鏈厤缃?const serverConfig = {
+  // 鏈嶅姟绔疘P鍦板潃
   host: process.env.SERVER_HOST || '0.0.0.0',
   
-  // 服务端端口（改为3000以避免与MetaJadeBridge冲突）
-  port: process.env.SERVER_PORT || 3000,
+  // 鏈嶅姟绔鍙ｏ紙鏀逛负3000浠ラ伩鍏嶄笌MetaJadeBridge鍐茬獊锛?  port: process.env.SERVER_PORT || 3000,
   
-  // 是否启用HTTPS
+  // 鏄惁鍚敤HTTPS
   https: process.env.SERVER_HTTPS === 'true' || false,
   
-  // HTTPS证书配置
+  // HTTPS璇佷功閰嶇疆
   httpsConfig: {
     key: process.env.SERVER_HTTPS_KEY || '',
     cert: process.env.SERVER_HTTPS_CERT || ''
   },
   
-  // 玄玉区块链DHT配置
+  // 鐜勭帀鍖哄潡閾綝HT閰嶇疆
   dht: {
-    // 是否自动启动DHT服务器
-    autoStart: process.env.DHT_AUTO_START === 'false' ? false : true,
+    // 鏄惁鑷姩鍚姩DHT鏈嶅姟鍣?    autoStart: process.env.DHT_AUTO_START === 'false' ? false : true,
     
-    // DHT服务器IP地址
+    // DHT鏈嶅姟鍣↖P鍦板潃
     ip: process.env.DHT_IP || '0.0.0.0',
     
-    // DHT服务器端口
-    port: process.env.DHT_PORT || 4001,
+    // DHT鏈嶅姟鍣ㄧ鍙?    port: process.env.DHT_PORT || 4001,
     
-    // 是否启用中继
+    // 鏄惁鍚敤涓户
     enableRelay: process.env.DHT_ENABLE_RELAY === 'false' ? false : true
   },
   
-  // 日志配置
+  // 鏃ュ織閰嶇疆
   logging: {
-    // 日志级别：error, warn, info, debug
+    // 鏃ュ織绾у埆锛歟rror, warn, info, debug
     level: process.env.LOGGING_LEVEL || 'info',
     
-    // 是否将日志输出到文件
+    // 鏄惁灏嗘棩蹇楄緭鍑哄埌鏂囦欢
     file: process.env.LOGGING_FILE === 'true' || false,
     
-    // 日志文件路径
+    // 鏃ュ織鏂囦欢璺緞
     filePath: process.env.LOGGING_FILE_PATH || './logs/server.log'
   },
   
-  // 开发模式配置
-  development: {
-    // 是否启用开发模式
-    enabled: process.env.NODE_ENV === 'development' || false,
+  // 寮€鍙戞ā寮忛厤缃?  development: {
+    // 鏄惁鍚敤寮€鍙戞ā寮?    enabled: process.env.NODE_ENV === 'development' || false,
     
-    // 是否启用热重载
-    hotReload: process.env.DEV_HOT_RELOAD === 'false' ? false : true,
+    // 鏄惁鍚敤鐑噸杞?    hotReload: process.env.DEV_HOT_RELOAD === 'false' ? false : true,
     
-    // 是否启用调试模式
+    // 鏄惁鍚敤璋冭瘯妯″紡
     debug: process.env.DEV_DEBUG === 'true' || false
   },
   
-  // 安全配置
+  // 瀹夊叏閰嶇疆
   security: {
-    // JWT密钥
+    // JWT瀵嗛挜
     jwtSecret: process.env.JWT_SECRET || 'your-secret-key-change-in-production',
     
-    // JWT过期时间（秒）
-    jwtExpiresIn: parseInt(process.env.JWT_EXPIRES_IN || '3600'),
+    // JWT杩囨湡鏃堕棿锛堢锛?    jwtExpiresIn: parseInt(process.env.JWT_EXPIRES_IN || '3600'),
     
-    // 是否启用CORS
+    // 鏄惁鍚敤CORS
     cors: process.env.SECURITY_CORS === 'false' ? false : true,
     
-    // CORS配置
+    // CORS閰嶇疆
     corsOptions: {
       origin: process.env.CORS_ORIGIN || '*',
       methods: process.env.CORS_METHODS || 'GET, POST, PUT, DELETE, OPTIONS',
@@ -75,27 +66,25 @@ const serverConfig = {
     }
   },
   
-  // 缓存配置
+  // 缂撳瓨閰嶇疆
   cache: {
-    // 是否启用缓存
+    // 鏄惁鍚敤缂撳瓨
     enabled: process.env.CACHE_ENABLED === 'false' ? false : true,
     
-    // 缓存过期时间（秒）
-    ttl: parseInt(process.env.CACHE_TTL || '3600'),
+    // 缂撳瓨杩囨湡鏃堕棿锛堢锛?    ttl: parseInt(process.env.CACHE_TTL || '3600'),
     
-    // 缓存大小限制（MB）
-    sizeLimit: parseInt(process.env.CACHE_SIZE_LIMIT || '50')
+    // 缂撳瓨澶у皬闄愬埗锛圡B锛?    sizeLimit: parseInt(process.env.CACHE_SIZE_LIMIT || '50')
   },
   
-  // 自动备份配置
+  // 鑷姩澶囦唤閰嶇疆
   backup: {
-    // 是否启用自动备份
+    // 鏄惁鍚敤鑷姩澶囦唤
     enabled: process.env.BACKUP_ENABLED === 'false' ? false : true,
     
-    // 备份时间间隔（小时）
+    // 澶囦唤鏃堕棿闂撮殧锛堝皬鏃讹級
     interval: parseInt(process.env.BACKUP_INTERVAL || '24'),
     
-    // 备份文件保存路径
+    // 澶囦唤鏂囦欢淇濆瓨璺緞
     path: process.env.BACKUP_PATH || './backups'
   }
 };

@@ -1,7 +1,7 @@
-{
+﻿{
   "name": "cat9-server",
   "version": "1.0.0",
-  "description": "玄玉逍游后端服务",
+  "description": "鐜勭帀閫嶆父鍚庣鏈嶅姟",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -25,10 +25,10 @@
   },
   "keywords": [
     "web3",
-    "游戏",
-    "区块链",
-    "玄玉逍游"
+    "娓告垙",
+    "鍖哄潡閾?,
+    "鐜勭帀閫嶆父"
   ],
-  "author": "华梦有限公司",
+  "author": "鍗庢ⅵ鏈夐檺鍏徃",
   "license": "ISC"
 }

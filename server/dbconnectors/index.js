@@ -1,4 +1,4 @@
-// 数据库连接器索引文件
+﻿// 鏁版嵁搴撹繛鎺ュ櫒绱㈠紩鏂囦欢
 
 const MongoDBConnector = require('./mongodbConnector');
 const MySQLConnector = require('./mysqlConnector');
@@ -8,10 +8,8 @@ module.exports = {
   MongoDBConnector,
   MySQLConnector,
   MetaJadeConnector,
-  // 根据环境变量或配置选择合适的连接器
-  getConnector(type = 'metajade', config = {}) {
-    // 默认使用metajade（玄玉链）作为数据存储
-    const dbType = type.toLowerCase();
+  // 鏍规嵁鐜鍙橀噺鎴栭厤缃€夋嫨鍚堥€傜殑杩炴帴鍣?  getConnector(type = 'metajade', config = {}) {
+    // 榛樿浣跨敤metajade锛堢巹鐜夐摼锛変綔涓烘暟鎹瓨鍌?    const dbType = type.toLowerCase();
     
     switch (dbType) {
       case 'metajade':

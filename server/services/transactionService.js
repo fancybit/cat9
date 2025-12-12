@@ -1,27 +1,27 @@
-// 交易服务 - 处理Cat9Coin交易和钱包管理相关的业务逻辑
+﻿// 浜ゆ槗鏈嶅姟 - 澶勭悊Cat9Coin浜ゆ槗鍜岄挶鍖呯鐞嗙浉鍏崇殑涓氬姟閫昏緫
 
 const dal = require('../dal');
 
 class TransactionService {
   /**
-   * 创建交易
-   * @param {Object} transactionData - 交易数据
-   * @returns {Promise<Object>} 创建结果
+   * 鍒涘缓浜ゆ槗
+   * @param {Object} transactionData - 浜ゆ槗鏁版嵁
+   * @returns {Promise<Object>} 鍒涘缓缁撴灉
    */
   async createTransaction(transactionData) {
     try {
       const transaction = await dal.createTransaction(transactionData);
       return { success: true, transaction: transaction.toJSON() };
     } catch (error) {
-      console.error('创建交易失败:', error);
-      return { success: false, error: '创建交易失败，请稍后重试' };
+      console.error('鍒涘缓浜ゆ槗澶辫触:', error);
+      return { success: false, error: '鍒涘缓浜ゆ槗澶辫触锛岃绋嶅悗閲嶈瘯' };
     }
   }
 
   /**
-   * 执行交易
-   * @param {string} transactionId - 交易ID
-   * @returns {Promise<Object>} 执行结果
+   * 鎵ц浜ゆ槗
+   * @param {string} transactionId - 浜ゆ槗ID
+   * @returns {Promise<Object>} 鎵ц缁撴灉
    */
   async executeTransaction(transactionId) {
     try {
@@ -30,75 +30,75 @@ class TransactionService {
         const transaction = await dal.getTransaction(transactionId);
         return { success: true, transaction: transaction.toJSON() };
       }
-      return { success: false, error: '交易执行失败' };
+      return { success: false, error: '浜ゆ槗鎵ц澶辫触' };
     } catch (error) {
-      console.error('执行交易失败:', error);
-      return { success: false, error: '交易执行失败，请稍后重试' };
+      console.error('鎵ц浜ゆ槗澶辫触:', error);
+      return { success: false, error: '浜ゆ槗鎵ц澶辫触锛岃绋嶅悗閲嶈瘯' };
     }
   }
 
   /**
-   * 获取交易详情
-   * @param {string} transactionId - 交易ID
-   * @returns {Promise<Object|null>} 交易详情
+   * 鑾峰彇浜ゆ槗璇︽儏
+   * @param {string} transactionId - 浜ゆ槗ID
+   * @returns {Promise<Object|null>} 浜ゆ槗璇︽儏
    */
   async getTransactionDetails(transactionId) {
     try {
       const transaction = await dal.getTransaction(transactionId);
       return transaction ? transaction.toJSON() : null;
     } catch (error) {
-      console.error('获取交易详情失败:', error);
+      console.error('鑾峰彇浜ゆ槗璇︽儏澶辫触:', error);
       return null;
     }
   }
 
   /**
-   * 获取用户交易记录
-   * @param {string} userId - 用户ID
-   * @returns {Promise<Array>} 交易记录列表
+   * 鑾峰彇鐢ㄦ埛浜ゆ槗璁板綍
+   * @param {string} userId - 鐢ㄦ埛ID
+   * @returns {Promise<Array>} 浜ゆ槗璁板綍鍒楄〃
    */
   async getUserTransactions(userId) {
     try {
       const transactions = await dal.getUserTransactions(userId);
       return transactions.map(transaction => transaction.toJSON());
     } catch (error) {
-      console.error('获取用户交易记录失败:', error);
+      console.error('鑾峰彇鐢ㄦ埛浜ゆ槗璁板綍澶辫触:', error);
       return [];
     }
   }
 
   /**
-   * 转账Cat9Coins
-   * @param {string} fromUserId - 转出用户ID
-   * @param {string} toUserId - 转入用户ID
-   * @param {number} amount - 金额
-   * @param {string} description - 描述
-   * @returns {Promise<Object>} 转账结果
+   * 杞处Cat9Coins
+   * @param {string} fromUserId - 杞嚭鐢ㄦ埛ID
+   * @param {string} toUserId - 杞叆鐢ㄦ埛ID
+   * @param {number} amount - 閲戦
+   * @param {string} description - 鎻忚堪
+   * @returns {Promise<Object>} 杞处缁撴灉
    */
   async transferCoins(fromUserId, toUserId, amount, description = '') {
     try {
-      // 直接实现转账逻辑
-      // 获取转出用户
+      // 鐩存帴瀹炵幇杞处閫昏緫
+      // 鑾峰彇杞嚭鐢ㄦ埛
       const fromUser = await dal.getUser(fromUserId);
       const toUser = await dal.getUser(toUserId);
       
       if (!fromUser || !toUser) {
-        return { success: false, error: '用户不存在' };
+        return { success: false, error: '鐢ㄦ埛涓嶅瓨鍦? };
       }
       
       if (fromUser.wallet.balance < amount) {
-        return { success: false, error: '余额不足' };
+        return { success: false, error: '浣欓涓嶈冻' };
       }
       
-      // 更新用户余额
+      // 鏇存柊鐢ㄦ埛浣欓
       fromUser.wallet.balance -= amount;
       toUser.wallet.balance += amount;
       
-      // 保存更新后的用户数据
+      // 淇濆瓨鏇存柊鍚庣殑鐢ㄦ埛鏁版嵁
       await dal.storeData(dal.getUserKey(fromUserId), fromUser);
       await dal.storeData(dal.getUserKey(toUserId), toUser);
       
-      // 创建交易记录
+      // 鍒涘缓浜ゆ槗璁板綍
       const transaction = await dal.createTransaction({
         fromUserId,
         toUserId,
@@ -110,34 +110,34 @@ class TransactionService {
       
       return { success: true, transaction };
     } catch (error) {
-      console.error('转账失败:', error);
-      return { success: false, error: '转账失败，请稍后重试' };
+      console.error('杞处澶辫触:', error);
+      return { success: false, error: '杞处澶辫触锛岃绋嶅悗閲嶈瘯' };
     }
   }
 
   /**
-   * 奖励用户Cat9Coins
-   * @param {string} userId - 用户ID
-   * @param {number} amount - 金额
-   * @param {string} description - 描述
-   * @returns {Promise<Object>} 奖励结果
+   * 濂栧姳鐢ㄦ埛Cat9Coins
+   * @param {string} userId - 鐢ㄦ埛ID
+   * @param {number} amount - 閲戦
+   * @param {string} description - 鎻忚堪
+   * @returns {Promise<Object>} 濂栧姳缁撴灉
    */
   async rewardCoins(userId, amount, description = '') {
     try {
-      // 直接实现奖励逻辑
-      // 获取用户
+      // 鐩存帴瀹炵幇濂栧姳閫昏緫
+      // 鑾峰彇鐢ㄦ埛
       const user = await dal.getUser(userId);
       if (!user) {
-        return { success: false, error: '用户不存在' };
+        return { success: false, error: '鐢ㄦ埛涓嶅瓨鍦? };
       }
       
-      // 更新用户余额
+      // 鏇存柊鐢ㄦ埛浣欓
       user.wallet.balance += amount;
       
-      // 保存更新后的用户数据
+      // 淇濆瓨鏇存柊鍚庣殑鐢ㄦ埛鏁版嵁
       await dal.storeData(dal.getUserKey(userId), user);
       
-      // 创建交易记录
+      // 鍒涘缓浜ゆ槗璁板綍
       const transaction = await dal.createTransaction({
         toUserId: userId,
         amount,
@@ -148,30 +148,30 @@ class TransactionService {
       
       return { success: true, transaction };
     } catch (error) {
-      console.error('奖励失败:', error);
-      return { success: false, error: '奖励失败，请稍后重试' };
+      console.error('濂栧姳澶辫触:', error);
+      return { success: false, error: '濂栧姳澶辫触锛岃绋嶅悗閲嶈瘯' };
     }
   }
 
   /**
-   * 获取用户钱包余额
-   * @param {string} userId - 用户ID
-   * @returns {Promise<number|null>} 余额
+   * 鑾峰彇鐢ㄦ埛閽卞寘浣欓
+   * @param {string} userId - 鐢ㄦ埛ID
+   * @returns {Promise<number|null>} 浣欓
    */
   async getUserBalance(userId) {
     try {
       const user = await dal.getUser(userId);
       return user ? user.wallet.balance : null;
     } catch (error) {
-      console.error('获取用户余额失败:', error);
+      console.error('鑾峰彇鐢ㄦ埛浣欓澶辫触:', error);
       return null;
     }
   }
 
   /**
-   * 批量获取交易详情
-   * @param {Array<string>} transactionIds - 交易ID列表
-   * @returns {Promise<Array>} 交易详情列表
+   * 鎵归噺鑾峰彇浜ゆ槗璇︽儏
+   * @param {Array<string>} transactionIds - 浜ゆ槗ID鍒楄〃
+   * @returns {Promise<Array>} 浜ゆ槗璇︽儏鍒楄〃
    */
   async getBatchTransactions(transactionIds) {
     try {
@@ -184,7 +184,7 @@ class TransactionService {
       }
       return transactions;
     } catch (error) {
-      console.error('批量获取交易详情失败:', error);
+      console.error('鎵归噺鑾峰彇浜ゆ槗璇︽儏澶辫触:', error);
       return [];
     }
   }

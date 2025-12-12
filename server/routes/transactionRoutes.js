@@ -1,51 +1,46 @@
-// 交易相关路由
+﻿// 浜ゆ槗鐩稿叧璺敱
 
 const express = require('express');
 const router = express.Router();
 const transactionService = require('../services/transactionService');
 
-// 模拟认证中间件
-const authMiddleware = (req, res, next) => {
+// 妯℃嫙璁よ瘉涓棿浠?const authMiddleware = (req, res, next) => {
   const userId = req.headers['x-user-id'];
   if (!userId) {
-    return res.status(401).json({ success: false, error: '未认证' });
+    return res.status(401).json({ success: false, error: '鏈璇? });
   }
   req.userId = userId;
   next();
 };
 
-// 模拟管理员权限中间件
+// 妯℃嫙绠＄悊鍛樻潈闄愪腑闂翠欢
 const adminMiddleware = (req, res, next) => {
   const isAdmin = req.headers['x-is-admin'] === 'true';
   if (!isAdmin) {
-    return res.status(403).json({ success: false, error: '需要管理员权限' });
+    return res.status(403).json({ success: false, error: '闇€瑕佺鐞嗗憳鏉冮檺' });
   }
   next();
 };
 
-// 获取用户钱包余额 - 需要认证
-router.get('/balance', authMiddleware, async (req, res) => {
+// 鑾峰彇鐢ㄦ埛閽卞寘浣欓 - 闇€瑕佽璇?router.get('/balance', authMiddleware, async (req, res) => {
   const balance = await transactionService.getUserBalance(req.userId);
   if (balance !== null) {
     res.json({ success: true, balance });
   } else {
-    res.status(404).json({ success: false, error: '用户不存在' });
+    res.status(404).json({ success: false, error: '鐢ㄦ埛涓嶅瓨鍦? });
   }
 });
 
-// 获取用户交易记录 - 需要认证
-router.get('/history', authMiddleware, async (req, res) => {
+// 鑾峰彇鐢ㄦ埛浜ゆ槗璁板綍 - 闇€瑕佽璇?router.get('/history', authMiddleware, async (req, res) => {
   const transactions = await transactionService.getUserTransactions(req.userId);
   res.json({ success: true, transactions });
 });
 
-// 转账给其他用户 - 需要认证
-router.post('/transfer', authMiddleware, async (req, res) => {
+// 杞处缁欏叾浠栫敤鎴?- 闇€瑕佽璇?router.post('/transfer', authMiddleware, async (req, res) => {
   const { toUserId, amount, description } = req.body;
   
-  // 防止自己给自己转账
-  if (req.userId === toUserId) {
-    return res.status(400).json({ success: false, error: '不能给自己转账' });
+  // 闃叉鑷繁缁欒嚜宸辫浆璐?  if (req.userId === toUserId) {
+    return res.status(400).json({ success: false, error: '涓嶈兘缁欒嚜宸辫浆璐? });
   }
   
   const result = await transactionService.transferCoins(req.userId, toUserId, amount, description);
@@ -56,7 +51,7 @@ router.post('/transfer', authMiddleware, async (req, res) => {
   }
 });
 
-// 奖励用户Cat9Coins - 需要管理员权限
+// 濂栧姳鐢ㄦ埛Cat9Coins - 闇€瑕佺鐞嗗憳鏉冮檺
 router.post('/reward', authMiddleware, adminMiddleware, async (req, res) => {
   const { userId, amount, description } = req.body;
   const result = await transactionService.rewardCoins(userId, amount, description);
@@ -67,29 +62,26 @@ router.post('/reward', authMiddleware, adminMiddleware, async (req, res) => {
   }
 });
 
-// 通过ID获取交易详情 - 需要认证
-router.get('/:transactionId', authMiddleware, async (req, res) => {
+// 閫氳繃ID鑾峰彇浜ゆ槗璇︽儏 - 闇€瑕佽璇?router.get('/:transactionId', authMiddleware, async (req, res) => {
   const transaction = await transactionService.getTransactionDetails(req.params.transactionId);
   if (transaction) {
-    // 检查是否是用户自己的交易或管理员
-    const isAdmin = req.headers['x-is-admin'] === 'true';
+    // 妫€鏌ユ槸鍚︽槸鐢ㄦ埛鑷繁鐨勪氦鏄撴垨绠＄悊鍛?    const isAdmin = req.headers['x-is-admin'] === 'true';
     const isUserTransaction = transaction.fromUserId === req.userId || transaction.toUserId === req.userId;
     
     if (isAdmin || isUserTransaction) {
       res.json({ success: true, transaction });
     } else {
-      res.status(403).json({ success: false, error: '无权查看此交易' });
+      res.status(403).json({ success: false, error: '鏃犳潈鏌ョ湅姝や氦鏄? });
     }
   } else {
-    res.status(404).json({ success: false, error: '交易不存在' });
+    res.status(404).json({ success: false, error: '浜ゆ槗涓嶅瓨鍦? });
   }
 });
 
-// 批量获取交易详情 - 需要认证
-router.post('/batch', authMiddleware, async (req, res) => {
+// 鎵归噺鑾峰彇浜ゆ槗璇︽儏 - 闇€瑕佽璇?router.post('/batch', authMiddleware, async (req, res) => {
   const { transactionIds } = req.body;
   if (!Array.isArray(transactionIds)) {
-    return res.status(400).json({ success: false, error: '交易ID列表必须是数组' });
+    return res.status(400).json({ success: false, error: '浜ゆ槗ID鍒楄〃蹇呴』鏄暟缁? });
   }
   
   const transactions = await transactionService.getBatchTransactions(transactionIds);

@@ -1,4 +1,4 @@
-# Metajade Block Network: Construction and Application Research of an Information Security Network Based on Blockchain, Six Degrees Principle and IPFS
+﻿# Metajade Block Network: Construction and Application Research of an Information Security Network Based on Blockchain, Six Degrees Principle and IPFS
 
 ## Abstract
 
@@ -29,7 +29,7 @@ This paper sorts out relevant theoretical and technical foundations, constructs 
 
 ### 2.1 Blockchain Technology
 
-Blockchain is a distributed ledger maintained by multiple nodes, with core characteristics including decentralization, tamper-proofing, full traceability, and automatic execution of smart contracts. However, a single blockchain network has problems such as high storage redundancy, low data access efficiency, high spatiotemporal complexity (e.g., the time complexity of transaction confirmation approaches O(2ⁿ) under some consensus mechanisms), and difficulty in balancing security and efficiency due to fixed consensus depth, which limits large-scale applications.
+Blockchain is a distributed ledger maintained by multiple nodes, with core characteristics including decentralization, tamper-proofing, full traceability, and automatic execution of smart contracts. However, a single blockchain network has problems such as high storage redundancy, low data access efficiency, high spatiotemporal complexity (e.g., the time complexity of transaction confirmation approaches O(2鈦? under some consensus mechanisms), and difficulty in balancing security and efficiency due to fixed consensus depth, which limits large-scale applications.
 
 ### 2.2 Six Degrees Principle
 
@@ -80,10 +80,10 @@ By integrating the Six Degrees Principle, IPFS, and dynamic consensus mechanism,
 
 | Indicator                                        | Traditional Blockchain Network                              | Metajade Block Network                                       | Complexity Level                      |
 | ------------------------------------------------ | ----------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------- |
-| Time Complexity (Transaction Confirmation)       | O(n²) (approaching O(2ⁿ) under some consensus mechanisms) | O(nlogn) (can be reduced to O(logn) under dynamic consensus) | Polynomial/Exponential → Logarithmic |
-| Time Complexity (Data Retrieval)                 | O(n) (Linear)                                               | O(logn) (Logarithmic)                                        | Linear → Logarithmic                 |
-| Space Complexity (Data Storage)                  | O(n×D) (n: number of nodes; D: total data volume)          | O(D×logn)                                                   | Linear → Logarithmic                 |
-| Node Connection Efficiency (Average Path Length) | O(n) (Linear)                                               | O(logn) (Logarithmic)                                        | Linear → Logarithmic                 |
+| Time Complexity (Transaction Confirmation)       | O(n虏) (approaching O(2鈦? under some consensus mechanisms) | O(nlogn) (can be reduced to O(logn) under dynamic consensus) | Polynomial/Exponential 鈫?Logarithmic |
+| Time Complexity (Data Retrieval)                 | O(n) (Linear)                                               | O(logn) (Logarithmic)                                        | Linear 鈫?Logarithmic                 |
+| Space Complexity (Data Storage)                  | O(n脳D) (n: number of nodes; D: total data volume)          | O(D脳logn)                                                   | Linear 鈫?Logarithmic                 |
+| Node Connection Efficiency (Average Path Length) | O(n) (Linear)                                               | O(logn) (Logarithmic)                                        | Linear 鈫?Logarithmic                 |
 | Security-Efficiency Balance (Relative Value)     | Fixed (60)                                                  | Dynamically Adjustable (60-90)                               | -                                     |
 
 Note: Complexity levels are divided according to standard computer algorithm complexity; the security-efficiency balance is a relative evaluation value (100 is optimal). Traditional blockchain networks adopt fixed consensus depth, resulting in low and non-adjustable balance.

@@ -1,139 +1,136 @@
-export default {
-  // 导航栏
-  navbar: {
-    home: '홈',
-    store: '스토어',
-    library: '라이브러리',
-    downloads: '클라이언트 다운로드',
-    auction: '경매장',
-    community: '커뮤니티',
-    developer: '개발자',
-    auditTeam: '심사팀',
-    admin: '관리자',
-    aboutUs: '회사 소개',
-    login: '로그인',
-    register: '가입'
+﻿export default {
+  // 瀵艰埅鏍?  navbar: {
+    home: '頇?,
+    store: '鞀ろ啝鞏?,
+    library: '霛检澊敫岆煬毽?,
+    downloads: '韥措澕鞚挫柛韸?雼れ毚搿滊摐',
+    auction: '瓴诫Г鞛?,
+    community: '旎る雼堩嫲',
+    developer: '臧滊皽鞛?,
+    auditTeam: '鞁偓韺€',
+    admin: '甏€毽瀽',
+    aboutUs: '須岇偓 靻岅皽',
+    login: '搿滉犯鞚?,
+    register: '臧€鞛?
   },
   
-  // 页脚
+  // 椤佃剼
   footer: {
-    aboutUs: '회사 소개',
-    aboutText: 'Cat9 Entertainment은 인디 게임 출시에 중점을 둔 플랫폼으로, 개발자들에게 편리한 게임 출시 채널을 제공하고 플레이어들에게 고품질의 게임 경험을 선사합니다.',
-    quickLinks: '빠른 링크',
-    gameStore: '게임 스토어',
-    myLibrary: '내 라이브러리',
-    downloadClients: '클라이언트 다운로드',
-    developerResources: '개발자 리소스',
-    supportCenter: '지원 센터',
-    contactUs: '문의하기',
-    email: '이메일',
-    wechat: '위챗',
-    officialAccount: '공식 계정',
-    copyright: '© {year} Hong Kong Huameng Company Cat9 Entertainment. 저작권 소유.'
+    aboutUs: '須岇偓 靻岅皽',
+    aboutText: 'Cat9 Entertainment鞚€ 鞚鸽敂 瓴岇瀯 於滌嫓鞐?欷戩爯鞚?霊?頂岆灚韽检溂搿? 臧滊皽鞛愲摛鞐愱矊 韼鸽Μ頃?瓴岇瀯 於滌嫓 毂勲剱鞚?鞝滉车頃橁碃 頂岆爤鞚挫柎霌れ棎瓴?瓿犿拡歆堨潣 瓴岇瀯 瓴巾棙鞚?靹犾偓頃╇媹雼?',
+    quickLinks: '牍犽ジ 毵來伂',
+    gameStore: '瓴岇瀯 鞀ろ啝鞏?,
+    myLibrary: '雮?霛检澊敫岆煬毽?,
+    downloadClients: '韥措澕鞚挫柛韸?雼れ毚搿滊摐',
+    developerResources: '臧滊皽鞛?毽唽鞀?,
+    supportCenter: '歆€鞗?靹柬劙',
+    contactUs: '氍胳潣頃橁赴',
+    email: '鞚措鞚?,
+    wechat: '鞙勳睏',
+    officialAccount: '瓿奠嫕 瓿勳爼',
+    copyright: '漏 {year} Hong Kong Huameng Company Cat9 Entertainment. 鞝€鞛戧秾 靻岇湢.'
   },
   
-  // 通用
+  // 閫氱敤
   common: {
-    language: '언어',
-    search: '검색',
-    submit: '제출',
-    cancel: '취소',
-    confirm: '확인',
-    delete: '삭제',
-    edit: '편집',
-    add: '추가',
-    save: '저장',
-    loading: '로딩 중...',
-    success: '성공',
-    error: '오류',
-    warning: '경고',
-    info: '정보',
-    yes: '예',
-    no: '아니오',
-    close: '닫기',
-    next: '다음',
-    previous: '이전',
-    back: '뒤로',
-    more: '더 보기'
+    language: '鞏胳柎',
+    search: '瓴€靸?,
+    submit: '鞝滌稖',
+    cancel: '旆唽',
+    confirm: '頇曥澑',
+    delete: '靷牅',
+    edit: '韼胳',
+    add: '於旉皜',
+    save: '鞝€鞛?,
+    loading: '搿滊敥 欷?..',
+    success: '靹标车',
+    error: '鞓る',
+    warning: '瓴疥碃',
+    info: '鞝曤炒',
+    yes: '鞓?,
+    no: '鞎勲媹鞓?,
+    close: '雼赴',
+    next: '雼れ潓',
+    previous: '鞚挫爠',
+    back: '霋る',
+    more: '雿?氤搓赴'
   },
   
-  // 登录/注册
+  // 鐧诲綍/娉ㄥ唽
   auth: {
-    username: '사용자 이름',
-    password: '비밀번호',
-    confirmPassword: '비밀번호 확인',
-    email: '이메일',
-    login: '로그인',
-    register: '가입',
-    forgotPassword: '비밀번호를 잊으셨나요?',
-    noAccount: '계정이 없으신가요?',
-    haveAccount: '이미 계정이 있으신가요?',
-    logout: '로그아웃',
-    loginSuccess: '로그인 성공',
-    registerSuccess: '가입 성공',
-    loginFailed: '로그인 실패',
-    registerFailed: '가입 실패'
+    username: '靷毄鞛?鞚措',
+    password: '牍勲皜氩堩樃',
+    confirmPassword: '牍勲皜氩堩樃 頇曥澑',
+    email: '鞚措鞚?,
+    login: '搿滉犯鞚?,
+    register: '臧€鞛?,
+    forgotPassword: '牍勲皜氩堩樃毳?鞛婌溂靺倶鞖?',
+    noAccount: '瓿勳爼鞚?鞐嗢溂鞁犼皜鞖?',
+    haveAccount: '鞚措 瓿勳爼鞚?鞛堨溂鞁犼皜鞖?',
+    logout: '搿滉犯鞎勳泝',
+    loginSuccess: '搿滉犯鞚?靹标车',
+    registerSuccess: '臧€鞛?靹标车',
+    loginFailed: '搿滉犯鞚?鞁ろ尐',
+    registerFailed: '臧€鞛?鞁ろ尐'
   },
   
-  // 首页
+  // 棣栭〉
   home: {
-    welcome: 'Cat9 Entertainment에 오신 것을 환영합니다',
-    popularGames: '인기 게임',
-    newReleases: '새 출시',
-    recommendedForYou: '추천 게임',
-    browseAll: '전체 보기',
-    playNow: '지금 플레이',
-    buyNow: '지금 구매',
-    discount: '한정 기간 할인',
-    comingSoon: '출시 예정'
+    welcome: 'Cat9 Entertainment鞐?鞓れ嫚 瓴冹潉 頇橃榿頃╇媹雼?,
+    popularGames: '鞚戈赴 瓴岇瀯',
+    newReleases: '靸?於滌嫓',
+    recommendedForYou: '於旍矞 瓴岇瀯',
+    browseAll: '鞝勳泊 氤搓赴',
+    playNow: '歆€旮?頂岆爤鞚?,
+    buyNow: '歆€旮?甑Г',
+    discount: '頃滌爼 旮瓣皠 頃犾澑',
+    comingSoon: '於滌嫓 鞓堨爼'
   },
   
-  // 商店
+  // 鍟嗗簵
   store: {
-    allGames: '모든 게임',
-    categories: '카테고리',
-    tags: '태그',
-    priceRange: '가격 범위',
-    onSale: '할인 중',
-    topSellers: '베스트셀러',
-    recentlyAdded: '최근 추가',
-    freeToPlay: '무료 플레이',
-    wishlist: '위시리스트',
-    addToCart: '장바구니에 추가',
-    addToWishlist: '위시리스트에 추가',
-    removeFromWishlist: '위시리스트에서 제거'
+    allGames: '氇摖 瓴岇瀯',
+    categories: '旃错厡瓿犽Μ',
+    tags: '韮滉犯',
+    priceRange: '臧€瓴?氩旍渼',
+    onSale: '頃犾澑 欷?,
+    topSellers: '氩犾姢韸胳厐霟?,
+    recentlyAdded: '斓滉芳 於旉皜',
+    freeToPlay: '氍措 頂岆爤鞚?,
+    wishlist: '鞙勳嫓毽姢韸?,
+    addToCart: '鞛ル皵甑媹鞐?於旉皜',
+    addToWishlist: '鞙勳嫓毽姢韸胳棎 於旉皜',
+    removeFromWishlist: '鞙勳嫓毽姢韸胳棎靹?鞝滉卑'
   },
   
-  // 游戏库
-  library: {
-    yourGames: '내 게임',
-    recentlyPlayed: '최근 플레이',
-    allGames: '모든 게임',
-    install: '설치',
-    update: '업데이트',
-    play: '플레이',
-    uninstall: '제거',
-    gameDetails: '게임 상세 정보'
+  // 娓告垙搴?  library: {
+    yourGames: '雮?瓴岇瀯',
+    recentlyPlayed: '斓滉芳 頂岆爤鞚?,
+    allGames: '氇摖 瓴岇瀯',
+    install: '靹れ箻',
+    update: '鞐呺嵃鞚错姼',
+    play: '頂岆爤鞚?,
+    uninstall: '鞝滉卑',
+    gameDetails: '瓴岇瀯 靸侅劯 鞝曤炒'
   },
   
-  // 开发者
-  developer: {
-    welcomeDevelopers: '개발자 여러분 환영합니다',
-    documentation: '문서',
-    apiReference: 'API 참조',
-    submitGame: '게임 제출',
-    developerConsole: '개발자 콘솔',
-    revenueStats: '수익 통계',
-    gameAnalytics: '게임 분석'
+  // 寮€鍙戣€?  developer: {
+    welcomeDevelopers: '臧滊皽鞛?鞐煬攵?頇橃榿頃╇媹雼?,
+    documentation: '氍胳劀',
+    apiReference: 'API 彀胳“',
+    submitGame: '瓴岇瀯 鞝滌稖',
+    developerConsole: '臧滊皽鞛?旖橃啍',
+    revenueStats: '靾橃澋 韱店硠',
+    gameAnalytics: '瓴岇瀯 攵勳劃'
   },
   
-  // 审核团队
+  // 瀹℃牳鍥㈤槦
   auditTeam: {
-    aboutTeam: '심사팀 소개',
-    responsibilities: '핵심 책임',
-    process: '심사 프로세스',
-    members: '팀원',
-    faq: '자주 묻는 질문',
-    contact: '문의하기'
+    aboutTeam: '鞁偓韺€ 靻岅皽',
+    responsibilities: '頃奠嫭 毂呾瀯',
+    process: '鞁偓 頂勲靹胳姢',
+    members: '韺€鞗?,
+    faq: '鞛愳＜ 氍浑姅 歆堧',
+    contact: '氍胳潣頃橁赴'
   }
 }

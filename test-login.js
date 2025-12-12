@@ -1,21 +1,19 @@
-// 登录测试脚本 - 测试使用正确的用户名和密码登录
-const fetch = require('node-fetch');
+﻿// 鐧诲綍娴嬭瘯鑴氭湰 - 娴嬭瘯浣跨敤姝ｇ‘鐨勭敤鎴峰悕鍜屽瘑鐮佺櫥褰?const fetch = require('node-fetch');
 
-// 测试配置
+// 娴嬭瘯閰嶇疆
 const API_BASE_URL = 'http://localhost:5000/api/users';
 
-// 测试函数
+// 娴嬭瘯鍑芥暟
 async function testLogin() {
-  console.log('开始登录测试...');
+  console.log('寮€濮嬬櫥褰曟祴璇?..');
   console.log('='.repeat(50));
 
-  // 测试数据
+  // 娴嬭瘯鏁版嵁
   const testUsername = 'testuser_1765070810335_594';
   const testPassword = 'testpassword123';
 
   try {
-    // 发送登录请求
-    console.log(`\n测试使用用户名 "${testUsername}" 和密码 "${testPassword}" 登录...`);
+    // 鍙戦€佺櫥褰曡姹?    console.log(`\n娴嬭瘯浣跨敤鐢ㄦ埛鍚?"${testUsername}" 鍜屽瘑鐮?"${testPassword}" 鐧诲綍...`);
     const loginResponse = await fetch(`${API_BASE_URL}/login`, {
       method: 'POST',
       headers: {
@@ -28,25 +26,25 @@ async function testLogin() {
     });
 
     if (!loginResponse.ok) {
-      throw new Error(`登录失败，状态码: ${loginResponse.status}`);
+      throw new Error(`鐧诲綍澶辫触锛岀姸鎬佺爜: ${loginResponse.status}`);
     }
 
     const loginData = await loginResponse.json();
-    console.log('登录响应数据:', loginData);
+    console.log('鐧诲綍鍝嶅簲鏁版嵁:', loginData);
 
     if (!loginData.success || !loginData.token) {
-      throw new Error(`登录失败: ${loginData.error}`);
+      throw new Error(`鐧诲綍澶辫触: ${loginData.error}`);
     }
 
-    console.log(`✅ 登录成功，获取到令牌`);
-    console.log(`   令牌类型: Bearer`);
-    console.log(`   令牌长度: ${loginData.token.length} 字符`);
-    console.log(`   用户名: ${loginData.user.username}`);
-    console.log(`   显示名称: ${loginData.user.displayName}`);
-    console.log(`   邮箱: ${loginData.user.email}`);
+    console.log(`鉁?鐧诲綍鎴愬姛锛岃幏鍙栧埌浠ょ墝`);
+    console.log(`   浠ょ墝绫诲瀷: Bearer`);
+    console.log(`   浠ょ墝闀垮害: ${loginData.token.length} 瀛楃`);
+    console.log(`   鐢ㄦ埛鍚? ${loginData.user.username}`);
+    console.log(`   鏄剧ず鍚嶇О: ${loginData.user.displayName}`);
+    console.log(`   閭: ${loginData.user.email}`);
 
-    // 测试使用获取到的令牌获取用户信息
-    console.log('\n测试使用获取到的令牌获取用户信息...');
+    // 娴嬭瘯浣跨敤鑾峰彇鍒扮殑浠ょ墝鑾峰彇鐢ㄦ埛淇℃伅
+    console.log('\n娴嬭瘯浣跨敤鑾峰彇鍒扮殑浠ょ墝鑾峰彇鐢ㄦ埛淇℃伅...');
     const userInfoResponse = await fetch(`${API_BASE_URL}/me`, {
       method: 'GET',
       headers: {
@@ -55,32 +53,32 @@ async function testLogin() {
     });
 
     if (!userInfoResponse.ok) {
-      throw new Error(`获取用户信息失败，状态码: ${userInfoResponse.status}`);
+      throw new Error(`鑾峰彇鐢ㄦ埛淇℃伅澶辫触锛岀姸鎬佺爜: ${userInfoResponse.status}`);
     }
 
     const userInfoData = await userInfoResponse.json();
-    console.log('获取用户信息响应数据:', userInfoData);
+    console.log('鑾峰彇鐢ㄦ埛淇℃伅鍝嶅簲鏁版嵁:', userInfoData);
 
     if (!userInfoData.success || !userInfoData.user) {
-      throw new Error(`获取用户信息失败: ${userInfoData.error}`);
+      throw new Error(`鑾峰彇鐢ㄦ埛淇℃伅澶辫触: ${userInfoData.error}`);
     }
 
-    console.log(`✅ 获取用户信息成功`);
-    console.log(`   用户名: ${userInfoData.user.username}`);
-    console.log(`   显示名称: ${userInfoData.user.displayName}`);
-    console.log(`   邮箱: ${userInfoData.user.email}`);
+    console.log(`鉁?鑾峰彇鐢ㄦ埛淇℃伅鎴愬姛`);
+    console.log(`   鐢ㄦ埛鍚? ${userInfoData.user.username}`);
+    console.log(`   鏄剧ず鍚嶇О: ${userInfoData.user.displayName}`);
+    console.log(`   閭: ${userInfoData.user.email}`);
 
     console.log('\n' + '='.repeat(50));
-    console.log('✅ 登录测试通过！');
-    console.log('✅ 玄玉区块链连接器工作正常！');
-    console.log('✅ 用户名和密码验证正常！');
+    console.log('鉁?鐧诲綍娴嬭瘯閫氳繃锛?);
+    console.log('鉁?鐜勭帀鍖哄潡閾捐繛鎺ュ櫒宸ヤ綔姝ｅ父锛?);
+    console.log('鉁?鐢ㄦ埛鍚嶅拰瀵嗙爜楠岃瘉姝ｅ父锛?);
   } catch (error) {
-    console.error('\n❌ 测试失败:', error.message);
-    console.error('❌ 登录错误详情:', error);
+    console.error('\n鉂?娴嬭瘯澶辫触:', error.message);
+    console.error('鉂?鐧诲綍閿欒璇︽儏:', error);
   }
 }
 
-// 运行测试
+// 杩愯娴嬭瘯
 testLogin().catch(error => {
-  console.error('测试过程中发生错误:', error);
+  console.error('娴嬭瘯杩囩▼涓彂鐢熼敊璇?', error);
 });

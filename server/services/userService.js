@@ -1,33 +1,32 @@
-// 用户服务 - 处理用户相关的业务逻辑
+﻿// 鐢ㄦ埛鏈嶅姟 - 澶勭悊鐢ㄦ埛鐩稿叧鐨勪笟鍔￠€昏緫
 
 const dal = require('../dal');
 const bcrypt = require('bcryptjs');
 
 class UserService {
   /**
-   * 用户注册
-   * @param {Object} userData - 用户注册数据
-   * @returns {Promise<Object>} 注册结果
+   * 鐢ㄦ埛娉ㄥ唽
+   * @param {Object} userData - 鐢ㄦ埛娉ㄥ唽鏁版嵁
+   * @returns {Promise<Object>} 娉ㄥ唽缁撴灉
    */
   async register(userData) {
     try {
-      // 检查用户名是否已存在
-      const existingUser = await dal.getUserByUsername(userData.username);
+      // 妫€鏌ョ敤鎴峰悕鏄惁宸插瓨鍦?      const existingUser = await dal.getUserByUsername(userData.username);
       if (existingUser) {
-        return { success: false, error: '用户名已存在' };
+        return { success: false, error: '鐢ㄦ埛鍚嶅凡瀛樺湪' };
       }
 
-      // 检查邮箱是否已存在
+      // 妫€鏌ラ偖绠辨槸鍚﹀凡瀛樺湪
       const existingEmail = await dal.getUserByEmail(userData.email);
       if (existingEmail) {
-        return { success: false, error: '邮箱已被注册' };
+        return { success: false, error: '閭宸茶娉ㄥ唽' };
       }
 
-      // 加密密码
+      // 鍔犲瘑瀵嗙爜
       const salt = await bcrypt.genSalt(10);
       const passwordHash = await bcrypt.hash(userData.password, salt);
 
-      // 创建用户
+      // 鍒涘缓鐢ㄦ埛
       const user = await dal.createUser({
         username: userData.username,
         email: userData.email,
@@ -38,49 +37,45 @@ class UserService {
 
       return { success: true, user: user.toJSON() };
     } catch (error) {
-      console.error('用户注册失败:', error);
-      return { success: false, error: '注册失败，请稍后重试' };
+      console.error('鐢ㄦ埛娉ㄥ唽澶辫触:', error);
+      return { success: false, error: '娉ㄥ唽澶辫触锛岃绋嶅悗閲嶈瘯' };
     }
   }
 
   /**
-   * 用户登录
-   * @param {string} username - 用户名
-   * @param {string} password - 密码
-   * @returns {Promise<Object>} 登录结果
+   * 鐢ㄦ埛鐧诲綍
+   * @param {string} username - 鐢ㄦ埛鍚?   * @param {string} password - 瀵嗙爜
+   * @returns {Promise<Object>} 鐧诲綍缁撴灉
    */
   async login(username, password) {
     try {
-      // 查找用户
+      // 鏌ユ壘鐢ㄦ埛
       const user = await dal.getUserByUsername(username);
       if (!user) {
-        return { success: false, error: '用户名或密码错误' };
+        return { success: false, error: '鐢ㄦ埛鍚嶆垨瀵嗙爜閿欒' };
       }
 
-      // 验证密码
+      // 楠岃瘉瀵嗙爜
       const isMatch = await user.verifyPassword(bcrypt.compare, password);
       if (!isMatch) {
-        return { success: false, error: '用户名或密码错误' };
+        return { success: false, error: '鐢ㄦ埛鍚嶆垨瀵嗙爜閿欒' };
       }
 
-      // 更新最后登录时间
-      user.lastLogin = new Date();
+      // 鏇存柊鏈€鍚庣櫥褰曟椂闂?      user.lastLogin = new Date();
       
-      // 保存用户信息（兼容不同类型的用户对象）
-      let updatedUser = user;
+      // 淇濆瓨鐢ㄦ埛淇℃伅锛堝吋瀹逛笉鍚岀被鍨嬬殑鐢ㄦ埛瀵硅薄锛?      let updatedUser = user;
       if (typeof user.save === 'function') {
         updatedUser = await user.save();
       }
 
-      // 生成JWT令牌
+      // 鐢熸垚JWT浠ょ墝
       const { generateToken } = require('../utils/jwt');
-      const userId = user._id || user.id; // 兼容不同类型的用户ID
+      const userId = user._id || user.id; // 鍏煎涓嶅悓绫诲瀷鐨勭敤鎴稩D
       const token = generateToken({ userId });
 
-      // 转换用户信息为JSON格式（兼容不同类型的用户对象）
-      const userJson = typeof user.toJSON === 'function' ? user.toJSON() : {
+      // 杞崲鐢ㄦ埛淇℃伅涓篔SON鏍煎紡锛堝吋瀹逛笉鍚岀被鍨嬬殑鐢ㄦ埛瀵硅薄锛?      const userJson = typeof user.toJSON === 'function' ? user.toJSON() : {
         ...user,
-        // 移除敏感信息
+        // 绉婚櫎鏁忔劅淇℃伅
         passwordHash: undefined,
         resetPasswordToken: undefined,
         resetPasswordExpires: undefined
@@ -92,200 +87,187 @@ class UserService {
         token 
       };
     } catch (error) {
-      console.error('用户登录失败:', error);
-      return { success: false, error: '登录失败，请稍后重试' };
+      console.error('鐢ㄦ埛鐧诲綍澶辫触:', error);
+      return { success: false, error: '鐧诲綍澶辫触锛岃绋嶅悗閲嶈瘯' };
     }
   }
 
   /**
-   * 获取用户信息
-   * @param {string} userId - 用户ID
-   * @returns {Promise<Object|null>} 用户信息
+   * 鑾峰彇鐢ㄦ埛淇℃伅
+   * @param {string} userId - 鐢ㄦ埛ID
+   * @returns {Promise<Object|null>} 鐢ㄦ埛淇℃伅
    */
   async getUserInfo(userId) {
     try {
       const user = await dal.getUser(userId);
       return user ? user.toJSON() : null;
     } catch (error) {
-      console.error('获取用户信息失败:', error);
+      console.error('鑾峰彇鐢ㄦ埛淇℃伅澶辫触:', error);
       return null;
     }
   }
 
   /**
-   * 更新用户信息
-   * @param {string} userId - 用户ID
-   * @param {Object} updateData - 更新数据
-   * @returns {Promise<Object>} 更新结果
+   * 鏇存柊鐢ㄦ埛淇℃伅
+   * @param {string} userId - 鐢ㄦ埛ID
+   * @param {Object} updateData - 鏇存柊鏁版嵁
+   * @returns {Promise<Object>} 鏇存柊缁撴灉
    */
   async updateUserInfo(userId, updateData) {
     try {
-      // 如果更新密码，需要加密
-      if (updateData.password) {
+      // 濡傛灉鏇存柊瀵嗙爜锛岄渶瑕佸姞瀵?      if (updateData.password) {
         const salt = await bcrypt.genSalt(10);
         updateData.passwordHash = await bcrypt.hash(updateData.password, salt);
         delete updateData.password;
       }
 
       const user = await dal.updateUser(userId, updateData);
-      return user ? { success: true, user: user.toJSON() } : { success: false, error: '用户不存在' };
+      return user ? { success: true, user: user.toJSON() } : { success: false, error: '鐢ㄦ埛涓嶅瓨鍦? };
     } catch (error) {
-      console.error('更新用户信息失败:', error);
-      return { success: false, error: '更新失败，请稍后重试' };
+      console.error('鏇存柊鐢ㄦ埛淇℃伅澶辫触:', error);
+      return { success: false, error: '鏇存柊澶辫触锛岃绋嶅悗閲嶈瘯' };
     }
   }
 
   /**
-   * 获取用户钱包信息
-   * @param {string} userId - 用户ID
-   * @returns {Promise<Object|null>} 钱包信息
+   * 鑾峰彇鐢ㄦ埛閽卞寘淇℃伅
+   * @param {string} userId - 鐢ㄦ埛ID
+   * @returns {Promise<Object|null>} 閽卞寘淇℃伅
    */
   async getUserWallet(userId) {
     try {
       const user = await dal.getUser(userId);
       return user ? user.wallet : null;
     } catch (error) {
-      console.error('获取用户钱包信息失败:', error);
+      console.error('鑾峰彇鐢ㄦ埛閽卞寘淇℃伅澶辫触:', error);
       return null;
     }
   }
 
   /**
-   * 获取用户交易记录
-   * @param {string} userId - 用户ID
-   * @returns {Promise<Array>} 交易记录列表
+   * 鑾峰彇鐢ㄦ埛浜ゆ槗璁板綍
+   * @param {string} userId - 鐢ㄦ埛ID
+   * @returns {Promise<Array>} 浜ゆ槗璁板綍鍒楄〃
    */
   async getUserTransactions(userId) {
     try {
       const transactions = await dal.catDB.getUserTransactions(userId);
       return transactions.map(tx => tx.toJSON());
     } catch (error) {
-      console.error('获取用户交易记录失败:', error);
+      console.error('鑾峰彇鐢ㄦ埛浜ゆ槗璁板綍澶辫触:', error);
       return [];
     }
   }
 
   /**
-   * 请求重置密码
-   * @param {string} email - 用户邮箱
-   * @returns {Promise<Object>} 重置密码请求结果
+   * 璇锋眰閲嶇疆瀵嗙爜
+   * @param {string} email - 鐢ㄦ埛閭
+   * @returns {Promise<Object>} 閲嶇疆瀵嗙爜璇锋眰缁撴灉
    */
   async requestPasswordReset(email) {
     try {
-      // 查找用户
+      // 鏌ユ壘鐢ㄦ埛
       const user = await dal.getUserByEmail(email);
       if (!user) {
-        return { success: false, error: '该邮箱未注册' };
+        return { success: false, error: '璇ラ偖绠辨湭娉ㄥ唽' };
       }
 
-      // 生成重置令牌（这里简单实现，实际应该更复杂）
+      // 鐢熸垚閲嶇疆浠ょ墝锛堣繖閲岀畝鍗曞疄鐜帮紝瀹為檯搴旇鏇村鏉傦級
       const resetToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-      const resetTokenExpires = new Date(Date.now() + 3600000); // 1小时后过期
-
-      // 保存重置令牌到用户记录
-      user.resetPasswordToken = resetToken;
+      const resetTokenExpires = new Date(Date.now() + 3600000); // 1灏忔椂鍚庤繃鏈?
+      // 淇濆瓨閲嶇疆浠ょ墝鍒扮敤鎴疯褰?      user.resetPasswordToken = resetToken;
       user.resetPasswordExpires = resetTokenExpires;
       await user.save();
 
-      // 这里应该发送邮件给用户，包含重置链接
-      // 由于是演示，我们只返回成功信息
-      console.log(`密码重置请求：用户 ${user.username} (${user.email}) 生成的重置令牌：${resetToken}`);
+      // 杩欓噷搴旇鍙戦€侀偖浠剁粰鐢ㄦ埛锛屽寘鍚噸缃摼鎺?      // 鐢变簬鏄紨绀猴紝鎴戜滑鍙繑鍥炴垚鍔熶俊鎭?      console.log(`瀵嗙爜閲嶇疆璇锋眰锛氱敤鎴?${user.username} (${user.email}) 鐢熸垚鐨勯噸缃护鐗岋細${resetToken}`);
 
-      return { success: true, message: '密码重置链接已发送到您的邮箱' };
+      return { success: true, message: '瀵嗙爜閲嶇疆閾炬帴宸插彂閫佸埌鎮ㄧ殑閭' };
     } catch (error) {
-      console.error('请求密码重置失败:', error);
-      return { success: false, error: '请求密码重置失败，请稍后重试' };
+      console.error('璇锋眰瀵嗙爜閲嶇疆澶辫触:', error);
+      return { success: false, error: '璇锋眰瀵嗙爜閲嶇疆澶辫触锛岃绋嶅悗閲嶈瘯' };
     }
   }
 
   /**
-   * 验证密码重置令牌
-   * @param {string} token - 重置令牌
-   * @returns {Promise<Object>} 验证结果
+   * 楠岃瘉瀵嗙爜閲嶇疆浠ょ墝
+   * @param {string} token - 閲嶇疆浠ょ墝
+   * @returns {Promise<Object>} 楠岃瘉缁撴灉
    */
   async verifyResetToken(token) {
     try {
-      // 查找有有效重置令牌的用户
+      // 鏌ユ壘鏈夋湁鏁堥噸缃护鐗岀殑鐢ㄦ埛
       const user = await dal.getUserByResetToken(token);
       if (!user) {
-        return { success: false, error: '无效的重置令牌' };
+        return { success: false, error: '鏃犳晥鐨勯噸缃护鐗? };
       }
 
-      // 检查令牌是否过期
-      if (user.resetPasswordExpires < Date.now()) {
-        return { success: false, error: '重置令牌已过期' };
+      // 妫€鏌ヤ护鐗屾槸鍚﹁繃鏈?      if (user.resetPasswordExpires < Date.now()) {
+        return { success: false, error: '閲嶇疆浠ょ墝宸茶繃鏈? };
       }
 
       return { success: true, userId: user._id };
     } catch (error) {
-      console.error('验证重置令牌失败:', error);
-      return { success: false, error: '验证重置令牌失败，请稍后重试' };
+      console.error('楠岃瘉閲嶇疆浠ょ墝澶辫触:', error);
+      return { success: false, error: '楠岃瘉閲嶇疆浠ょ墝澶辫触锛岃绋嶅悗閲嶈瘯' };
     }
   }
 
   /**
-   * 重置密码
-   * @param {string} userId - 用户ID
-   * @param {string} token - 重置令牌
-   * @param {string} newPassword - 新密码
-   * @returns {Promise<Object>} 重置密码结果
+   * 閲嶇疆瀵嗙爜
+   * @param {string} userId - 鐢ㄦ埛ID
+   * @param {string} token - 閲嶇疆浠ょ墝
+   * @param {string} newPassword - 鏂板瘑鐮?   * @returns {Promise<Object>} 閲嶇疆瀵嗙爜缁撴灉
    */
   async resetPassword(userId, token, newPassword) {
     try {
-      // 验证令牌
+      // 楠岃瘉浠ょ墝
       const verifyResult = await this.verifyResetToken(token);
       if (!verifyResult.success || verifyResult.userId !== userId) {
-        return { success: false, error: '无效的重置令牌' };
+        return { success: false, error: '鏃犳晥鐨勯噸缃护鐗? };
       }
 
-      // 查找用户
+      // 鏌ユ壘鐢ㄦ埛
       const user = await dal.getUser(userId);
       if (!user) {
-        return { success: false, error: '用户不存在' };
+        return { success: false, error: '鐢ㄦ埛涓嶅瓨鍦? };
       }
 
-      // 加密新密码
-      const salt = await bcrypt.genSalt(10);
+      // 鍔犲瘑鏂板瘑鐮?      const salt = await bcrypt.genSalt(10);
       const passwordHash = await bcrypt.hash(newPassword, salt);
 
-      // 更新密码并清除重置令牌
-      user.passwordHash = passwordHash;
+      // 鏇存柊瀵嗙爜骞舵竻闄ら噸缃护鐗?      user.passwordHash = passwordHash;
       user.resetPasswordToken = undefined;
       user.resetPasswordExpires = undefined;
       await user.save();
 
-      return { success: true, message: '密码重置成功' };
+      return { success: true, message: '瀵嗙爜閲嶇疆鎴愬姛' };
     } catch (error) {
-      console.error('重置密码失败:', error);
-      return { success: false, error: '重置密码失败，请稍后重试' };
+      console.error('閲嶇疆瀵嗙爜澶辫触:', error);
+      return { success: false, error: '閲嶇疆瀵嗙爜澶辫触锛岃绋嶅悗閲嶈瘯' };
     }
   }
 
   /**
-   * 上传用户头像
-   * @param {string} userId - 用户ID
-   * @param {Object} file - 上传的文件对象（multer处理后）或头像数据
-   * @param {Object} [avatarData] - 可选的头像数据对象（用于JSON格式上传）
-   * @returns {Promise<Object>} 上传结果
+   * 涓婁紶鐢ㄦ埛澶村儚
+   * @param {string} userId - 鐢ㄦ埛ID
+   * @param {Object} file - 涓婁紶鐨勬枃浠跺璞★紙multer澶勭悊鍚庯級鎴栧ご鍍忔暟鎹?   * @param {Object} [avatarData] - 鍙€夌殑澶村儚鏁版嵁瀵硅薄锛堢敤浜嶫SON鏍煎紡涓婁紶锛?   * @returns {Promise<Object>} 涓婁紶缁撴灉
    */
   async uploadAvatar(userId, file, avatarData = null) {
     try {
-      // 查找用户
+      // 鏌ユ壘鐢ㄦ埛
       const user = await dal.getUser(userId);
       if (!user) {
-        return { success: false, error: '用户不存在' };
+        return { success: false, error: '鐢ㄦ埛涓嶅瓨鍦? };
       }
 
-      // 生成一个简单的随机字符串作为头像标识
-      const avatarId = `avatar_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+      // 鐢熸垚涓€涓畝鍗曠殑闅忔満瀛楃涓蹭綔涓哄ご鍍忔爣璇?      const avatarId = `avatar_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
       
-      // 模拟玄玉区块链存储
-      const avatarKey = `avatar_${userId}`;
+      // 妯℃嫙鐜勭帀鍖哄潡閾惧瓨鍌?      const avatarKey = `avatar_${userId}`;
       
-      // 处理两种上传方式：multer文件上传和JSON数据上传
+      // 澶勭悊涓ょ涓婁紶鏂瑰紡锛歮ulter鏂囦欢涓婁紶鍜孞SON鏁版嵁涓婁紶
       let storedData;
       if (file && file.originalname) {
-        // 传统文件上传方式
+        // 浼犵粺鏂囦欢涓婁紶鏂瑰紡
         storedData = {
           userId,
           avatarId,
@@ -295,7 +277,7 @@ class UserService {
           uploadedAt: new Date()
         };
       } else {
-        // JSON数据上传方式
+        // JSON鏁版嵁涓婁紶鏂瑰紡
         storedData = {
           userId,
           avatarId,
@@ -308,22 +290,21 @@ class UserService {
       
       await dal.storeData(avatarKey, storedData);
 
-      // 使用数据URL作为头像占位符，避免依赖外部服务，解决DNS解析问题
-      // 生成一个简单的SVG数据URL，显示用户名首字母
-      const initial = user.username.charAt(0).toUpperCase();
-      // 生成SVG数据URL，圆形背景，白色文字
+      // 浣跨敤鏁版嵁URL浣滀负澶村儚鍗犱綅绗︼紝閬垮厤渚濊禆澶栭儴鏈嶅姟锛岃В鍐矰NS瑙ｆ瀽闂
+      // 鐢熸垚涓€涓畝鍗曠殑SVG鏁版嵁URL锛屾樉绀虹敤鎴峰悕棣栧瓧姣?      const initial = user.username.charAt(0).toUpperCase();
+      // 鐢熸垚SVG鏁版嵁URL锛屽渾褰㈣儗鏅紝鐧借壊鏂囧瓧
       const avatarUrl = `data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%22120%22 height%3D%22120%22 viewBox%3D%220 0 120 120%22%3E%3Ccircle cx%3D%2260%22 cy%3D%2260%22 r%3D%2255%22 fill%3D%22%2366c0f4%22%2F%3E%3Ctext x%3D%2260%22 y%3D%2275%22 font-size%3D%2260%22 text-anchor%3D%22middle%22 fill%3D%22white%22 font-weight%3D%22bold%22%3E${initial}%3C%2Ftext%3E%3C%2Fsvg%3E`;
       
-      // 更新用户头像URL
+      // 鏇存柊鐢ㄦ埛澶村儚URL
       user.avatar = avatarUrl;
       
-      // 保存用户信息到玄玉区块链
+      // 淇濆瓨鐢ㄦ埛淇℃伅鍒扮巹鐜夊尯鍧楅摼
       await dal.updateUser(userId, { avatar: avatarUrl });
 
       return { success: true, avatarUrl };
     } catch (error) {
-      console.error('头像上传失败:', error);
-      return { success: false, error: '头像上传失败，请稍后重试' };
+      console.error('澶村儚涓婁紶澶辫触:', error);
+      return { success: false, error: '澶村儚涓婁紶澶辫触锛岃绋嶅悗閲嶈瘯' };
     }
   }
 }

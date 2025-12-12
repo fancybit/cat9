@@ -1,110 +1,108 @@
-// 服务层测试脚本
-
+﻿// 鏈嶅姟灞傛祴璇曡剼鏈?
 const userService = require('./services/userService');
 const transactionService = require('./services/transactionService');
 
 async function runServiceTests() {
-  console.log('开始测试玄玉区块链服务层...');
+  console.log('寮€濮嬫祴璇曠巹鐜夊尯鍧楅摼鏈嶅姟灞?..');
   
   try {
-    // 测试1: 用户注册
-    console.log('\n=== 测试1: 用户注册 ===');
+    // 娴嬭瘯1: 鐢ㄦ埛娉ㄥ唽
+    console.log('\n=== 娴嬭瘯1: 鐢ㄦ埛娉ㄥ唽 ===');
     const userData = {
       username: 'serviceuser',
       email: 'service@example.com',
       password: 'password123',
-      displayName: '服务测试用户'
+      displayName: '鏈嶅姟娴嬭瘯鐢ㄦ埛'
     };
     
     const registerResult = await userService.register(userData);
-    console.log('✓ 用户注册成功:', registerResult.user.username);
+    console.log('鉁?鐢ㄦ埛娉ㄥ唽鎴愬姛:', registerResult.user.username);
     
-    // 测试2: 用户登录
-    console.log('\n=== 测试2: 用户登录 ===');
+    // 娴嬭瘯2: 鐢ㄦ埛鐧诲綍
+    console.log('\n=== 娴嬭瘯2: 鐢ㄦ埛鐧诲綍 ===');
     const loginResult = await userService.login(userData.username, userData.password);
-    console.log('✓ 用户登录成功:', loginResult.user.username);
-    console.log('✓ JWT令牌生成成功:', loginResult.token.substring(0, 20) + '...');
+    console.log('鉁?鐢ㄦ埛鐧诲綍鎴愬姛:', loginResult.user.username);
+    console.log('鉁?JWT浠ょ墝鐢熸垚鎴愬姛:', loginResult.token.substring(0, 20) + '...');
     
-    // 测试3: 获取用户信息
-    console.log('\n=== 测试3: 获取用户信息 ===');
+    // 娴嬭瘯3: 鑾峰彇鐢ㄦ埛淇℃伅
+    console.log('\n=== 娴嬭瘯3: 鑾峰彇鐢ㄦ埛淇℃伅 ===');
     const userInfo = await userService.getUserInfo(registerResult.user.id);
-    console.log('✓ 用户信息获取成功:', userInfo.displayName);
+    console.log('鉁?鐢ㄦ埛淇℃伅鑾峰彇鎴愬姛:', userInfo.displayName);
     
-    // 测试4: 更新用户信息
-    console.log('\n=== 测试4: 更新用户信息 ===');
+    // 娴嬭瘯4: 鏇存柊鐢ㄦ埛淇℃伅
+    console.log('\n=== 娴嬭瘯4: 鏇存柊鐢ㄦ埛淇℃伅 ===');
     const updateData = {
-      displayName: '更新后的服务测试用户',
+      displayName: '鏇存柊鍚庣殑鏈嶅姟娴嬭瘯鐢ㄦ埛',
       avatar: 'https://via.placeholder.com/150'
     };
     
     const updateResult = await userService.updateUserInfo(registerResult.user.id, updateData);
-    console.log('✓ 用户信息更新成功:', updateResult.user.displayName);
+    console.log('鉁?鐢ㄦ埛淇℃伅鏇存柊鎴愬姛:', updateResult.user.displayName);
     
-    // 测试5: 获取用户钱包信息
-    console.log('\n=== 测试5: 获取用户钱包信息 ===');
+    // 娴嬭瘯5: 鑾峰彇鐢ㄦ埛閽卞寘淇℃伅
+    console.log('\n=== 娴嬭瘯5: 鑾峰彇鐢ㄦ埛閽卞寘淇℃伅 ===');
     const wallet = await userService.getUserWallet(registerResult.user.id);
-    console.log('✓ 用户钱包信息获取成功:', wallet.balance);
+    console.log('鉁?鐢ㄦ埛閽卞寘淇℃伅鑾峰彇鎴愬姛:', wallet.balance);
     
-    // 测试6: 奖励用户
-    console.log('\n=== 测试6: 奖励用户 ===');
+    // 娴嬭瘯6: 濂栧姳鐢ㄦ埛
+    console.log('\n=== 娴嬭瘯6: 濂栧姳鐢ㄦ埛 ===');
     const rewardAmount = 100;
-    const rewardResult = await transactionService.rewardCoins(registerResult.user.id, rewardAmount, '测试奖励');
-    console.log('✓ 奖励用户成功:', rewardResult.success);
+    const rewardResult = await transactionService.rewardCoins(registerResult.user.id, rewardAmount, '娴嬭瘯濂栧姳');
+    console.log('鉁?濂栧姳鐢ㄦ埛鎴愬姛:', rewardResult.success);
     
-    // 测试7: 获取用户余额
-    console.log('\n=== 测试7: 获取用户余额 ===');
+    // 娴嬭瘯7: 鑾峰彇鐢ㄦ埛浣欓
+    console.log('\n=== 娴嬭瘯7: 鑾峰彇鐢ㄦ埛浣欓 ===');
     const balance = await transactionService.getUserBalance(registerResult.user.id);
-    console.log('✓ 用户余额获取成功:', balance);
+    console.log('鉁?鐢ㄦ埛浣欓鑾峰彇鎴愬姛:', balance);
     
-    // 测试8: 创建第二个用户
-    console.log('\n=== 测试8: 创建第二个用户 ===');
+    // 娴嬭瘯8: 鍒涘缓绗簩涓敤鎴?    console.log('\n=== 娴嬭瘯8: 鍒涘缓绗簩涓敤鎴?===');
     const userData2 = {
       username: 'serviceuser2',
       email: 'service2@example.com',
       password: 'password123',
-      displayName: '服务测试用户2'
+      displayName: '鏈嶅姟娴嬭瘯鐢ㄦ埛2'
     };
     
     const registerResult2 = await userService.register(userData2);
-    console.log('✓ 第二个用户注册成功:', registerResult2.user.username);
+    console.log('鉁?绗簩涓敤鎴锋敞鍐屾垚鍔?', registerResult2.user.username);
     
-    // 测试9: 转账
-    console.log('\n=== 测试9: 转账 ===');
+    // 娴嬭瘯9: 杞处
+    console.log('\n=== 娴嬭瘯9: 杞处 ===');
     const transferAmount = 50;
     const transferResult = await transactionService.transferCoins(
       registerResult.user.id, 
       registerResult2.user.id, 
       transferAmount, 
-      '测试转账'
+      '娴嬭瘯杞处'
     );
-    console.log('✓ 转账成功:', transferResult.success);
+    console.log('鉁?杞处鎴愬姛:', transferResult.success);
     
-    // 测试10: 验证转账结果
-    console.log('\n=== 测试10: 验证转账结果 ===');
+    // 娴嬭瘯10: 楠岃瘉杞处缁撴灉
+    console.log('\n=== 娴嬭瘯10: 楠岃瘉杞处缁撴灉 ===');
     const balance1 = await transactionService.getUserBalance(registerResult.user.id);
     const balance2 = await transactionService.getUserBalance(registerResult2.user.id);
-    console.log('✓ 用户1余额:', balance1);
-    console.log('✓ 用户2余额:', balance2);
-    console.log('✓ 转账金额:', transferAmount);
+    console.log('鉁?鐢ㄦ埛1浣欓:', balance1);
+    console.log('鉁?鐢ㄦ埛2浣欓:', balance2);
+    console.log('鉁?杞处閲戦:', transferAmount);
     
-    // 测试11: 获取用户交易记录
-    console.log('\n=== 测试11: 获取用户交易记录 ===');
+    // 娴嬭瘯11: 鑾峰彇鐢ㄦ埛浜ゆ槗璁板綍
+    console.log('\n=== 娴嬭瘯11: 鑾峰彇鐢ㄦ埛浜ゆ槗璁板綍 ===');
     const transactions = await userService.getUserTransactions(registerResult.user.id);
-    console.log('✓ 用户交易记录获取成功:', transactions.length);
+    console.log('鉁?鐢ㄦ埛浜ゆ槗璁板綍鑾峰彇鎴愬姛:', transactions.length);
     
-    console.log('\n=== 所有服务层测试通过！===');
+    console.log('\n=== 鎵€鏈夋湇鍔″眰娴嬭瘯閫氳繃锛?==');
     return true;
   } catch (error) {
-    console.error('测试失败:', error);
-    console.error('错误详情:', error.stack);
+    console.error('娴嬭瘯澶辫触:', error);
+    console.error('閿欒璇︽儏:', error.stack);
     return false;
   }
 }
 
-// 运行测试
+// 杩愯娴嬭瘯
 runServiceTests().then(success => {
   process.exit(success ? 0 : 1);
 }).catch(error => {
-  console.error('测试过程中发生未捕获的错误:', error);
+  console.error('娴嬭瘯杩囩▼涓彂鐢熸湭鎹曡幏鐨勯敊璇?', error);
   process.exit(1);
 });

@@ -1,7 +1,7 @@
-// MongoDB数据库连接器
+﻿// MongoDB鏁版嵁搴撹繛鎺ュ櫒
 const mongoose = require('mongoose');
 
-// 定义Mongoose模型
+// 瀹氫箟Mongoose妯″瀷
 const UserSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
-// 添加密码验证方法
+// 娣诲姞瀵嗙爜楠岃瘉鏂规硶
 UserSchema.methods.verifyPassword = function(compareFunction, password) {
   return compareFunction(password, this.passwordHash);
 };
@@ -57,46 +57,45 @@ class MongoDBConnector {
     this.Transaction = null;
   }
 
-  // 连接到MongoDB
+  // 杩炴帴鍒癕ongoDB
   async connect(config = {}) {
     try {
-      // 如果config是字符串，直接使用作为uri
+      // 濡傛灉config鏄瓧绗︿覆锛岀洿鎺ヤ娇鐢ㄤ綔涓簎ri
       const uri = typeof config === 'string' ? config : config.uri || 'mongodb://localhost:27017/cat9';
       this.connection = await mongoose.connect(uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true
       });
       
-      // 初始化模型
-      this.User = mongoose.model('User', UserSchema);
+      // 鍒濆鍖栨ā鍨?      this.User = mongoose.model('User', UserSchema);
       this.Software = mongoose.model('Software', SoftwareSchema);
       this.Product = mongoose.model('Product', ProductSchema);
       this.Transaction = mongoose.model('Transaction', TransactionSchema);
       
-      console.log('MongoDB数据库已连接');
+      console.log('MongoDB鏁版嵁搴撳凡杩炴帴');
       return true;
     } catch (error) {
-      console.error('MongoDB连接失败:', error.message);
+      console.error('MongoDB杩炴帴澶辫触:', error.message);
       throw error;
     }
   }
 
-  // 断开连接
+  // 鏂紑杩炴帴
   async disconnect() {
     try {
       if (this.connection) {
         await mongoose.disconnect();
-        console.log('MongoDB数据库已断开连接');
+        console.log('MongoDB鏁版嵁搴撳凡鏂紑杩炴帴');
         return true;
       }
       return false;
     } catch (error) {
-      console.error('MongoDB断开连接失败:', error.message);
+      console.error('MongoDB鏂紑杩炴帴澶辫触:', error.message);
       throw error;
     }
   }
 
-  // 用户相关方法
+  // 鐢ㄦ埛鐩稿叧鏂规硶
   async createUser(userData) {
     const user = new this.User(userData);
     return await user.save();
@@ -114,7 +113,7 @@ class MongoDBConnector {
     return await this.User.findByIdAndUpdate(id, { ...userData, updatedAt: Date.now() }, { new: true });
   }
 
-  // 软件相关方法
+  // 杞欢鐩稿叧鏂规硶
   async createSoftware(softwareData) {
     const software = new this.Software(softwareData);
     return await software.save();
@@ -132,7 +131,7 @@ class MongoDBConnector {
     return await this.Software.findByIdAndUpdate(id, { ...softwareData, updatedAt: Date.now() }, { new: true });
   }
 
-  // 商品相关方法
+  // 鍟嗗搧鐩稿叧鏂规硶
   async createProduct(productData) {
     const product = new this.Product(productData);
     return await product.save();
@@ -150,7 +149,7 @@ class MongoDBConnector {
     return await this.Product.findByIdAndUpdate(id, { ...productData, updatedAt: Date.now() }, { new: true });
   }
 
-  // 交易相关方法
+  // 浜ゆ槗鐩稿叧鏂规硶
   async createTransaction(transactionData) {
     const transaction = new this.Transaction(transactionData);
     return await transaction.save();
@@ -164,7 +163,7 @@ class MongoDBConnector {
     return await this.Transaction.find({ userId });
   }
 
-  // 更新用户余额
+  // 鏇存柊鐢ㄦ埛浣欓
   async updateUserCoins(userId, amount) {
     return await this.User.findByIdAndUpdate(
       userId,

@@ -1,19 +1,17 @@
-// 测试头像上传功能 - 带用户注册
-const fetch = require('node-fetch');
+﻿// 娴嬭瘯澶村儚涓婁紶鍔熻兘 - 甯︾敤鎴锋敞鍐?const fetch = require('node-fetch');
 const FormData = require('form-data');
 const fs = require('fs');
 
-// 模拟一个简单的测试图片
+// 妯℃嫙涓€涓畝鍗曠殑娴嬭瘯鍥剧墖
 const testImageBuffer = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==', 'base64');
 
-// 生成随机用户名
-const randomUsername = `testuser_${Date.now()}`;
+// 鐢熸垚闅忔満鐢ㄦ埛鍚?const randomUsername = `testuser_${Date.now()}`;
 
-// 测试头像上传
+// 娴嬭瘯澶村儚涓婁紶
 async function testAvatarUpload() {
   try {
-    // 1. 首先注册一个新用户
-    console.log('开始注册新用户...');
+    // 1. 棣栧厛娉ㄥ唽涓€涓柊鐢ㄦ埛
+    console.log('寮€濮嬫敞鍐屾柊鐢ㄦ埛...');
     const registerResponse = await fetch('http://localhost:5000/api/users/register', {
       method: 'POST',
       headers: {
@@ -28,20 +26,20 @@ async function testAvatarUpload() {
     });
 
     if (!registerResponse.ok) {
-      console.error('注册失败:', registerResponse.statusText);
+      console.error('娉ㄥ唽澶辫触:', registerResponse.statusText);
       return;
     }
 
     const registerData = await registerResponse.json();
     if (!registerData.success || !registerData.user) {
-      console.error('注册失败:', registerData.error);
+      console.error('娉ㄥ唽澶辫触:', registerData.error);
       return;
     }
 
-    console.log('注册成功，用户信息:', registerData.user);
+    console.log('娉ㄥ唽鎴愬姛锛岀敤鎴蜂俊鎭?', registerData.user);
 
-    // 2. 使用新注册的用户登录
-    console.log('开始登录...');
+    // 2. 浣跨敤鏂版敞鍐岀殑鐢ㄦ埛鐧诲綍
+    console.log('寮€濮嬬櫥褰?..');
     const loginResponse = await fetch('http://localhost:5000/api/users/login', {
       method: 'POST',
       headers: {
@@ -54,28 +52,27 @@ async function testAvatarUpload() {
     });
 
     if (!loginResponse.ok) {
-      console.error('登录失败:', loginResponse.statusText);
+      console.error('鐧诲綍澶辫触:', loginResponse.statusText);
       return;
     }
 
     const loginData = await loginResponse.json();
     if (!loginData.success || !loginData.token) {
-      console.error('登录失败，无法获取令牌:', loginData.error);
+      console.error('鐧诲綍澶辫触锛屾棤娉曡幏鍙栦护鐗?', loginData.error);
       return;
     }
 
     const token = loginData.token;
-    console.log('登录成功，获取到令牌:', token);
+    console.log('鐧诲綍鎴愬姛锛岃幏鍙栧埌浠ょ墝:', token);
 
-    // 3. 使用获取到的令牌测试头像上传
-    console.log('开始测试头像上传...');
+    // 3. 浣跨敤鑾峰彇鍒扮殑浠ょ墝娴嬭瘯澶村儚涓婁紶
+    console.log('寮€濮嬫祴璇曞ご鍍忎笂浼?..');
     
-    // 创建FormData对象
+    // 鍒涘缓FormData瀵硅薄
     const formData = new FormData();
     formData.append('avatar', testImageBuffer, { filename: 'test.jpg', contentType: 'image/jpeg' });
 
-    // 发送请求
-    const uploadResponse = await fetch('http://localhost:5000/api/users/avatar', {
+    // 鍙戦€佽姹?    const uploadResponse = await fetch('http://localhost:5000/api/users/avatar', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -83,23 +80,23 @@ async function testAvatarUpload() {
       body: formData
     });
 
-    // 打印响应状态码
-    console.log('响应状态码:', uploadResponse.status);
+    // 鎵撳嵃鍝嶅簲鐘舵€佺爜
+    console.log('鍝嶅簲鐘舵€佺爜:', uploadResponse.status);
     
-    // 打印响应内容
+    // 鎵撳嵃鍝嶅簲鍐呭
     const responseData = await uploadResponse.json();
-    console.log('响应内容:', JSON.stringify(responseData, null, 2));
+    console.log('鍝嶅簲鍐呭:', JSON.stringify(responseData, null, 2));
     
     if (uploadResponse.ok && responseData.success) {
-      console.log('头像上传测试成功！');
-      console.log('头像URL:', responseData.avatarUrl);
+      console.log('澶村儚涓婁紶娴嬭瘯鎴愬姛锛?);
+      console.log('澶村儚URL:', responseData.avatarUrl);
     } else {
-      console.log('头像上传测试失败！');
+      console.log('澶村儚涓婁紶娴嬭瘯澶辫触锛?);
     }
   } catch (error) {
-    console.error('测试过程中出错:', error);
+    console.error('娴嬭瘯杩囩▼涓嚭閿?', error);
   }
 }
 
-// 运行测试
+// 杩愯娴嬭瘯
 testAvatarUpload();

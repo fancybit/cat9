@@ -1,19 +1,19 @@
-const mongoose = require('mongoose');
+﻿const mongoose = require('mongoose');
 
 const NewsSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: [true, '请输入新闻标题'],
+    required: [true, '璇疯緭鍏ユ柊闂绘爣棰?],
     trim: true,
   },
   content: {
     type: String,
-    required: [true, '请输入新闻内容'],
+    required: [true, '璇疯緭鍏ユ柊闂诲唴瀹?],
     trim: true,
   },
   excerpt: {
     type: String,
-    required: [true, '请输入新闻摘要'],
+    required: [true, '璇疯緭鍏ユ柊闂绘憳瑕?],
     trim: true,
   },
   image: {
@@ -22,7 +22,7 @@ const NewsSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    required: [true, '请输入新闻分类'],
+    required: [true, '璇疯緭鍏ユ柊闂诲垎绫?],
     trim: true,
   },
   isFeatured: {
@@ -35,7 +35,7 @@ const NewsSchema = new mongoose.Schema({
   },
   author: {
     type: String,
-    default: '玄玉逍游',
+    default: '鐜勭帀閫嶆父',
     trim: true,
   },
   createdAt: {

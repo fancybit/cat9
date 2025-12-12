@@ -1,11 +1,10 @@
-const { app, BrowserWindow} = require('electron')
+﻿const { app, BrowserWindow} = require('electron')
 const path = require('path')
 const fs = require('fs')
 
-// 设置详细日志记录，使用应用程序目录下的固定位置，每次启动时创建新的日志文件
-const logFile = path.join(__dirname, 'app.log')
+// 璁剧疆璇︾粏鏃ュ織璁板綍锛屼娇鐢ㄥ簲鐢ㄧ▼搴忕洰褰曚笅鐨勫浐瀹氫綅缃紝姣忔鍚姩鏃跺垱寤烘柊鐨勬棩蹇楁枃浠?const logFile = path.join(__dirname, 'app.log')
 
-// 简单的日志函数，确保日志能正常写入
+// 绠€鍗曠殑鏃ュ織鍑芥暟锛岀‘淇濇棩蹇楄兘姝ｅ父鍐欏叆
 function logMessage(message) {
   const timestamp = new Date().toISOString()
   const logEntry = `${timestamp}: ${message}\n`
@@ -17,7 +16,7 @@ function logMessage(message) {
   }
 }
 
-// 清空日志文件
+// 娓呯┖鏃ュ織鏂囦欢
 try {
   fs.writeFileSync(logFile, '')
   console.log('Log file cleared')
@@ -25,16 +24,16 @@ try {
   console.error('Failed to clear log file:', err)
 }
 
-// 添加基础日志
+// 娣诲姞鍩虹鏃ュ織
 logMessage('Application started')
 logMessage('Background.js file loaded')
 
-// 引入守护进程和下载管理器
+// 寮曞叆瀹堟姢杩涚▼鍜屼笅杞界鐞嗗櫒
 //let daemonManager
 //let downloadManager
 
 try {
-  // 尝试加载原有的功能模块，如果不存在则忽略
+  // 灏濊瘯鍔犺浇鍘熸湁鐨勫姛鑳芥ā鍧楋紝濡傛灉涓嶅瓨鍦ㄥ垯蹇界暐
   //daemonManager = require('./electron/daemon')
   //downloadManager = require('./electron/downloadManager')
   logMessage('Feature modules skipped')
@@ -42,47 +41,42 @@ try {
   logMessage('Feature modules not found: ' + error.message)
 }
 
-// 处理Windows安装和更新 - 添加错误处理以防止模块缺失时崩溃
+// 澶勭悊Windows瀹夎鍜屾洿鏂?- 娣诲姞閿欒澶勭悊浠ラ槻姝㈡ā鍧楃己澶辨椂宕╂簝
 try {
-  // 仅在模块存在时才尝试加载和使用
-  if (require('electron-squirrel-startup')) {
+  // 浠呭湪妯″潡瀛樺湪鏃舵墠灏濊瘯鍔犺浇鍜屼娇鐢?  if (require('electron-squirrel-startup')) {
     app.quit()
   }
 } catch (error) {
-  logMessage('electron-squirrel-startup模块未找到，但应用将继续运行: ' + error.message)
+  logMessage('electron-squirrel-startup妯″潡鏈壘鍒帮紝浣嗗簲鐢ㄥ皢缁х画杩愯: ' + error.message)
 }
 
-// 创建窗口函数
+// 鍒涘缓绐楀彛鍑芥暟
 function createWindow () {
   logMessage('Starting to create browser window')
   try {
-    // 创建浏览器窗口
-    const win = new BrowserWindow({
+    // 鍒涘缓娴忚鍣ㄧ獥鍙?    const win = new BrowserWindow({
       width: 1200,
       height: 800,
-      minWidth: 360, // 最小宽度，适配移动设备视口
-      minHeight: 600, // 最小高度
-      backgroundColor: '#1b2838', // 与应用主题色一致
-      show: false, // 先隐藏窗口
-      icon: path.join(__dirname, 'public', 'favicon.ico'), // 设置应用图标
+      minWidth: 360, // 鏈€灏忓搴︼紝閫傞厤绉诲姩璁惧瑙嗗彛
+      minHeight: 600, // 鏈€灏忛珮搴?      backgroundColor: '#1b2838', // 涓庡簲鐢ㄤ富棰樿壊涓€鑷?      show: false, // 鍏堥殣钘忕獥鍙?      icon: path.join(__dirname, 'public', 'favicon.ico'), // 璁剧疆搴旂敤鍥炬爣
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: false,
         preload: path.join(__dirname, 'electron/preload.js'),
-        zoomFactor: 1.0, // 默认缩放比例
+        zoomFactor: 1.0, // 榛樿缂╂斁姣斾緥
       }
     })
 
     logMessage('Window created successfully')
 
-    // 窗口准备好后再显示，避免闪烁
+    // 绐楀彛鍑嗗濂藉悗鍐嶆樉绀猴紝閬垮厤闂儊
     win.once('ready-to-show', () => {
       win.show()
       logMessage('Window shown')
     })
 
-    // 加载Vue应用
-    // 在开发环境中加载http://localhost:8080，在生产环境中加载index.html
+    // 鍔犺浇Vue搴旂敤
+    // 鍦ㄥ紑鍙戠幆澧冧腑鍔犺浇http://localhost:8080锛屽湪鐢熶骇鐜涓姞杞絠ndex.html
     try {
       logMessage(`Current directory: ${__dirname}`)
       logMessage(`Resources path: ${process.resourcesPath}`)
@@ -93,25 +87,22 @@ function createWindow () {
           logMessage('Dev server loaded successfully')
         }).catch(error => {
           logMessage(`Failed to load dev server: ${error.message}`)
-          // 开发环境加载失败时，尝试加载本地构建文件作为备选
-          const fallbackPath = path.join(__dirname, 'dist', 'index.html')
+          // 寮€鍙戠幆澧冨姞杞藉け璐ユ椂锛屽皾璇曞姞杞芥湰鍦版瀯寤烘枃浠朵綔涓哄閫?          const fallbackPath = path.join(__dirname, 'dist', 'index.html')
           logMessage(`Trying to load fallback file: ${fallbackPath}`)
           if (fs.existsSync(fallbackPath)) {
             win.loadFile(fallbackPath)
           }
         })
-        // 开发环境打开开发者工具
-        if (!process.env.IS_TEST) win.webContents.openDevTools()
+        // 寮€鍙戠幆澧冩墦寮€寮€鍙戣€呭伐鍏?        if (!process.env.IS_TEST) win.webContents.openDevTools()
       } else {
-        // 生产环境尝试多种可能的路径，增加更多日志和路径检查
-        const possiblePaths = [
+        // 鐢熶骇鐜灏濊瘯澶氱鍙兘鐨勮矾寰勶紝澧炲姞鏇村鏃ュ織鍜岃矾寰勬鏌?        const possiblePaths = [
           path.join(__dirname, 'dist', 'index.html'),
           path.join(process.resourcesPath, 'app', 'dist', 'index.html'),
           path.join(process.resourcesPath, 'dist', 'index.html'),
           path.join(__dirname, 'index.html')
         ]
         
-        // 检查各目录是否存在
+        // 妫€鏌ュ悇鐩綍鏄惁瀛樺湪
         logMessage('Checking if critical directories exist:')
         logMessage(`__dirname/dist: ${fs.existsSync(path.join(__dirname, 'dist'))}`)
         logMessage(`process.resourcesPath/app/dist: ${fs.existsSync(path.join(process.resourcesPath, 'app', 'dist'))}`)
@@ -123,8 +114,7 @@ function createWindow () {
           if (fs.existsSync(testPath)) {
             foundPath = testPath
             logMessage(`Found valid index.html path: ${testPath}`)
-            // 检查该路径下是否有app.js等关键资源
-            const distDir = path.dirname(testPath)
+            // 妫€鏌ヨ璺緞涓嬫槸鍚︽湁app.js绛夊叧閿祫婧?            const distDir = path.dirname(testPath)
             const appJsPath = path.join(distDir, 'app.js')
             const vendorsJsPath = path.join(distDir, 'chunk-vendors.js')
             logMessage(`Checking critical resources in ${distDir} directory:`)
@@ -140,7 +130,7 @@ function createWindow () {
             logMessage('HTML loaded successfully')
           }).catch(error => {
             logMessage(`Failed to load HTML: ${error.message}`)
-            // 如果文件加载失败，尝试使用URL方式
+            // 濡傛灉鏂囦欢鍔犺浇澶辫触锛屽皾璇曚娇鐢║RL鏂瑰紡
             const fileUrl = `file://${foundPath}`
             logMessage(`Trying to load using URL: ${fileUrl}`)
             win.loadURL(fileUrl).catch(urlError => {
@@ -149,8 +139,7 @@ function createWindow () {
           })
         } else {
           logMessage('Error: Could not find index.html file!')
-          // 显示错误页面，增加更多调试信息
-          const errorHtml = `
+          // 鏄剧ず閿欒椤甸潰锛屽鍔犳洿澶氳皟璇曚俊鎭?          const errorHtml = `
             <html>
               <head><title>Error - Failed to load application</title></head>
               <body style="font-family: Arial; margin: 40px;">
@@ -177,7 +166,7 @@ function createWindow () {
     } catch (error) {
       logMessage(`Critical error when loading application: ${error.message}`)
       console.error(error)
-      // 显示严重错误页面
+      // 鏄剧ず涓ラ噸閿欒椤甸潰
       const criticalErrorHtml = `
         <html>
           <head><title>Critical Error</title></head>
@@ -191,10 +180,10 @@ function createWindow () {
       win.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(criticalErrorHtml)}`)
     }
     
-    // 打印日志
+    // 鎵撳嵃鏃ュ織
     logMessage('Window creation in progress...')
     
-    // 添加错误处理
+    // 娣诲姞閿欒澶勭悊
     win.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
       logMessage(`Page load failed: ${errorDescription} (code: ${errorCode})`)
       logMessage(`URL: ${validatedURL}`)
@@ -207,26 +196,25 @@ function createWindow () {
       console.log('Page loaded completely')
     })
     
-    // 监听控制台消息
-    win.webContents.on('console-message', (event, level, message) => {
+    // 鐩戝惉鎺у埗鍙版秷鎭?    win.webContents.on('console-message', (event, level, message) => {
       logMessage(`Web console: ${message}`)
       console.log(`Web console: ${message}`)
     })
     
-    // 监听窗口大小变化，以便调试响应式设计
+    // 鐩戝惉绐楀彛澶у皬鍙樺寲锛屼互渚胯皟璇曞搷搴斿紡璁捐
     win.on('resize', () => {
       const { width, height } = win.getBounds()
       logMessage(`Window size changed: ${width}x${height}`)
       console.log(`Window size changed: ${width}x${height}`)
     })
     
-    // 允许缩放
+    // 鍏佽缂╂斁
     win.webContents.on('did-finish-load', () => {
-      // 启用缩放控制
+      // 鍚敤缂╂斁鎺у埗
       win.webContents.setVisualZoomLevelLimits(0.5, 2.0)
     })
 
-    // 监听窗口关闭事件
+    // 鐩戝惉绐楀彛鍏抽棴浜嬩欢
     win.on('closed', () => {
       logMessage('Window closed')
     })
@@ -237,17 +225,15 @@ function createWindow () {
   }
 }
 
-// 检查app对象状态
-logMessage(`App ready state: ${app.isReady()}`)
+// 妫€鏌pp瀵硅薄鐘舵€?logMessage(`App ready state: ${app.isReady()}`)
 
-// 添加立即执行的日志来验证执行流程
+// 娣诲姞绔嬪嵆鎵ц鐨勬棩蹇楁潵楠岃瘉鎵ц娴佺▼
 setTimeout(() => {
   logMessage('1 second timeout callback executed - event loop working')
 }, 1000)
 
-// Electron 会在初始化完成并且准备好创建浏览器窗口时调用这个方法
-// 部分 API 在 ready 事件触发后才能使用
-logMessage('Setting up ready event listener')
+// Electron 浼氬湪鍒濆鍖栧畬鎴愬苟涓斿噯澶囧ソ鍒涘缓娴忚鍣ㄧ獥鍙ｆ椂璋冪敤杩欎釜鏂规硶
+// 閮ㄥ垎 API 鍦?ready 浜嬩欢瑙﹀彂鍚庢墠鑳戒娇鐢?logMessage('Setting up ready event listener')
 app.on('ready', () => {
   logMessage('Ready event triggered')
   try {
@@ -263,40 +249,35 @@ app.on('ready', () => {
 logMessage('Setting up activate event listener')
 app.on('activate', function () {
   logMessage('Activate event triggered')
-  // 在 macOS 上，当点击 dock 图标并且没有其他窗口打开时，通常会重新创建一个窗口
-  if (BrowserWindow.getAllWindows().length === 0) {
+  // 鍦?macOS 涓婏紝褰撶偣鍑?dock 鍥炬爣骞朵笖娌℃湁鍏朵粬绐楀彛鎵撳紑鏃讹紝閫氬父浼氶噸鏂板垱寤轰竴涓獥鍙?  if (BrowserWindow.getAllWindows().length === 0) {
     logMessage('No active windows, creating new window')
     createWindow()
   }
 })
 
-// 当所有窗口都关闭时退出应用
-app.on('window-all-closed', function () {
-  logMessage('所有窗口已关闭')
-  // 在 macOS 上，除非用户用 Cmd + Q 确定地退出，否则绝大部分应用及其菜单栏会保持激活
-  if (process.platform !== 'darwin') {
-    logMessage('应用准备退出')
+// 褰撴墍鏈夌獥鍙ｉ兘鍏抽棴鏃堕€€鍑哄簲鐢?app.on('window-all-closed', function () {
+  logMessage('鎵€鏈夌獥鍙ｅ凡鍏抽棴')
+  // 鍦?macOS 涓婏紝闄ら潪鐢ㄦ埛鐢?Cmd + Q 纭畾鍦伴€€鍑猴紝鍚﹀垯缁濆ぇ閮ㄥ垎搴旂敤鍙婂叾鑿滃崟鏍忎細淇濇寔婵€娲?  if (process.platform !== 'darwin') {
+    logMessage('搴旂敤鍑嗗閫€鍑?)
     app.quit()
   }
 })
 
-// 监听应用退出事件
-app.on('will-quit', () => {
-  logMessage('应用即将退出')
+// 鐩戝惉搴旂敤閫€鍑轰簨浠?app.on('will-quit', () => {
+  logMessage('搴旂敤鍗冲皢閫€鍑?)
 })
 
-// 监听未捕获的异常
+// 鐩戝惉鏈崟鑾风殑寮傚父
 process.on('uncaughtException', (error) => {
-  logMessage(`未捕获的异常: ${error.message}`)
-  logMessage(`堆栈跟踪: ${error.stack}`)
-  console.error('未捕获的异常:', error)
+  logMessage(`鏈崟鑾风殑寮傚父: ${error.message}`)
+  logMessage(`鍫嗘爤璺熻釜: ${error.stack}`)
+  console.error('鏈崟鑾风殑寮傚父:', error)
 })
 
-// 监听未处理的Promise拒绝
+// 鐩戝惉鏈鐞嗙殑Promise鎷掔粷
 process.on('unhandledRejection', (reason) => {
-  logMessage(`未处理的Promise拒绝: ${reason}`)
-  console.error('未处理的Promise拒绝:', reason)
+  logMessage(`鏈鐞嗙殑Promise鎷掔粷: ${reason}`)
+  console.error('鏈鐞嗙殑Promise鎷掔粷:', reason)
 })
 
-// 在这个文件中，你可以续写应用剩下主进程代码
-// 也可以拆分成几个文件，然后用 require 导入
+// 鍦ㄨ繖涓枃浠朵腑锛屼綘鍙互缁啓搴旂敤鍓╀笅涓昏繘绋嬩唬鐮?// 涔熷彲浠ユ媶鍒嗘垚鍑犱釜鏂囦欢锛岀劧鍚庣敤 require 瀵煎叆

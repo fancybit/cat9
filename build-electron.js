@@ -1,53 +1,51 @@
-const { execSync } = require('child_process');
+﻿const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-console.log('开始构建Electron应用...');
+console.log('寮€濮嬫瀯寤篍lectron搴旂敤...');
 
-// 确保构建目录不存在
-const buildDir = path.join(__dirname, 'dist-exe');
+// 纭繚鏋勫缓鐩綍涓嶅瓨鍦?const buildDir = path.join(__dirname, 'dist-exe');
 if (fs.existsSync(buildDir)) {
-  console.log(`删除旧的构建目录: ${buildDir}`);
+  console.log(`鍒犻櫎鏃х殑鏋勫缓鐩綍: ${buildDir}`);
   try {
-    // 使用简单的方法删除目录
+    // 浣跨敤绠€鍗曠殑鏂规硶鍒犻櫎鐩綍
     fs.rmSync(buildDir, { recursive: true, force: true });
-    console.log('旧目录删除成功');
+    console.log('鏃х洰褰曞垹闄ゆ垚鍔?);
   } catch (err) {
-    console.warn('删除旧目录失败，将继续使用新目录名称:', err.message);
+    console.warn('鍒犻櫎鏃х洰褰曞け璐ワ紝灏嗙户缁娇鐢ㄦ柊鐩綍鍚嶇О:', err.message);
   }
 }
 
-// 先运行Vue构建
-console.log('运行Vue构建...');
+// 鍏堣繍琛孷ue鏋勫缓
+console.log('杩愯Vue鏋勫缓...');
 try {
   execSync('npm run build', { stdio: 'inherit' });
-  console.log('Vue构建成功');
+  console.log('Vue鏋勫缓鎴愬姛');
 } catch (err) {
-  console.error('Vue构建失败:', err.message);
+  console.error('Vue鏋勫缓澶辫触:', err.message);
   process.exit(1);
 }
 
-// 使用更简单的electron-packager参数，通过npx运行
-console.log('开始打包Electron应用...');
+// 浣跨敤鏇寸畝鍗曠殑electron-packager鍙傛暟锛岄€氳繃npx杩愯
+console.log('寮€濮嬫墦鍖匛lectron搴旂敤...');
 try {
-  // 使用更简单的配置，避免可能的问题，通过npx运行以确保可访问
+  // 浣跨敤鏇寸畝鍗曠殑閰嶇疆锛岄伩鍏嶅彲鑳界殑闂锛岄€氳繃npx杩愯浠ョ‘淇濆彲璁块棶
   const electronCommand = 'npx electron-packager . cat9 --platform=win32 --arch=x64 --out=dist-exe --overwrite --ignore=node_modules';
-  console.log(`执行命令: ${electronCommand}`);
+  console.log(`鎵ц鍛戒护: ${electronCommand}`);
   
-  // 设置较长的超时时间
-  const options = {
+  // 璁剧疆杈冮暱鐨勮秴鏃舵椂闂?  const options = {
     stdio: 'inherit',
-    timeout: 300000, // 5分钟超时
+    timeout: 300000, // 5鍒嗛挓瓒呮椂
   };
   
   execSync(electronCommand, options);
-  console.log('\n✅ Electron应用构建成功!');
-  console.log(`\n可执行文件位置: ${buildDir}/cat9-win32-x64/cat9.exe`);
+  console.log('\n鉁?Electron搴旂敤鏋勫缓鎴愬姛!');
+  console.log(`\n鍙墽琛屾枃浠朵綅缃? ${buildDir}/cat9-win32-x64/cat9.exe`);
 } catch (err) {
-  console.error('\n❌ Electron打包失败:', err.message);
-  console.log('\n请检查以下可能的问题:');
-  console.log('1. electron-packager是否正确安装');
-  console.log('2. 项目中是否有必要的Electron文件(background.js等)');
-  console.log('3. 尝试手动删除dist-exe目录后再试');
+  console.error('\n鉂?Electron鎵撳寘澶辫触:', err.message);
+  console.log('\n璇锋鏌ヤ互涓嬪彲鑳界殑闂:');
+  console.log('1. electron-packager鏄惁姝ｇ‘瀹夎');
+  console.log('2. 椤圭洰涓槸鍚︽湁蹇呰鐨凟lectron鏂囦欢(background.js绛?');
+  console.log('3. 灏濊瘯鎵嬪姩鍒犻櫎dist-exe鐩綍鍚庡啀璇?);
   process.exit(1);
 }

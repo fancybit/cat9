@@ -1,4 +1,4 @@
-import { createI18n } from 'vue-i18n'
+﻿import { createI18n } from 'vue-i18n'
 import zhCN from './zh-CN'
 import zhTW from './zh-TW'
 import enUS from './en-US'
@@ -9,34 +9,34 @@ import frFR from './fr-FR'
 import deDE from './de-DE'
 import ruRU from './ru-RU'
 
-// 获取用户浏览器语言
+// 鑾峰彇鐢ㄦ埛娴忚鍣ㄨ瑷€
 const getBrowserLanguage = () => {
-  // 优先从localStorage获取用户保存的语言设置
+  // 浼樺厛浠巐ocalStorage鑾峰彇鐢ㄦ埛淇濆瓨鐨勮瑷€璁剧疆
   const savedLang = localStorage.getItem('selectedLanguage')
   if (savedLang) {
     return savedLang.toLowerCase()
   }
   
-  // 获取浏览器语言（降级处理）
+  // 鑾峰彇娴忚鍣ㄨ瑷€锛堥檷绾у鐞嗭級
   const lang = navigator.language || navigator.userLanguage || 'zh-CN'
   const langLower = lang.toLowerCase()
   
-  // 尝试从navigator.languages数组中找到支持的语言
+  // 灏濊瘯浠巒avigator.languages鏁扮粍涓壘鍒版敮鎸佺殑璇█
   if (navigator.languages && navigator.languages.length > 0) {
     for (const l of navigator.languages) {
       const lLower = l.toLowerCase()
       
-      // 检查完整语言代码是否直接支持
+      // 妫€鏌ュ畬鏁磋瑷€浠ｇ爜鏄惁鐩存帴鏀寔
       if (isLanguageSupported(lLower)) {
         return lLower
       }
       
-      // 检查主要语言代码（如 'en' 而不是 'en-US'）
+      // 妫€鏌ヤ富瑕佽瑷€浠ｇ爜锛堝 'en' 鑰屼笉鏄?'en-US'锛?
       const mainLang = lLower.split('-')[0]
       
-      // 根据主要语言代码返回默认区域变体
+      // 鏍规嵁涓昏璇█浠ｇ爜杩斿洖榛樿鍖哄煙鍙樹綋
       if (mainLang === 'zh') {
-        return 'zh-cn'  // 中文默认返回简体中文
+        return 'zh-cn'  // 涓枃榛樿杩斿洖绠€浣撲腑鏂?
       } else if (mainLang === 'en') {
         return 'en-us'
       } else if (mainLang === 'ja') {
@@ -55,7 +55,7 @@ const getBrowserLanguage = () => {
     }
   }
   
-  // 检查完整语言代码
+  // 妫€鏌ュ畬鏁磋瑷€浠ｇ爜
   if (langLower.includes('zh') && langLower.includes('tw')) {
     return 'zh-tw'
   } else if (langLower.includes('zh')) {
@@ -76,32 +76,32 @@ const getBrowserLanguage = () => {
     return 'ru-ru'
   }
   
-  // 返回浏览器原始语言
+  // 杩斿洖娴忚鍣ㄥ師濮嬭瑷€
   return langLower
 }
 
-// 检测语言是否支持
+// 妫€娴嬭瑷€鏄惁鏀寔
 const isLanguageSupported = (lang) => {
   const supportedLanguages = ['zh-cn', 'zh-tw', 'en-us', 'ja-jp', 'ko-kr', 'es-es', 'fr-fr', 'de-de', 'ru-ru']
   return supportedLanguages.includes(lang)
 }
 
 
-// 获取默认语言
+// 鑾峰彇榛樿璇█
 const getDefaultLanguage = () => {
   const browserLang = getBrowserLanguage()
   
-  // 检查完整语言代码是否支持
+  // 妫€鏌ュ畬鏁磋瑷€浠ｇ爜鏄惁鏀寔
   if (isLanguageSupported(browserLang)) {
     return browserLang
   }
   
-  // 检查主要语言代码
+  // 妫€鏌ヤ富瑕佽瑷€浠ｇ爜
   const mainLang = browserLang.split('-')[0]
   
-  // 根据主要语言代码选择默认区域变体
+  // 鏍规嵁涓昏璇█浠ｇ爜閫夋嫨榛樿鍖哄煙鍙樹綋
   if (mainLang === 'zh') {
-    return 'zh-cn'  // 默认为简体中文
+    return 'zh-cn'  // 榛樿涓虹畝浣撲腑鏂?
   } else if (mainLang === 'en') {
     return 'en-us'
   } else if (mainLang === 'ja') {
@@ -118,14 +118,14 @@ const getDefaultLanguage = () => {
     return 'ru-ru'
   }
   
-  // 默认返回中文
+  // 榛樿杩斿洖涓枃
   return 'zh-cn'
 }
 
-// 导出语言相关工具函数
+// 瀵煎嚭璇█鐩稿叧宸ュ叿鍑芥暟
 export { getBrowserLanguage, getDefaultLanguage, isLanguageSupported }
 
-// 定义各语言的消息对象
+// 瀹氫箟鍚勮瑷€鐨勬秷鎭璞?
 const messages = {
   'zh-cn': zhCN,
   'zh-tw': zhTW,
@@ -138,14 +138,14 @@ const messages = {
   'ru-ru': ruRU
 }
 
-// 配置i18n，使用兼容模式确保$t在模板中正常工作
+// 閰嶇疆i18n锛屼娇鐢ㄥ吋瀹规ā寮忕‘淇?t鍦ㄦā鏉夸腑姝ｅ父宸ヤ綔
 const i18n = createI18n({
-  legacy: true,          // 使用兼容模式，确保$t可用
-  locale: getDefaultLanguage(), // 使用默认格式获取语言代码
-  fallbackLocale: 'zh-cn',      // 默认语言
-  messages,              // 语言消息对象
-  globalInjection: true  // 全局注入$t
+  legacy: true,          // 浣跨敤鍏煎妯″紡锛岀‘淇?t鍙敤
+  locale: getDefaultLanguage(), // 浣跨敤榛樿鏍煎紡鑾峰彇璇█浠ｇ爜
+  fallbackLocale: 'zh-cn',      // 榛樿璇█
+  messages,              // 璇█娑堟伅瀵硅薄
+  globalInjection: true  // 鍏ㄥ眬娉ㄥ叆$t
 })
 
-// 导出i18n实例
+// 瀵煎嚭i18n瀹炰緥
 export default i18n

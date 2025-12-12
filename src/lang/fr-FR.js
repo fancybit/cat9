@@ -1,38 +1,37 @@
-export default {
-  // 导航栏
-  navbar: {
+﻿export default {
+  // 瀵艰埅鏍?  navbar: {
     home: 'Accueil',
     store: 'Boutique',
-    library: 'Bibliothèque',
-    downloads: 'Télécharger Clients',
-    auction: 'Hôtel des Ventes',
-    community: 'Communauté',
-    developer: 'Développeur',
-    auditTeam: 'Équipe d\'Audit',
+    library: 'Biblioth猫que',
+    downloads: 'T茅l茅charger Clients',
+    auction: 'H么tel des Ventes',
+    community: 'Communaut茅',
+    developer: 'D茅veloppeur',
+    auditTeam: '脡quipe d\'Audit',
     admin: 'Administration',
-    aboutUs: 'À Propos de Nous',
+    aboutUs: '脌 Propos de Nous',
     login: 'Connexion',
     register: 'Inscription'
   },
   
-  // 页脚
+  // 椤佃剼
   footer: {
-    aboutUs: 'À Propos de Nous',
-    aboutText: 'Cat9 Entertainment est une plateforme spécialisée dans la publication de jeux indépendants, offrant des canaux de publication de jeux pratiques pour les développeurs et des expériences de jeu de haute qualité pour les joueurs.',
+    aboutUs: '脌 Propos de Nous',
+    aboutText: 'Cat9 Entertainment est une plateforme sp茅cialis茅e dans la publication de jeux ind茅pendants, offrant des canaux de publication de jeux pratiques pour les d茅veloppeurs et des exp茅riences de jeu de haute qualit茅 pour les joueurs.',
     quickLinks: 'Liens Rapides',
     gameStore: 'Boutique de Jeux',
-    myLibrary: 'Ma Bibliothèque',
-    downloadClients: 'Télécharger Clients',
-    developerResources: 'Ressources pour Développeurs',
+    myLibrary: 'Ma Biblioth猫que',
+    downloadClients: 'T茅l茅charger Clients',
+    developerResources: 'Ressources pour D茅veloppeurs',
     supportCenter: 'Centre d\'Assistance',
     contactUs: 'Contactez-Nous',
     email: 'Email',
     wechat: 'WeChat',
     officialAccount: 'Compte Officiel',
-    copyright: '© {year} Hong Kong Huameng Company Cat9 Entertainment. Tous droits réservés.'
+    copyright: '漏 {year} Hong Kong Huameng Company Cat9 Entertainment. Tous droits r茅serv茅s.'
   },
   
-  // 通用
+  // 閫氱敤
   common: {
     language: 'Langue',
     search: 'Rechercher',
@@ -44,7 +43,7 @@ export default {
     add: 'Ajouter',
     save: 'Enregistrer',
     loading: 'Chargement...',
-    success: 'Succès',
+    success: 'Succ猫s',
     error: 'Erreur',
     warning: 'Avertissement',
     info: 'Information',
@@ -52,12 +51,12 @@ export default {
     no: 'Non',
     close: 'Fermer',
     next: 'Suivant',
-    previous: 'Précédent',
+    previous: 'Pr茅c茅dent',
     back: 'Retour',
     more: 'Plus',
   },
   
-  // 登录/注册
+  // 鐧诲綍/娉ㄥ唽
   auth: {
     username: 'Nom d\'utilisateur',
     password: 'Mot de passe',
@@ -65,74 +64,72 @@ export default {
     email: 'Email',
     login: 'Connexion',
     register: 'Inscription',
-    forgotPassword: 'Mot de passe oublié ?',
+    forgotPassword: 'Mot de passe oubli茅 ?',
     noAccount: 'Pas de compte ?',
-    haveAccount: 'Déjà un compte ?',
-    logout: 'Déconnexion',
-    loginSuccess: 'Connexion réussie',
-    registerSuccess: 'Inscription réussie',
-    loginFailed: 'Échec de la connexion',
-    registerFailed: 'Échec de l\'inscription'
+    haveAccount: 'D茅j脿 un compte ?',
+    logout: 'D茅connexion',
+    loginSuccess: 'Connexion r茅ussie',
+    registerSuccess: 'Inscription r茅ussie',
+    loginFailed: '脡chec de la connexion',
+    registerFailed: '脡chec de l\'inscription'
   },
   
-  // 首页
+  // 棣栭〉
   home: {
     welcome: 'Bienvenue sur Cat9 Entertainment',
     popularGames: 'Jeux Populaires',
     newReleases: 'Nouveaux Jeux',
-    recommendedForYou: 'Recommandés pour Vous',
+    recommendedForYou: 'Recommand茅s pour Vous',
     browseAll: 'Voir Tous',
     playNow: 'Jouer Maintenant',
     buyNow: 'Acheter Maintenant',
-    discount: 'Offre Limitée dans le Temps',
-    comingSoon: 'Bientôt Disponible'
+    discount: 'Offre Limit茅e dans le Temps',
+    comingSoon: 'Bient么t Disponible'
   },
   
-  // 商店
+  // 鍟嗗簵
   store: {
     allGames: 'Tous les Jeux',
-    categories: 'Catégories',
-    tags: 'Étiquettes',
+    categories: 'Cat茅gories',
+    tags: '脡tiquettes',
     priceRange: 'Gamme de Prix',
     onSale: 'En Promotion',
     topSellers: 'Meilleures Ventes',
-    recentlyAdded: 'Récemment Ajoutés',
+    recentlyAdded: 'R茅cemment Ajout茅s',
     freeToPlay: 'Jouer Gratuitement',
     wishlist: 'Liste de Souhaits',
     addToCart: 'Ajouter au Panier',
-    addToWishlist: 'Ajouter à la Liste de Souhaits',
+    addToWishlist: 'Ajouter 脿 la Liste de Souhaits',
     removeFromWishlist: 'Retirer de la Liste de Souhaits'
   },
   
-  // 游戏库
-  library: {
+  // 娓告垙搴?  library: {
     yourGames: 'Vos Jeux',
-    recentlyPlayed: 'Joués Récemment',
+    recentlyPlayed: 'Jou茅s R茅cemment',
     allGames: 'Tous les Jeux',
     install: 'Installer',
-    update: 'Mettre à Jour',
+    update: 'Mettre 脿 Jour',
     play: 'Jouer',
-    uninstall: 'Désinstaller',
-    gameDetails: 'Détails du Jeu'
+    uninstall: 'D茅sinstaller',
+    gameDetails: 'D茅tails du Jeu'
   },
   
-  // 开发者
-  developer: {
-    welcomeDevelopers: 'Bienvenue aux Développeurs',
+  // 寮€鍙戣€?  developer: {
+    welcomeDevelopers: 'Bienvenue aux D茅veloppeurs',
     documentation: 'Documentation',
-    apiReference: 'Référence API',
+    apiReference: 'R茅f茅rence API',
     submitGame: 'Soumettre un Jeu',
-    developerConsole: 'Console de Développeur',
+    developerConsole: 'Console de D茅veloppeur',
     revenueStats: 'Statistiques de Revenus',
     gameAnalytics: 'Analyse de Jeux'
   },
   
-  // 审核团队
+  // 瀹℃牳鍥㈤槦
   auditTeam: {
-    aboutTeam: 'À Propos de l\'Équipe d\'Audit',
-    responsibilities: 'Responsabilités Principales',
+    aboutTeam: '脌 Propos de l\'脡quipe d\'Audit',
+    responsibilities: 'Responsabilit茅s Principales',
     process: 'Processus d\'Audit',
-    members: 'Membres de l\'Équipe',
+    members: 'Membres de l\'脡quipe',
     faq: 'FAQ',
     contact: 'Contactez-Nous'
   }

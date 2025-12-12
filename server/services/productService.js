@@ -1,148 +1,143 @@
-// 商品服务 - 处理虚拟商品相关的业务逻辑
+﻿// 鍟嗗搧鏈嶅姟 - 澶勭悊铏氭嫙鍟嗗搧鐩稿叧鐨勪笟鍔￠€昏緫
 
 const dal = require('../dal');
 
 class ProductService {
   /**
-   * 创建商品
-   * @param {Object} productData - 商品数据
-   * @returns {Promise<Object>} 创建结果
+   * 鍒涘缓鍟嗗搧
+   * @param {Object} productData - 鍟嗗搧鏁版嵁
+   * @returns {Promise<Object>} 鍒涘缓缁撴灉
    */
   async createProduct(productData) {
     try {
-      // 检查商品名称是否已存在
+      // 妫€鏌ュ晢鍝佸悕绉版槸鍚﹀凡瀛樺湪
       const existingProduct = await dal.catDB.getProductByName(productData.name);
       if (existingProduct) {
-        return { success: false, error: '商品名称已存在' };
+        return { success: false, error: '鍟嗗搧鍚嶇О宸插瓨鍦? };
       }
 
-      // 创建商品
+      // 鍒涘缓鍟嗗搧
       const product = await dal.createProduct(productData);
 
       return { success: true, product: product.toJSON() };
     } catch (error) {
-      console.error('创建商品失败:', error);
-      return { success: false, error: '创建商品失败，请稍后重试' };
+      console.error('鍒涘缓鍟嗗搧澶辫触:', error);
+      return { success: false, error: '鍒涘缓鍟嗗搧澶辫触锛岃绋嶅悗閲嶈瘯' };
     }
   }
 
   /**
-   * 获取商品信息
-   * @param {string} productId - 商品ID
-   * @returns {Promise<Object|null>} 商品信息
+   * 鑾峰彇鍟嗗搧淇℃伅
+   * @param {string} productId - 鍟嗗搧ID
+   * @returns {Promise<Object|null>} 鍟嗗搧淇℃伅
    */
   async getProductInfo(productId) {
     try {
       const product = await dal.getProduct(productId);
       return product ? product.toJSON() : null;
     } catch (error) {
-      console.error('获取商品信息失败:', error);
+      console.error('鑾峰彇鍟嗗搧淇℃伅澶辫触:', error);
       return null;
     }
   }
 
   /**
-   * 通过名称获取商品
-   * @param {string} name - 商品名称
-   * @returns {Promise<Object|null>} 商品信息
+   * 閫氳繃鍚嶇О鑾峰彇鍟嗗搧
+   * @param {string} name - 鍟嗗搧鍚嶇О
+   * @returns {Promise<Object|null>} 鍟嗗搧淇℃伅
    */
   async getProductByName(name) {
     try {
       const product = await dal.catDB.getProductByName(name);
       return product ? product.toJSON() : null;
     } catch (error) {
-      console.error('通过名称获取商品失败:', error);
+      console.error('閫氳繃鍚嶇О鑾峰彇鍟嗗搧澶辫触:', error);
       return null;
     }
   }
 
   /**
-   * 更新商品信息
-   * @param {string} productId - 商品ID
-   * @param {Object} updateData - 更新数据
-   * @returns {Promise<Object>} 更新结果
+   * 鏇存柊鍟嗗搧淇℃伅
+   * @param {string} productId - 鍟嗗搧ID
+   * @param {Object} updateData - 鏇存柊鏁版嵁
+   * @returns {Promise<Object>} 鏇存柊缁撴灉
    */
   async updateProduct(productId, updateData) {
     try {
       const product = await dal.updateProduct(productId, updateData);
-      return product ? { success: true, product: product.toJSON() } : { success: false, error: '商品不存在' };
+      return product ? { success: true, product: product.toJSON() } : { success: false, error: '鍟嗗搧涓嶅瓨鍦? };
     } catch (error) {
-      console.error('更新商品信息失败:', error);
-      return { success: false, error: '更新失败，请稍后重试' };
+      console.error('鏇存柊鍟嗗搧淇℃伅澶辫触:', error);
+      return { success: false, error: '鏇存柊澶辫触锛岃绋嶅悗閲嶈瘯' };
     }
   }
 
   /**
-   * 更新商品库存
-   * @param {string} productId - 商品ID
-   * @param {number} quantity - 新库存数量
-   * @returns {Promise<Object>} 操作结果
+   * 鏇存柊鍟嗗搧搴撳瓨
+   * @param {string} productId - 鍟嗗搧ID
+   * @param {number} quantity - 鏂板簱瀛樻暟閲?   * @returns {Promise<Object>} 鎿嶄綔缁撴灉
    */
   async updateProductStock(productId, quantity) {
     try {
       const product = await dal.getProduct(productId);
       if (!product) {
-        return { success: false, error: '商品不存在' };
+        return { success: false, error: '鍟嗗搧涓嶅瓨鍦? };
       }
 
       product.updateQuantity(quantity);
       return { success: true, product: product.toJSON() };
     } catch (error) {
-      console.error('更新商品库存失败:', error);
-      return { success: false, error: '操作失败，请稍后重试' };
+      console.error('鏇存柊鍟嗗搧搴撳瓨澶辫触:', error);
+      return { success: false, error: '鎿嶄綔澶辫触锛岃绋嶅悗閲嶈瘯' };
     }
   }
 
   /**
-   * 获取用户拥有的商品
-   * @param {string} userId - 用户ID
-   * @returns {Promise<Array>} 用户商品列表
+   * 鑾峰彇鐢ㄦ埛鎷ユ湁鐨勫晢鍝?   * @param {string} userId - 鐢ㄦ埛ID
+   * @returns {Promise<Array>} 鐢ㄦ埛鍟嗗搧鍒楄〃
    */
   async getUserProducts(userId) {
     try {
       const products = await dal.catDB.getUserProducts(userId);
       return products.map(product => product.toJSON());
     } catch (error) {
-      console.error('获取用户商品列表失败:', error);
+      console.error('鑾峰彇鐢ㄦ埛鍟嗗搧鍒楄〃澶辫触:', error);
       return [];
     }
   }
 
   /**
-   * 购买商品
-   * @param {string} userId - 用户ID
-   * @param {string} productId - 商品ID
-   * @returns {Promise<Object>} 购买结果
+   * 璐拱鍟嗗搧
+   * @param {string} userId - 鐢ㄦ埛ID
+   * @param {string} productId - 鍟嗗搧ID
+   * @returns {Promise<Object>} 璐拱缁撴灉
    */
   async purchaseProduct(userId, productId) {
     try {
       const result = await dal.purchaseProduct(userId, productId);
       return result;
     } catch (error) {
-      console.error('购买商品失败:', error);
-      return { success: false, error: '购买失败，请稍后重试' };
+      console.error('璐拱鍟嗗搧澶辫触:', error);
+      return { success: false, error: '璐拱澶辫触锛岃绋嶅悗閲嶈瘯' };
     }
   }
 
   /**
-   * 获取所有商品
-   * @returns {Promise<Array>} 商品列表
+   * 鑾峰彇鎵€鏈夊晢鍝?   * @returns {Promise<Array>} 鍟嗗搧鍒楄〃
    */
   async getAllProducts() {
     try {
-      // 从catDB获取所有商品
-      const allProducts = Array.from(dal.catDB.products.values());
+      // 浠巆atDB鑾峰彇鎵€鏈夊晢鍝?      const allProducts = Array.from(dal.catDB.products.values());
       return allProducts.map(product => product.toJSON());
     } catch (error) {
-      console.error('获取所有商品失败:', error);
+      console.error('鑾峰彇鎵€鏈夊晢鍝佸け璐?', error);
       return [];
     }
   }
 
   /**
-   * 获取特定类别的商品
-   * @param {string} category - 商品类别
-   * @returns {Promise<Array>} 商品列表
+   * 鑾峰彇鐗瑰畾绫诲埆鐨勫晢鍝?   * @param {string} category - 鍟嗗搧绫诲埆
+   * @returns {Promise<Array>} 鍟嗗搧鍒楄〃
    */
   async getProductsByCategory(category) {
     try {
@@ -152,7 +147,7 @@ class ProductService {
       );
       return filteredProducts.map(product => product.toJSON());
     } catch (error) {
-      console.error('获取商品分类失败:', error);
+      console.error('鑾峰彇鍟嗗搧鍒嗙被澶辫触:', error);
       return [];
     }
   }

@@ -1,19 +1,17 @@
-// 调试脚本：检查管理员权限相关状态
-console.log('===== 管理员权限调试信息 =====');
+﻿// 璋冭瘯鑴氭湰锛氭鏌ョ鐞嗗憳鏉冮檺鐩稿叧鐘舵€?console.log('===== 绠＄悊鍛樻潈闄愯皟璇曚俊鎭?=====');
 
-// 1. 检查localStorage中的用户数据
+// 1. 妫€鏌ocalStorage涓殑鐢ㄦ埛鏁版嵁
 const userData = localStorage.getItem('user');
-console.log('localStorage中的用户数据:', userData);
+console.log('localStorage涓殑鐢ㄦ埛鏁版嵁:', userData);
 
-// 2. 解析用户数据并检查角色
-if (userData) {
+// 2. 瑙ｆ瀽鐢ㄦ埛鏁版嵁骞舵鏌ヨ鑹?if (userData) {
   const user = JSON.parse(userData);
-  console.log('用户角色:', user.roles);
-  console.log('用户组:', user.groups);
-  console.log('是否包含admin角色:', user.roles && user.roles.includes('admin'));
+  console.log('鐢ㄦ埛瑙掕壊:', user.roles);
+  console.log('鐢ㄦ埛缁?', user.groups);
+  console.log('鏄惁鍖呭惈admin瑙掕壊:', user.roles && user.roles.includes('admin'));
 }
 
-// 3. 手动模拟App.vue中的isAdmin计算
+// 3. 鎵嬪姩妯℃嫙App.vue涓殑isAdmin璁＄畻
 const simulateIsAdmin = () => {
   const userStr = localStorage.getItem('user');
   if (!userStr) return false;
@@ -22,7 +20,7 @@ const simulateIsAdmin = () => {
   return user.roles && user.roles.includes('admin');
 };
 
-console.log('模拟的isAdmin值:', simulateIsAdmin());
+console.log('妯℃嫙鐨刬sAdmin鍊?', simulateIsAdmin());
 
-// 4. 检查路由配置中的管理员页面
-console.log('请确保以admin用户身份登录后查看此信息');
+// 4. 妫€鏌ヨ矾鐢遍厤缃腑鐨勭鐞嗗憳椤甸潰
+console.log('璇风‘淇濅互admin鐢ㄦ埛韬唤鐧诲綍鍚庢煡鐪嬫淇℃伅');

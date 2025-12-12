@@ -1,109 +1,93 @@
-# 玄玉逍游 (MetaJadeGaming)
+﻿# 鐜勭帀閫嶆父 (MetaJadeGaming)
 
-![玄玉逍游](https://placeholder-for-logo.png)`<!-- 这里可以放置公司logo -->`
+![鐜勭帀閫嶆父](https://placeholder-for-logo.png)`<!-- 杩欓噷鍙互鏀剧疆鍏徃logo -->`
 
-## 项目介绍
+## 椤圭洰浠嬬粛
 
-玄玉逍游 (MetaJadeGaming) 是一个专注于Web3游戏发行和娱乐的创新平台，致力于为用户提供沉浸式的区块链游戏体验。我们的使命是探索Web3游戏的未来，通过区块链技术赋能游戏产业，创造全新的游戏经济体系。
+鐜勭帀閫嶆父 (MetaJadeGaming) 鏄竴涓笓娉ㄤ簬Web3娓告垙鍙戣鍜屽ū涔愮殑鍒涙柊骞冲彴锛岃嚧鍔涗簬涓虹敤鎴锋彁渚涙矇娴稿紡鐨勫尯鍧楅摼娓告垙浣撻獙銆傛垜浠殑浣垮懡鏄帰绱eb3娓告垙鐨勬湭鏉ワ紝閫氳繃鍖哄潡閾炬妧鏈祴鑳芥父鎴忎骇涓氾紝鍒涢€犲叏鏂扮殑娓告垙缁忔祹浣撶郴銆?
+- **鍏徃鍚嶇О**: 鍗庢ⅵ鏈夐檺鍏徃
+- **缃戠珯鍩熷悕**: www.cat9.hk
+- **鎬婚儴**: 棣欐腐鐗瑰埆琛屾斂鍖?
+## 鎶€鏈爤
 
-- **公司名称**: 华梦有限公司
-- **网站域名**: www.cat9.hk
-- **总部**: 香港特别行政区
+### 鍓嶇
 
-## 技术栈
+- **妗嗘灦**: Vue 3
+- **鏋勫缓宸ュ叿**: Vue CLI
+- **鏍峰紡**: 鍘熺敓CSS (榛戠孩涓婚鑹茶皟)
 
-### 前端
+### 鍚庣
 
-- **框架**: Vue 3
-- **构建工具**: Vue CLI
-- **样式**: 原生CSS (黑红主题色调)
+- **鏈嶅姟鍣?*: Node.js
+- **鏁版嵁搴?*: MongoDB
 
-### 后端
-
-- **服务器**: Node.js
-- **数据库**: MongoDB
-
-## 项目结构
+## 椤圭洰缁撴瀯
 
 ```
-├── .gitignore         # Git忽略文件配置
-├── README.md          # 项目说明文档
-├── babel.config.js    # Babel配置
-├── jsconfig.json      # JavaScript配置
-├── package-lock.json  # 依赖锁定文件
-├── package.json       # 项目配置和依赖
-├── public/            # 静态资源
-│   ├── favicon.ico    # 网站图标
-│   └── index.html     # HTML入口文件
-├── src/               # 源代码目录
-│   ├── App.vue        # 主应用组件
-│   ├── assets/        # 资源文件
-│   │   └── logo.png   # Logo图片
-│   ├── components/    # Vue组件
-│   │   └── HelloWorld.vue # 示例组件
-│   └── main.js        # 应用入口文件
-└── vue.config.js      # Vue配置文件
+鈹溾攢鈹€ .gitignore         # Git蹇界暐鏂囦欢閰嶇疆
+鈹溾攢鈹€ README.md          # 椤圭洰璇存槑鏂囨。
+鈹溾攢鈹€ babel.config.js    # Babel閰嶇疆
+鈹溾攢鈹€ jsconfig.json      # JavaScript閰嶇疆
+鈹溾攢鈹€ package-lock.json  # 渚濊禆閿佸畾鏂囦欢
+鈹溾攢鈹€ package.json       # 椤圭洰閰嶇疆鍜屼緷璧?鈹溾攢鈹€ public/            # 闈欐€佽祫婧?鈹?  鈹溾攢鈹€ favicon.ico    # 缃戠珯鍥炬爣
+鈹?  鈹斺攢鈹€ index.html     # HTML鍏ュ彛鏂囦欢
+鈹溾攢鈹€ src/               # 婧愪唬鐮佺洰褰?鈹?  鈹溾攢鈹€ App.vue        # 涓诲簲鐢ㄧ粍浠?鈹?  鈹溾攢鈹€ assets/        # 璧勬簮鏂囦欢
+鈹?  鈹?  鈹斺攢鈹€ logo.png   # Logo鍥剧墖
+鈹?  鈹溾攢鈹€ components/    # Vue缁勪欢
+鈹?  鈹?  鈹斺攢鈹€ HelloWorld.vue # 绀轰緥缁勪欢
+鈹?  鈹斺攢鈹€ main.js        # 搴旂敤鍏ュ彛鏂囦欢
+鈹斺攢鈹€ vue.config.js      # Vue閰嶇疆鏂囦欢
 ```
 
-## 功能特性
+## 鍔熻兘鐗规€?
+- **Web3娓告垙灞曠ず涓庡彂琛?*: 鎻愪緵鏈€鏂般€佹渶鐑棬鐨勫尯鍧楅摼娓告垙
+- **NFT璧勪骇浜ゆ槗**: 鏀寔娓告垙鍐匩FT璧勪骇鐨勫睍绀哄拰浜ゆ槗
+- **娓告垙璧勮**: 鎻愪緵琛屼笟鍔ㄦ€併€佹父鎴忔敾鐣ュ拰鏈€鏂版秷鎭?- **鐢ㄦ埛绀惧尯**: 寤虹珛鐜╁绀惧尯锛屼績杩涗氦娴佷笌浜掑姩
 
-- **Web3游戏展示与发行**: 提供最新、最热门的区块链游戏
-- **NFT资产交易**: 支持游戏内NFT资产的展示和交易
-- **游戏资讯**: 提供行业动态、游戏攻略和最新消息
-- **用户社区**: 建立玩家社区，促进交流与互动
+## 瀹夎涓庤繍琛?
+### 鍓嶆彁鏉′欢
 
-## 安装与运行
+- Node.js (v14.0.0鎴栨洿楂樼増鏈?
+- npm (v6.0.0鎴栨洿楂樼増鏈? 鎴?yarn
 
-### 前提条件
-
-- Node.js (v14.0.0或更高版本)
-- npm (v6.0.0或更高版本) 或 yarn
-
-### 安装依赖
+### 瀹夎渚濊禆
 
 ```bash
 npm install
-# 或
-# yarn install
+# 鎴?# yarn install
 ```
 
-### 开发模式运行
-
+### 寮€鍙戞ā寮忚繍琛?
 ```bash
 npm run serve
-# 或
-# yarn serve
+# 鎴?# yarn serve
 ```
 
-### 构建生产版本
+### 鏋勫缓鐢熶骇鐗堟湰
 
 ```bash
 npm run build
-# 或
-# yarn build
+# 鎴?# yarn build
 ```
 
-## 浏览器支持
+## 娴忚鍣ㄦ敮鎸?
+- Chrome (鏈€鏂颁袱涓増鏈?
+- Firefox (鏈€鏂颁袱涓増鏈?
+- Safari (鏈€鏂颁袱涓増鏈?
+- Edge (鏈€鏂颁袱涓増鏈?
 
-- Chrome (最新两个版本)
-- Firefox (最新两个版本)
-- Safari (最新两个版本)
-- Edge (最新两个版本)
+## 璐＄尞鎸囧崡
 
-## 贡献指南
+濡傞渶璐＄尞浠ｇ爜锛岃閬靛惊浠ヤ笅姝ラ锛?
+1. Fork 鏈粨搴?2. 鍒涘缓鎮ㄧ殑鐗规€у垎鏀?(`git checkout -b feature/AmazingFeature`)
+3. 鎻愪氦鎮ㄧ殑鏇存敼 (`git commit -m 'Add some AmazingFeature'`)
+4. 鎺ㄩ€佸埌鍒嗘敮 (`git push origin feature/AmazingFeature`)
+5. 寮€鍚竴涓?Pull Request
 
-如需贡献代码，请遵循以下步骤：
+## 鐗堟潈淇℃伅
 
-1. Fork 本仓库
-2. 创建您的特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交您的更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 开启一个 Pull Request
+漏 2025 鍗庢ⅵ鏈夐檺鍏徃. 淇濈暀鎵€鏈夋潈鍒?
 
-## 版权信息
+## 鑱旂郴鏂瑰紡
 
-© 2025 华梦有限公司. 保留所有权利.
-
-## 联系方式
-
-如需联系我们，请访问我们的官方网站 [www.cat9.hk](https://www.cat9.hk) 或发送邮件至 fancybit@qq.com
+濡傞渶鑱旂郴鎴戜滑锛岃璁块棶鎴戜滑鐨勫畼鏂圭綉绔?[www.cat9.hk](https://www.cat9.hk) 鎴栧彂閫侀偖浠惰嚦 fancybit@qq.com

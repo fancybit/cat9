@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>用户数据调试工具</title>
+    <title>鐢ㄦ埛鏁版嵁璋冭瘯宸ュ叿</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -74,96 +74,94 @@
 </head>
 <body>
     <div class="container">
-        <h1>用户数据调试工具</h1>
-        <p>此工具用于检查浏览器中localStorage的用户数据，特别是管理员权限相关信息。</p>
+        <h1>鐢ㄦ埛鏁版嵁璋冭瘯宸ュ叿</h1>
+        <p>姝ゅ伐鍏风敤浜庢鏌ユ祻瑙堝櫒涓璴ocalStorage鐨勭敤鎴锋暟鎹紝鐗瑰埆鏄鐞嗗憳鏉冮檺鐩稿叧淇℃伅銆?/p>
         
-        <button class="button" onclick="checkUserData()">检查用户数据</button>
-        <button class="button" onclick="clearUserData()">清除用户数据</button>
+        <button class="button" onclick="checkUserData()">妫€鏌ョ敤鎴锋暟鎹?/button>
+        <button class="button" onclick="clearUserData()">娓呴櫎鐢ㄦ埛鏁版嵁</button>
         
         <div class="result-section">
-            <h2>localStorage中的用户数据：</h2>
+            <h2>localStorage涓殑鐢ㄦ埛鏁版嵁锛?/h2>
             <pre id="userData"></pre>
         </div>
         
         <div class="result-section">
-            <h2>管理员权限检查结果：</h2>
+            <h2>绠＄悊鍛樻潈闄愭鏌ョ粨鏋滐細</h2>
             <div id="adminCheck" class="admin-check"></div>
         </div>
         
         <div class="result-section">
-            <h2>调试信息：</h2>
+            <h2>璋冭瘯淇℃伅锛?/h2>
             <pre id="debugInfo"></pre>
         </div>
     </div>
 
     <script>
         function checkUserData() {
-            // 获取用户数据
+            // 鑾峰彇鐢ㄦ埛鏁版嵁
             const userStr = localStorage.getItem('user');
             const userDataElement = document.getElementById('userData');
             const adminCheckElement = document.getElementById('adminCheck');
             const debugInfoElement = document.getElementById('debugInfo');
             
-            // 显示原始用户数据
+            // 鏄剧ず鍘熷鐢ㄦ埛鏁版嵁
             if (userStr) {
                 try {
                     const userObj = JSON.parse(userStr);
                     userDataElement.textContent = JSON.stringify(userObj, null, 2);
                     
-                    // 检查管理员权限
+                    // 妫€鏌ョ鐞嗗憳鏉冮檺
                     const isLoggedIn = userStr !== null;
                     const hasRoleAdmin = userObj.role === 'admin';
                     const hasRolesArray = Array.isArray(userObj.roles);
                     const hasAdminInRoles = hasRolesArray && userObj.roles.includes('admin');
                     const isAdmin = isLoggedIn && (hasRoleAdmin || hasAdminInRoles);
                     
-                    // 显示管理员检查结果
-                    if (isAdmin) {
-                        adminCheckElement.textContent = '用户是管理员！应显示后台管理按钮。';
+                    // 鏄剧ず绠＄悊鍛樻鏌ョ粨鏋?                    if (isAdmin) {
+                        adminCheckElement.textContent = '鐢ㄦ埛鏄鐞嗗憳锛佸簲鏄剧ず鍚庡彴绠＄悊鎸夐挳銆?;
                         adminCheckElement.className = 'admin-check is-admin';
                     } else {
-                        adminCheckElement.textContent = '用户不是管理员。不会显示后台管理按钮。';
+                        adminCheckElement.textContent = '鐢ㄦ埛涓嶆槸绠＄悊鍛樸€備笉浼氭樉绀哄悗鍙扮鐞嗘寜閽€?;
                         adminCheckElement.className = 'admin-check not-admin';
                     }
                     
-                    // 显示详细调试信息
+                    // 鏄剧ず璇︾粏璋冭瘯淇℃伅
                     let debugInfo = '';
                     debugInfo += `isLoggedIn: ${isLoggedIn}\n`;
                     debugInfo += `user.role: ${userObj.role || 'undefined'}\n`;
                     debugInfo += `hasRoleAdmin: ${hasRoleAdmin}\n`;
-                    debugInfo += `user.roles 类型: ${typeof userObj.roles}\n`;
+                    debugInfo += `user.roles 绫诲瀷: ${typeof userObj.roles}\n`;
                     debugInfo += `hasRolesArray: ${hasRolesArray}\n`;
                     if (hasRolesArray) {
-                        debugInfo += `user.roles 内容: ${JSON.stringify(userObj.roles)}\n`;
+                        debugInfo += `user.roles 鍐呭: ${JSON.stringify(userObj.roles)}\n`;
                     }
                     debugInfo += `hasAdminInRoles: ${hasAdminInRoles}\n`;
-                    debugInfo += `最终isAdmin结果: ${isAdmin}`;
+                    debugInfo += `鏈€缁坕sAdmin缁撴灉: ${isAdmin}`;
                     debugInfoElement.textContent = debugInfo;
                     
                 } catch (e) {
-                    userDataElement.textContent = `用户数据格式错误: ${e.message}`;
-                    adminCheckElement.textContent = '无法解析用户数据';
+                    userDataElement.textContent = `鐢ㄦ埛鏁版嵁鏍煎紡閿欒: ${e.message}`;
+                    adminCheckElement.textContent = '鏃犳硶瑙ｆ瀽鐢ㄦ埛鏁版嵁';
                     adminCheckElement.className = 'admin-check not-admin';
-                    debugInfoElement.textContent = `错误: ${e.message}`;
+                    debugInfoElement.textContent = `閿欒: ${e.message}`;
                 }
             } else {
-                userDataElement.textContent = 'localStorage中没有用户数据';
-                adminCheckElement.textContent = '用户未登录';
+                userDataElement.textContent = 'localStorage涓病鏈夌敤鎴锋暟鎹?;
+                adminCheckElement.textContent = '鐢ㄦ埛鏈櫥褰?;
                 adminCheckElement.className = 'admin-check not-admin';
                 debugInfoElement.textContent = 'isLoggedIn: false';
             }
         }
         
         function clearUserData() {
-            if (confirm('确定要清除localStorage中的用户数据吗？这将模拟退出登录。')) {
+            if (confirm('纭畾瑕佹竻闄ocalStorage涓殑鐢ㄦ埛鏁版嵁鍚楋紵杩欏皢妯℃嫙閫€鍑虹櫥褰曘€?)) {
                 localStorage.removeItem('user');
-                alert('用户数据已清除');
-                checkUserData(); // 重新检查以显示变化
+                alert('鐢ㄦ埛鏁版嵁宸叉竻闄?);
+                checkUserData(); // 閲嶆柊妫€鏌ヤ互鏄剧ず鍙樺寲
             }
         }
         
-        // 页面加载时自动检查
-        window.onload = checkUserData;
+        // 椤甸潰鍔犺浇鏃惰嚜鍔ㄦ鏌?        window.onload = checkUserData;
     </script>
 </body>
 </html>

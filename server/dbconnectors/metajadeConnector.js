@@ -1,22 +1,20 @@
-// 玄玉区块链连接器 - 用于连接玄玉区块链网络
-const { spawn } = require('child_process');
+﻿// 鐜勭帀鍖哄潡閾捐繛鎺ュ櫒 - 鐢ㄤ簬杩炴帴鐜勭帀鍖哄潡閾剧綉缁?const { spawn } = require('child_process');
 const path = require('path');
 
 class MetaJadeConnector {
   /**
-   * 构造函数
-   * @param {Object} options - 配置选项
-   * @param {string} options.bridgeHost - 玄玉区块链网络服务端的IP，默认为localhost
-   * @param {number} options.bridgePort - 玄玉区块链网络服务端的端口，默认为5000
+   * 鏋勯€犲嚱鏁?   * @param {Object} options - 閰嶇疆閫夐」
+   * @param {string} options.bridgeHost - 鐜勭帀鍖哄潡閾剧綉缁滄湇鍔＄鐨処P锛岄粯璁や负localhost
+   * @param {number} options.bridgePort - 鐜勭帀鍖哄潡閾剧綉缁滄湇鍔＄鐨勭鍙ｏ紝榛樿涓?000
    */
   constructor(options = {}) {
     this.connected = false;
-    this.dataCache = new Map(); // 本地缓存，提高性能
+    this.dataCache = new Map(); // 鏈湴缂撳瓨锛屾彁楂樻€ц兘
     this.bridgeProcess = null;
     this.options = options;
   }
 
-  // 检查端口是否被占用
+  // 妫€鏌ョ鍙ｆ槸鍚﹁鍗犵敤
   async isPortInUse(port) {
     return new Promise((resolve) => {
       const net = require('net');
@@ -39,71 +37,70 @@ class MetaJadeConnector {
     });
   }
 
-  // 连接方法
+  // 杩炴帴鏂规硶
   async connect(options = {}) {
-    console.log('玄玉区块链正在连接...');
+    console.log('鐜勭帀鍖哄潡閾炬鍦ㄨ繛鎺?..');
     try {
       // 4001
       const dhtOptions = {
         port: options.dhtPort || 4001,
-        ip: options.dhtIp || '0.0.0.0', // 允许配置DHT服务器IP
+        ip: options.dhtIp || '0.0.0.0', // 鍏佽閰嶇疆DHT鏈嶅姟鍣↖P
         enableRelay: options.enableRelay || true
       };
-      // 检测指定端口是否被占用
+      // 妫€娴嬫寚瀹氱鍙ｆ槸鍚﹁鍗犵敤
       const isPortUsed = await this.isPortInUse(dhtOptions.port);
       if (isPortUsed) {
-        console.error(`玄玉DHT服务器端口 ${dhtOptions.port} 已被占用，无法启动新的DHT服务器`);
-        return Promise.reject(new Error(`玄玉DHT服务器端口 ${dhtOptions.port} 已被占用`));
+        console.error(`鐜勭帀DHT鏈嶅姟鍣ㄧ鍙?${dhtOptions.port} 宸茶鍗犵敤锛屾棤娉曞惎鍔ㄦ柊鐨凞HT鏈嶅姟鍣╜);
+        return Promise.reject(new Error(`鐜勭帀DHT鏈嶅姟鍣ㄧ鍙?${dhtOptions.port} 宸茶鍗犵敤`));
       }
-      console.log('启动MetaJadeNode...');
-      // 使用dotnet run命令启动MetaJadeNode服务
+      console.log('鍚姩MetaJadeNode...');
+      // 浣跨敤dotnet run鍛戒护鍚姩MetaJadeNode鏈嶅姟
       try {
-        // 检查MetaJadeNode项目是否存在
+        // 妫€鏌etaJadeNode椤圭洰鏄惁瀛樺湪
         const metaJadeNodePath = path.join(__dirname, '../../metajade-csharp/MetaJadeNode');
         const fs = require('fs');
-        if (fs.existsSync(metaJadeNodePath)) throw new Error('MetaJadeNode不存在');
+        if (fs.existsSync(metaJadeNodePath)) throw new Error('MetaJadeNode涓嶅瓨鍦?);
           this.bridgeProcess = spawn('dotnet', ['run'], {
             cwd: metaJadeNodePath,
             detached: true,
             stdio: 'ignore'
           });
-          // 等待3秒钟让node启动
+          // 绛夊緟3绉掗挓璁﹏ode鍚姩
           await new Promise(resolve => setTimeout(resolve, 3000));
-          console.log('MetaJadeNode启动成功');
+          console.log('MetaJadeNode鍚姩鎴愬姛');
       } catch (nodeError) {
-        console.error('启动MetaJadeNode失败:', nodeError.message);
+        console.error('鍚姩MetaJadeNode澶辫触:', nodeError.message);
         await this.disconnect();
         return;
       }
       this.connected = true;
       return Promise.resolve(true);
     } catch (error) {
-      console.error('玄玉区块链连接失败:', error.message);
+      console.error('鐜勭帀鍖哄潡閾捐繛鎺ュけ璐?', error.message);
       return Promise.reject(error);
     }
   }
 
-  // 断开连接方法
+  // 鏂紑杩炴帴鏂规硶
   async disconnect() {
-    console.log('玄玉区块链正在断开连接...');
+    console.log('鐜勭帀鍖哄潡閾炬鍦ㄦ柇寮€杩炴帴...');
     try {
       this.connected = false;
       this.dataCache.clear();
-      console.log('玄玉区块链已断开连接');
+      console.log('鐜勭帀鍖哄潡閾惧凡鏂紑杩炴帴');
       return Promise.resolve(true);
     } catch (error) {
-      console.error('玄玉区块链断开连接失败:', error.message);
+      console.error('鐜勭帀鍖哄潡閾炬柇寮€杩炴帴澶辫触:', error.message);
       return Promise.reject(error);
     }
   }
 
-  // 生成唯一ID
+  // 鐢熸垚鍞竴ID
   generateId(prefix) {
     return `${prefix}_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
   }
 
-  // 生成数据键
-  getUserKey(userId) {
+  // 鐢熸垚鏁版嵁閿?  getUserKey(userId) {
     return `user_${userId}`;
   }
 
@@ -115,12 +112,12 @@ class MetaJadeConnector {
     return `email_index_${email}`;
   }
 
-  // 用户相关方法
+  // 鐢ㄦ埛鐩稿叧鏂规硶
   async createUser(userData) {
     try {
-      // 生成唯一用户ID
+      // 鐢熸垚鍞竴鐢ㄦ埛ID
       const userId = this.generateId('user');
-      // 创建用户对象
+      // 鍒涘缓鐢ㄦ埛瀵硅薄
       const user = {
         ...userData,
         _id: userId,
@@ -133,36 +130,35 @@ class MetaJadeConnector {
         }
       };
       
-      // 存储用户数据到玄玉区块链
+      // 瀛樺偍鐢ㄦ埛鏁版嵁鍒扮巹鐜夊尯鍧楅摼
       const userKey = this.getUserKey(userId);
       await this.metaJadeNode.store(userKey, JSON.stringify(user));
       this.dataCache.set(userKey, user);
       
-      // 创建用户名索引
-      const usernameIndexKey = this.getUsernameIndexKey(userData.username);
+      // 鍒涘缓鐢ㄦ埛鍚嶇储寮?      const usernameIndexKey = this.getUsernameIndexKey(userData.username);
       await this.metaJadeNode.store(usernameIndexKey, userId);
       this.dataCache.set(usernameIndexKey, userId);
       
-      // 创建邮箱索引
+      // 鍒涘缓閭绱㈠紩
       const emailIndexKey = this.getEmailIndexKey(userData.email);
       await this.metaJadeNode.store(emailIndexKey, userId);
       this.dataCache.set(emailIndexKey, userId);
       
-      // 添加verifyPassword方法
+      // 娣诲姞verifyPassword鏂规硶
       user.verifyPassword = function(compareFunction, password) {
         return compareFunction(password, this.passwordHash);
       };
       
       return user;
     } catch (error) {
-      console.error('创建用户失败:', error.message);
+      console.error('鍒涘缓鐢ㄦ埛澶辫触:', error.message);
       throw error;
     }
   }
 
   async getUserByUsername(username) {
     try {
-      // 从缓存或区块链获取用户名索引
+      // 浠庣紦瀛樻垨鍖哄潡閾捐幏鍙栫敤鎴峰悕绱㈠紩
       const usernameIndexKey = this.getUsernameIndexKey(username);
       let userId = this.dataCache.get(usernameIndexKey);
       
@@ -175,18 +171,17 @@ class MetaJadeConnector {
         }
       }
       
-      // 通过用户ID获取用户数据
+      // 閫氳繃鐢ㄦ埛ID鑾峰彇鐢ㄦ埛鏁版嵁
       return this.getUserById(userId);
     } catch (error) {
-      console.error('通过用户名获取用户失败:', error.message);
+      console.error('閫氳繃鐢ㄦ埛鍚嶈幏鍙栫敤鎴峰け璐?', error.message);
       throw error;
     }
   }
 
   async getUserById(id) {
     try {
-      // 从缓存或区块链获取用户数据
-      const userKey = this.getUserKey(id);
+      // 浠庣紦瀛樻垨鍖哄潡閾捐幏鍙栫敤鎴锋暟鎹?      const userKey = this.getUserKey(id);
       let user = this.dataCache.get(userKey);
       
       if (!user) {
@@ -199,67 +194,67 @@ class MetaJadeConnector {
         }
       }
       
-      // 添加verifyPassword方法
+      // 娣诲姞verifyPassword鏂规硶
       user.verifyPassword = function(compareFunction, password) {
         return compareFunction(password, this.passwordHash);
       };
       
       return user;
     } catch (error) {
-      console.error('通过ID获取用户失败:', error.message);
+      console.error('閫氳繃ID鑾峰彇鐢ㄦ埛澶辫触:', error.message);
       throw error;
     }
   }
 
   async updateUser(id, userData) {
     try {
-      // 获取现有用户
+      // 鑾峰彇鐜版湁鐢ㄦ埛
       const user = await this.getUserById(id);
       if (!user) {
         return null;
       }
       
-      // 更新用户数据
+      // 鏇存柊鐢ㄦ埛鏁版嵁
       const updatedUser = {
         ...user,
         ...userData,
         updatedAt: new Date().toISOString()
       };
       
-      // 存储更新后的用户数据到玄玉区块链
+      // 瀛樺偍鏇存柊鍚庣殑鐢ㄦ埛鏁版嵁鍒扮巹鐜夊尯鍧楅摼
       const userKey = this.getUserKey(id);
       await this.metaJadeNode.store(userKey, JSON.stringify(updatedUser));
       this.dataCache.set(userKey, updatedUser);
       
       return updatedUser;
     } catch (error) {
-      console.error('更新用户失败:', error.message);
+      console.error('鏇存柊鐢ㄦ埛澶辫触:', error.message);
       throw error;
     }
   }
 
   async getUserByResetToken(token) {
     try {
-      // 注意：当前实现中，重置令牌没有存储在玄玉区块链上
-      // 实际生产环境中应该实现此功能
+      // 娉ㄦ剰锛氬綋鍓嶅疄鐜颁腑锛岄噸缃护鐗屾病鏈夊瓨鍌ㄥ湪鐜勭帀鍖哄潡閾句笂
+      // 瀹為檯鐢熶骇鐜涓簲璇ュ疄鐜版鍔熻兘
       return null;
     } catch (error) {
-      console.error('通过重置令牌获取用户失败:', error.message);
+      console.error('閫氳繃閲嶇疆浠ょ墝鑾峰彇鐢ㄦ埛澶辫触:', error.message);
       throw error;
     }
   }
 
-  // 软件相关方法
+  // 杞欢鐩稿叧鏂规硶
   getSoftwareKey(softwareId) {
     return `software_${softwareId}`;
   }
 
   async createSoftware(softwareData) {
     try {
-      // 生成唯一软件ID
+      // 鐢熸垚鍞竴杞欢ID
       const softwareId = this.generateId('software');
       
-      // 创建软件对象
+      // 鍒涘缓杞欢瀵硅薄
       const software = {
         ...softwareData,
         _id: softwareId,
@@ -268,22 +263,21 @@ class MetaJadeConnector {
         updatedAt: new Date().toISOString()
       };
       
-      // 存储软件数据到玄玉区块链
+      // 瀛樺偍杞欢鏁版嵁鍒扮巹鐜夊尯鍧楅摼
       const softwareKey = this.getSoftwareKey(softwareId);
       await this.metaJadeNode.store(softwareKey, JSON.stringify(software));
       this.dataCache.set(softwareKey, software);
       
       return software;
     } catch (error) {
-      console.error('创建软件失败:', error.message);
+      console.error('鍒涘缓杞欢澶辫触:', error.message);
       throw error;
     }
   }
 
   async getSoftwareById(id) {
     try {
-      // 从缓存或区块链获取软件数据
-      const softwareKey = this.getSoftwareKey(id);
+      // 浠庣紦瀛樻垨鍖哄潡閾捐幏鍙栬蒋浠舵暟鎹?      const softwareKey = this.getSoftwareKey(id);
       let software = this.dataCache.get(softwareKey);
       
       if (!software) {
@@ -298,60 +292,58 @@ class MetaJadeConnector {
       
       return software;
     } catch (error) {
-      console.error('通过ID获取软件失败:', error.message);
+      console.error('閫氳繃ID鑾峰彇杞欢澶辫触:', error.message);
       throw error;
     }
   }
 
   async getAllSoftware() {
     try {
-      // 注意：当前实现中，玄玉区块链DHT不支持获取所有软件
-      // 实际生产环境中应该维护软件索引
-      return [];
+      // 娉ㄦ剰锛氬綋鍓嶅疄鐜颁腑锛岀巹鐜夊尯鍧楅摼DHT涓嶆敮鎸佽幏鍙栨墍鏈夎蒋浠?      // 瀹為檯鐢熶骇鐜涓簲璇ョ淮鎶よ蒋浠剁储寮?      return [];
     } catch (error) {
-      console.error('获取所有软件失败:', error.message);
+      console.error('鑾峰彇鎵€鏈夎蒋浠跺け璐?', error.message);
       throw error;
     }
   }
 
   async updateSoftware(id, softwareData) {
     try {
-      // 获取现有软件
+      // 鑾峰彇鐜版湁杞欢
       const software = await this.getSoftwareById(id);
       if (!software) {
         return null;
       }
       
-      // 更新软件数据
+      // 鏇存柊杞欢鏁版嵁
       const updatedSoftware = {
         ...software,
         ...softwareData,
         updatedAt: new Date().toISOString()
       };
       
-      // 存储更新后的软件数据到玄玉区块链
+      // 瀛樺偍鏇存柊鍚庣殑杞欢鏁版嵁鍒扮巹鐜夊尯鍧楅摼
       const softwareKey = this.getSoftwareKey(id);
       await this.metaJadeNode.store(softwareKey, JSON.stringify(updatedSoftware));
       this.dataCache.set(softwareKey, updatedSoftware);
       
       return updatedSoftware;
     } catch (error) {
-      console.error('更新软件失败:', error.message);
+      console.error('鏇存柊杞欢澶辫触:', error.message);
       throw error;
     }
   }
 
-  // 商品相关方法
+  // 鍟嗗搧鐩稿叧鏂规硶
   getProductKey(productId) {
     return `product_${productId}`;
   }
 
   async createProduct(productData) {
     try {
-      // 生成唯一商品ID
+      // 鐢熸垚鍞竴鍟嗗搧ID
       const productId = this.generateId('product');
       
-      // 创建商品对象
+      // 鍒涘缓鍟嗗搧瀵硅薄
       const product = {
         ...productData,
         _id: productId,
@@ -360,22 +352,21 @@ class MetaJadeConnector {
         updatedAt: new Date().toISOString()
       };
       
-      // 存储商品数据到玄玉区块链
+      // 瀛樺偍鍟嗗搧鏁版嵁鍒扮巹鐜夊尯鍧楅摼
       const productKey = this.getProductKey(productId);
       await this.metaJadeNode.store(productKey, JSON.stringify(product));
       this.dataCache.set(productKey, product);
       
       return product;
     } catch (error) {
-      console.error('创建商品失败:', error.message);
+      console.error('鍒涘缓鍟嗗搧澶辫触:', error.message);
       throw error;
     }
   }
 
   async getProductById(id) {
     try {
-      // 从缓存或区块链获取商品数据
-      const productKey = this.getProductKey(id);
+      // 浠庣紦瀛樻垨鍖哄潡閾捐幏鍙栧晢鍝佹暟鎹?      const productKey = this.getProductKey(id);
       let product = this.dataCache.get(productKey);
       
       if (!product) {
@@ -390,60 +381,58 @@ class MetaJadeConnector {
       
       return product;
     } catch (error) {
-      console.error('通过ID获取商品失败:', error.message);
+      console.error('閫氳繃ID鑾峰彇鍟嗗搧澶辫触:', error.message);
       throw error;
     }
   }
 
   async getAllProducts() {
     try {
-      // 注意：当前实现中，玄玉区块链DHT不支持获取所有商品
-      // 实际生产环境中应该维护商品索引
-      return [];
+      // 娉ㄦ剰锛氬綋鍓嶅疄鐜颁腑锛岀巹鐜夊尯鍧楅摼DHT涓嶆敮鎸佽幏鍙栨墍鏈夊晢鍝?      // 瀹為檯鐢熶骇鐜涓簲璇ョ淮鎶ゅ晢鍝佺储寮?      return [];
     } catch (error) {
-      console.error('获取所有商品失败:', error.message);
+      console.error('鑾峰彇鎵€鏈夊晢鍝佸け璐?', error.message);
       throw error;
     }
   }
 
   async updateProduct(id, productData) {
     try {
-      // 获取现有商品
+      // 鑾峰彇鐜版湁鍟嗗搧
       const product = await this.getProductById(id);
       if (!product) {
         return null;
       }
       
-      // 更新商品数据
+      // 鏇存柊鍟嗗搧鏁版嵁
       const updatedProduct = {
         ...product,
         ...productData,
         updatedAt: new Date().toISOString()
       };
       
-      // 存储更新后的商品数据到玄玉区块链
+      // 瀛樺偍鏇存柊鍚庣殑鍟嗗搧鏁版嵁鍒扮巹鐜夊尯鍧楅摼
       const productKey = this.getProductKey(id);
       await this.metaJadeNode.store(productKey, JSON.stringify(updatedProduct));
       this.dataCache.set(productKey, updatedProduct);
       
       return updatedProduct;
     } catch (error) {
-      console.error('更新商品失败:', error.message);
+      console.error('鏇存柊鍟嗗搧澶辫触:', error.message);
       throw error;
     }
   }
 
-  // 交易相关方法
+  // 浜ゆ槗鐩稿叧鏂规硶
   getTransactionKey(transactionId) {
     return `transaction_${transactionId}`;
   }
 
   async createTransaction(transactionData) {
     try {
-      // 生成唯一交易ID
+      // 鐢熸垚鍞竴浜ゆ槗ID
       const transactionId = this.generateId('transaction');
       
-      // 创建交易对象
+      // 鍒涘缓浜ゆ槗瀵硅薄
       const transaction = {
         ...transactionData,
         _id: transactionId,
@@ -452,22 +441,21 @@ class MetaJadeConnector {
         status: 'pending'
       };
       
-      // 存储交易数据到玄玉区块链
+      // 瀛樺偍浜ゆ槗鏁版嵁鍒扮巹鐜夊尯鍧楅摼
       const transactionKey = this.getTransactionKey(transactionId);
       await this.metaJadeNode.store(transactionKey, JSON.stringify(transaction));
       this.dataCache.set(transactionKey, transaction);
       
       return transaction;
     } catch (error) {
-      console.error('创建交易失败:', error.message);
+      console.error('鍒涘缓浜ゆ槗澶辫触:', error.message);
       throw error;
     }
   }
 
   async getTransactionById(id) {
     try {
-      // 从缓存或区块链获取交易数据
-      const transactionKey = this.getTransactionKey(id);
+      // 浠庣紦瀛樻垨鍖哄潡閾捐幏鍙栦氦鏄撴暟鎹?      const transactionKey = this.getTransactionKey(id);
       let transaction = this.dataCache.get(transactionKey);
       
       if (!transaction) {
@@ -482,43 +470,41 @@ class MetaJadeConnector {
       
       return transaction;
     } catch (error) {
-      console.error('通过ID获取交易失败:', error.message);
+      console.error('閫氳繃ID鑾峰彇浜ゆ槗澶辫触:', error.message);
       throw error;
     }
   }
 
   async getUserTransactions(userId) {
     try {
-      // 注意：当前实现中，玄玉区块链DHT不支持获取用户交易记录
-      // 实际生产环境中应该维护用户交易索引
-      return [];
+      // 娉ㄦ剰锛氬綋鍓嶅疄鐜颁腑锛岀巹鐜夊尯鍧楅摼DHT涓嶆敮鎸佽幏鍙栫敤鎴蜂氦鏄撹褰?      // 瀹為檯鐢熶骇鐜涓簲璇ョ淮鎶ょ敤鎴蜂氦鏄撶储寮?      return [];
     } catch (error) {
-      console.error('获取用户交易记录失败:', error.message);
+      console.error('鑾峰彇鐢ㄦ埛浜ゆ槗璁板綍澶辫触:', error.message);
       throw error;
     }
   }
 
-  // 更新用户余额
+  // 鏇存柊鐢ㄦ埛浣欓
   async updateUserCoins(userId, amount) {
     try {
-      // 获取现有用户
+      // 鑾峰彇鐜版湁鐢ㄦ埛
       const user = await this.getUserById(userId);
       if (!user) {
-        throw new Error('用户不存在');
+        throw new Error('鐢ㄦ埛涓嶅瓨鍦?);
       }
       
-      // 更新用户余额
+      // 鏇存柊鐢ㄦ埛浣欓
       user.wallet.balance += amount;
       user.updatedAt = new Date().toISOString();
       
-      // 存储更新后的用户数据到玄玉区块链
+      // 瀛樺偍鏇存柊鍚庣殑鐢ㄦ埛鏁版嵁鍒扮巹鐜夊尯鍧楅摼
       const userKey = this.getUserKey(userId);
       await this.metaJadeNode.store(userKey, JSON.stringify(user));
       this.dataCache.set(userKey, user);
       
       return user;
     } catch (error) {
-      console.error('更新用户余额失败:', error.message);
+      console.error('鏇存柊鐢ㄦ埛浣欓澶辫触:', error.message);
       throw error;
     }
   }

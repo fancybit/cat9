@@ -1,7 +1,6 @@
-const dal = require('../dal');
+﻿const dal = require('../dal');
 
-// 获取所有游戏
-exports.getAllGames = async (req, res) => {
+// 鑾峰彇鎵€鏈夋父鎴?exports.getAllGames = async (req, res) => {
   try {
     const games = await dal.getAllGames();
     res.status(200).json({
@@ -13,12 +12,12 @@ exports.getAllGames = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: '服务器错误',
+      error: '鏈嶅姟鍣ㄩ敊璇?,
     });
   }
 };
 
-// 获取特色游戏
+// 鑾峰彇鐗硅壊娓告垙
 exports.getFeaturedGames = async (req, res) => {
   try {
     const games = await dal.getFeaturedGames();
@@ -31,12 +30,12 @@ exports.getFeaturedGames = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: '服务器错误',
+      error: '鏈嶅姟鍣ㄩ敊璇?,
     });
   }
 };
 
-// 获取单个游戏
+// 鑾峰彇鍗曚釜娓告垙
 exports.getGameById = async (req, res) => {
   try {
     const game = await dal.getGameById(req.params.id);
@@ -44,7 +43,7 @@ exports.getGameById = async (req, res) => {
     if (!game) {
       return res.status(404).json({
         success: false,
-        error: '游戏不存在',
+        error: '娓告垙涓嶅瓨鍦?,
       });
     }
 
@@ -56,13 +55,12 @@ exports.getGameById = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: '服务器错误',
+      error: '鏈嶅姟鍣ㄩ敊璇?,
     });
   }
 };
 
-// 创建新游戏
-exports.createGame = async (req, res) => {
+// 鍒涘缓鏂版父鎴?exports.createGame = async (req, res) => {
   try {
     const game = await dal.createGame(req.body);
 
@@ -74,12 +72,12 @@ exports.createGame = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: '创建游戏失败',
+      error: '鍒涘缓娓告垙澶辫触',
     });
   }
 };
 
-// 更新游戏
+// 鏇存柊娓告垙
 exports.updateGame = async (req, res) => {
   try {
     const game = await dal.updateGame(req.params.id, req.body);
@@ -87,7 +85,7 @@ exports.updateGame = async (req, res) => {
     if (!game) {
       return res.status(404).json({
         success: false,
-        error: '游戏不存在',
+        error: '娓告垙涓嶅瓨鍦?,
       });
     }
 
@@ -99,12 +97,12 @@ exports.updateGame = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: '更新游戏失败',
+      error: '鏇存柊娓告垙澶辫触',
     });
   }
 };
 
-// 删除游戏
+// 鍒犻櫎娓告垙
 exports.deleteGame = async (req, res) => {
   try {
     const success = await dal.deleteGame(req.params.id);
@@ -112,7 +110,7 @@ exports.deleteGame = async (req, res) => {
     if (!success) {
       return res.status(404).json({
         success: false,
-        error: '游戏不存在',
+        error: '娓告垙涓嶅瓨鍦?,
       });
     }
 
@@ -124,7 +122,7 @@ exports.deleteGame = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: '删除游戏失败',
+      error: '鍒犻櫎娓告垙澶辫触',
     });
   }
 };

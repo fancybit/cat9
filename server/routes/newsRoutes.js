@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const router = express.Router();
 const {
   getAllNews,
@@ -9,7 +9,7 @@ const {
   deleteNews,
 } = require('../controllers/newsController');
 
-// 定义新闻路由
+// 瀹氫箟鏂伴椈璺敱
 router
   .route('/')
   .get(getAllNews)

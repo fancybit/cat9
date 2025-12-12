@@ -1,11 +1,9 @@
-// 数据库连接配置
-const { getConnector } = require('../dbconnectors');
+﻿// 鏁版嵁搴撹繛鎺ラ厤缃?const { getConnector } = require('../dbconnectors');
 
-// 获取数据库类型，默认为metajade
+// 鑾峰彇鏁版嵁搴撶被鍨嬶紝榛樿涓簃etajade
 const DB_TYPE = process.env.DB_TYPE || 'metajade';
 
-// 数据库配置
-const dbConfig = {
+// 鏁版嵁搴撻厤缃?const dbConfig = {
   mongodb: {
     uri: process.env.MONGO_URI || 'mongodb://localhost:27017/cat9',
     options: {
@@ -21,52 +19,44 @@ const dbConfig = {
     port: process.env.MYSQL_PORT || 3306
   },
   metajade: {
-    // 玄玉区块链网络配置选项 - 只保留桥服务的必要配置
-    // 因为它只是对cs版玄玉区块链桥服务的封装
+    // 鐜勭帀鍖哄潡閾剧綉缁滈厤缃€夐」 - 鍙繚鐣欐ˉ鏈嶅姟鐨勫繀瑕侀厤缃?    // 鍥犱负瀹冨彧鏄cs鐗堢巹鐜夊尯鍧楅摼妗ユ湇鍔＄殑灏佽
     bridgeHost: process.env.METAJADE_BRIDGE_HOST || 'localhost',
     bridgePort: process.env.METAJADE_BRIDGE_PORT || 5000
-    // DHT相关配置已移至server.js中
-  }
+    // DHT鐩稿叧閰嶇疆宸茬Щ鑷硈erver.js涓?  }
 };
 
-// 全局数据库连接器实例
+// 鍏ㄥ眬鏁版嵁搴撹繛鎺ュ櫒瀹炰緥
 let dbConnector = null;
 
-// 连接数据库
-const connectDB = async () => {
+// 杩炴帴鏁版嵁搴?const connectDB = async () => {
   try {
-    // 获取数据库配置
-    const config = dbConfig[DB_TYPE];
+    // 鑾峰彇鏁版嵁搴撻厤缃?    const config = dbConfig[DB_TYPE];
     
-    // 获取对应类型的数据库连接器，传递配置选项
+    // 鑾峰彇瀵瑰簲绫诲瀷鐨勬暟鎹簱杩炴帴鍣紝浼犻€掗厤缃€夐」
     dbConnector = getConnector(DB_TYPE, config);
     
-    // 连接数据库
-    await dbConnector.connect(config);
+    // 杩炴帴鏁版嵁搴?    await dbConnector.connect(config);
     
-    // 获取数据库类型名称
-    const dbTypeName = {
+    // 鑾峰彇鏁版嵁搴撶被鍨嬪悕绉?    const dbTypeName = {
       'mongodb': 'MongoDB',
       'mysql': 'MySQL',
-      'metajade': '玄玉区块链'
+      'metajade': '鐜勭帀鍖哄潡閾?
     }[DB_TYPE] || DB_TYPE;
     
-    console.log(`${dbTypeName} 数据库连接成功`);
+    console.log(`${dbTypeName} 鏁版嵁搴撹繛鎺ユ垚鍔焋);
     
-    // 如果是玄玉区块链，显示连接信息
-    if (DB_TYPE === 'metajade') {
-      console.log(`玄玉区块链配置: 桥服务=${config.bridgeHost}:${config.bridgePort}`);
+    // 濡傛灉鏄巹鐜夊尯鍧楅摼锛屾樉绀鸿繛鎺ヤ俊鎭?    if (DB_TYPE === 'metajade') {
+      console.log(`鐜勭帀鍖哄潡閾鹃厤缃? 妗ユ湇鍔?${config.bridgeHost}:${config.bridgePort}`);
     }
   } catch (error) {
-    // 获取数据库类型名称
-    const dbTypeName = {
+    // 鑾峰彇鏁版嵁搴撶被鍨嬪悕绉?    const dbTypeName = {
       'mongodb': 'MongoDB',
       'mysql': 'MySQL',
-      'metajade': '玄玉区块链'
+      'metajade': '鐜勭帀鍖哄潡閾?
     }[DB_TYPE] || DB_TYPE;
     
-    console.error(`${dbTypeName} 数据库连接失败: ${error.message}`);
-    // 开发环境下不退出进程，以便继续调试
+    console.error(`${dbTypeName} 鏁版嵁搴撹繛鎺ュけ璐? ${error.message}`);
+    // 寮€鍙戠幆澧冧笅涓嶉€€鍑鸿繘绋嬶紝浠ヤ究缁х画璋冭瘯
     if (process.env.NODE_ENV !== 'development') {
       process.exit(1);
     }
@@ -74,30 +64,28 @@ const connectDB = async () => {
   }
 };
 
-// 断开数据库连接
-const disconnectDB = async () => {
+// 鏂紑鏁版嵁搴撹繛鎺?const disconnectDB = async () => {
   if (dbConnector) {
     try {
       await dbConnector.disconnect();
       
-      // 获取数据库类型名称
-      const dbTypeName = {
+      // 鑾峰彇鏁版嵁搴撶被鍨嬪悕绉?      const dbTypeName = {
         'mongodb': 'MongoDB',
         'mysql': 'MySQL',
-        'metajade': '玄玉区块链'
+        'metajade': '鐜勭帀鍖哄潡閾?
       }[DB_TYPE] || DB_TYPE;
       
-      console.log(`${dbTypeName} 数据库连接已断开`);
+      console.log(`${dbTypeName} 鏁版嵁搴撹繛鎺ュ凡鏂紑`);
     } catch (error) {
-      console.error(`断开数据库连接失败: ${error.message}`);
+      console.error(`鏂紑鏁版嵁搴撹繛鎺ュけ璐? ${error.message}`);
     }
   }
 };
 
-// 获取数据库连接器实例
+// 鑾峰彇鏁版嵁搴撹繛鎺ュ櫒瀹炰緥
 const getDBConnector = () => {
   if (!dbConnector) {
-    throw new Error('数据库尚未连接，请先调用 connectDB()');
+    throw new Error('鏁版嵁搴撳皻鏈繛鎺ワ紝璇峰厛璋冪敤 connectDB()');
   }
   return dbConnector;
 };

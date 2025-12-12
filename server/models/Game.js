@@ -1,19 +1,19 @@
-const mongoose = require('mongoose');
+﻿const mongoose = require('mongoose');
 
 const GameSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, '请输入游戏名称'],
+    required: [true, '璇疯緭鍏ユ父鎴忓悕绉?],
     trim: true,
   },
   description: {
     type: String,
-    required: [true, '请输入游戏描述'],
+    required: [true, '璇疯緭鍏ユ父鎴忔弿杩?],
     trim: true,
   },
   category: {
     type: String,
-    required: [true, '请输入游戏分类'],
+    required: [true, '璇疯緭鍏ユ父鎴忓垎绫?],
     trim: true,
   },
   image: {
@@ -22,7 +22,7 @@ const GameSchema = new mongoose.Schema({
   },
   url: {
     type: String,
-    required: [true, '请输入游戏链接'],
+    required: [true, '璇疯緭鍏ユ父鎴忛摼鎺?],
     trim: true,
   },
   isFeatured: {

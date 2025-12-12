@@ -1,6 +1,5 @@
-export default {
-  // 导航栏
-  navbar: {
+﻿export default {
+  // 瀵艰埅鏍?  navbar: {
     home: 'Home',
     store: 'Store',
     library: 'Library',
@@ -15,7 +14,7 @@ export default {
     register: 'Register'
   },
   
-  // 页脚
+  // 椤佃剼
   footer: {
     aboutUs: 'About Us',
     aboutText: 'Cat9 Entertainment is a platform focused on independent game publishing, providing convenient game release channels for developers and bringing high-quality gaming experiences to players.',
@@ -33,10 +32,10 @@ export default {
     qq: 'QQ Number',
     qqGroup: 'QQ Group',
     groupName: 'Jiuyi Union',
-    copyright: '© {year} Hong Kong Huameng Company Cat9 Entertainment. All rights reserved.'
+    copyright: '漏 {year} Hong Kong Huameng Company Cat9 Entertainment. All rights reserved.'
   },
   
-  // 通用
+  // 閫氱敤
   common: {
     language: 'Language',
     search: 'Search',
@@ -61,7 +60,7 @@ export default {
     more: 'More'
   },
   
-  // 登录/注册
+  // 鐧诲綍/娉ㄥ唽
   auth: {
     username: 'Username',
     password: 'Password',
@@ -79,7 +78,7 @@ export default {
     registerFailed: 'Registration Failed'
   },
   
-  // 首页
+  // 棣栭〉
   home: {
     welcome: 'Welcome to Cat9 Entertainment',
     popularGames: 'Popular Games',
@@ -92,7 +91,7 @@ export default {
     comingSoon: 'Coming Soon'
   },
   
-  // 商店
+  // 鍟嗗簵
   store: {
     allGames: 'All Games',
     categories: 'Categories',
@@ -108,8 +107,7 @@ export default {
     removeFromWishlist: 'Remove from Wishlist'
   },
   
-  // 游戏库
-  library: {
+  // 娓告垙搴?  library: {
     yourGames: 'Your Games',
     recentlyPlayed: 'Recently Played',
     allGames: 'All Games',
@@ -120,8 +118,7 @@ export default {
     gameDetails: 'Game Details'
   },
   
-  // 开发者
-  developer: {
+  // 寮€鍙戣€?  developer: {
     welcomeDevelopers: 'Welcome Developers',
     documentation: 'Documentation',
     apiReference: 'API Reference',
@@ -131,7 +128,7 @@ export default {
     gameAnalytics: 'Game Analytics'
   },
   
-  // 审核团队
+  // 瀹℃牳鍥㈤槦
   auditTeam: {
     aboutTeam: 'About the Audit Team',
     responsibilities: 'Core Responsibilities',

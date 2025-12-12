@@ -1,4 +1,4 @@
-/* 全局样式重置与基础设置 */
+﻿/* 鍏ㄥ眬鏍峰紡閲嶇疆涓庡熀纭€璁剧疆 */
 * {
   margin: 0;
   padding: 0;
@@ -13,7 +13,7 @@ body {
   overflow-x: hidden;
 }
 
-/* 根变量 - 全局主题色定义 */
+/* 鏍瑰彉閲?- 鍏ㄥ眬涓婚鑹插畾涔?*/
 :root {
   --primary-color: #333333;
   --secondary-color: #222222;
@@ -31,7 +31,7 @@ body {
   --info-color: #2b79a2;
 }
 
-/* 容器样式 */
+/* 瀹瑰櫒鏍峰紡 */
 .container {
   width: 100%;
   max-width: 1200px;
@@ -39,7 +39,7 @@ body {
   padding: 0 20px;
 }
 
-/* 按钮基础样式 */
+/* 鎸夐挳鍩虹鏍峰紡 */
 .btn {
   display: inline-block;
   padding: 8px 16px;
@@ -92,7 +92,7 @@ body {
   background-color: #5ab98c;
 }
 
-/* 卡片基础样式 */
+/* 鍗＄墖鍩虹鏍峰紡 */
 .card {
   background-color: var(--card-bg);
   border-radius: 4px;
@@ -107,7 +107,7 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* 表单元素样式 */
+/* 琛ㄥ崟鍏冪礌鏍峰紡 */
 input,
 select,
 textarea {
@@ -134,20 +134,20 @@ textarea::placeholder {
   color: var(--text-secondary);
 }
 
-/* 导航栏样式 */
+/* 瀵艰埅鏍忔牱寮?*/
 .navbar {
   background-color: var(--secondary-color);
   border-bottom: 1px solid var(--border-color);
   padding: 0;
 }
 
-/* 页面内容区域 */
+/* 椤甸潰鍐呭鍖哄煙 */
 .page-content {
   padding: 30px 0;
   min-height: calc(100vh - 120px);
 }
 
-/* 标题样式 */
+/* 鏍囬鏍峰紡 */
 h1, h2, h3, h4, h5, h6 {
   color: var(--text-primary);
   margin-bottom: 16px;
@@ -166,7 +166,7 @@ h3 {
   font-size: 20px;
 }
 
-/* 链接样式 */
+/* 閾炬帴鏍峰紡 */
 a {
   color: var(--button-primary);
   text-decoration: none;
@@ -178,7 +178,7 @@ a:hover {
   text-decoration: underline;
 }
 
-/* 网格布局 */
+/* 缃戞牸甯冨眬 */
 .grid {
   display: grid;
   gap: 16px;
@@ -196,14 +196,14 @@ a:hover {
   grid-template-columns: repeat(4, 1fr);
 }
 
-/* 分隔线 */
+/* 鍒嗛殧绾?*/
 .divider {
   height: 1px;
   background-color: var(--border-color);
   margin: 24px 0;
 }
 
-/* 动画效果 */
+/* 鍔ㄧ敾鏁堟灉 */
 .fade-in {
   animation: fadeIn 0.5s ease-in;
 }
@@ -219,11 +219,11 @@ a:hover {
   }
 }
 
-/* 响应式设计系统 */
+/* 鍝嶅簲寮忚璁＄郴缁?*/
 
-/* 断点定义 */
+/* 鏂偣瀹氫箟 */
 @media (max-width: 767px) {
-  /* 移动设备 */
+  /* 绉诲姩璁惧 */
   .container {
     padding: 0 15px;
   }
@@ -261,7 +261,7 @@ a:hover {
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
-  /* 平板设备 */
+  /* 骞虫澘璁惧 */
   .grid-cols-3,
   .grid-cols-4 {
     grid-template-columns: repeat(2, 1fr);
@@ -269,20 +269,20 @@ a:hover {
 }
 
 @media (min-width: 1024px) {
-  /* 桌面设备 */
+  /* 妗岄潰璁惧 */
   .container {
     padding: 0 20px;
   }
 }
 
 @media (min-width: 1440px) {
-  /* 大屏设备 */
+  /* 澶у睆璁惧 */
   .container {
     max-width: 1400px;
   }
 }
 
-/* 游戏卡片特殊样式 */
+/* 娓告垙鍗＄墖鐗规畩鏍峰紡 */
 .game-card {
   background-color: var(--card-bg);
   border-radius: 4px;
@@ -322,7 +322,7 @@ a:hover {
   color: var(--button-primary);
 }
 
-/* 加载状态 */
+/* 鍔犺浇鐘舵€?*/
 .loading {
   display: flex;
   justify-content: center;
@@ -345,14 +345,14 @@ a:hover {
   100% { transform: rotate(360deg); }
 }
 
-/* 错误状态 */
+/* 閿欒鐘舵€?*/
 .error {
   color: var(--error-color);
   font-size: 14px;
   margin-top: 5px;
 }
 
-/* 成功状态 */
+/* 鎴愬姛鐘舵€?*/
 .success {
   color: var(--success-color);
   font-size: 14px;

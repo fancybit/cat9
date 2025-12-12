@@ -1,77 +1,74 @@
-const { execSync } = require('child_process');
+﻿const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-console.log('开始超简化版Electron应用构建...');
+console.log('寮€濮嬭秴绠€鍖栫増Electron搴旂敤鏋勫缓...');
 
-// 确保工作目录干净
+// 纭繚宸ヤ綔鐩綍骞插噣
 const cleanDirs = ['dist-electron', 'dist-exe', 'dist'];
 cleanDirs.forEach(dir => {
   const dirPath = path.join(__dirname, dir);
   if (fs.existsSync(dirPath)) {
-    console.log(`清理目录: ${dirPath}`);
+    console.log(`娓呯悊鐩綍: ${dirPath}`);
     try {
       fs.rmSync(dirPath, { recursive: true, force: true });
     } catch (err) {
-      console.warn(`清理 ${dir} 时出错，但将继续:`, err.message);
+      console.warn(`娓呯悊 ${dir} 鏃跺嚭閿欙紝浣嗗皢缁х画:`, err.message);
     }
   }
 });
 
-// 重新创建dist目录
+// 閲嶆柊鍒涘缓dist鐩綍
 if (!fs.existsSync(path.join(__dirname, 'dist'))) {
   fs.mkdirSync(path.join(__dirname, 'dist'));
 }
 
-// 重新创建dist-exe目录
+// 閲嶆柊鍒涘缓dist-exe鐩綍
 if (!fs.existsSync(path.join(__dirname, 'dist-exe'))) {
   fs.mkdirSync(path.join(__dirname, 'dist-exe'));
 }
 
-// 确保没有奇怪的符号链接或嵌套目录
-console.log('\n检查并清理可能的符号链接问题...');
+// 纭繚娌℃湁濂囨€殑绗﹀彿閾炬帴鎴栧祵濂楃洰褰?console.log('\n妫€鏌ュ苟娓呯悊鍙兘鐨勭鍙烽摼鎺ラ棶棰?..');
 
 try {
-  // 先运行Vue构建
-  console.log('\n=== 运行Vue构建 ===');
+  // 鍏堣繍琛孷ue鏋勫缓
+  console.log('\n=== 杩愯Vue鏋勫缓 ===');
   execSync('npm run build', { stdio: 'inherit' });
-  console.log('✅ Vue构建成功');
+  console.log('鉁?Vue鏋勫缓鎴愬姛');
   
-  // 验证Vue构建结果
+  // 楠岃瘉Vue鏋勫缓缁撴灉
   const distPath = path.join(__dirname, 'dist');
   if (fs.existsSync(distPath) && fs.existsSync(path.join(distPath, 'index.html'))) {
-    console.log('✅ Vue构建产物验证成功');
+    console.log('鉁?Vue鏋勫缓浜х墿楠岃瘉鎴愬姛');
   } else {
-    console.error('❌ Vue构建产物验证失败，找不到index.html');
+    console.error('鉂?Vue鏋勫缓浜х墿楠岃瘉澶辫触锛屾壘涓嶅埌index.html');
     process.exit(1);
   }
   
-  // 使用最简单的electron-packager命令，只包含必要参数
-  console.log('\n=== 打包Electron应用 ===');
-  console.log('注意：这一步可能需要较长时间，因为需要下载Electron');
+  // 浣跨敤鏈€绠€鍗曠殑electron-packager鍛戒护锛屽彧鍖呭惈蹇呰鍙傛暟
+  console.log('\n=== 鎵撳寘Electron搴旂敤 ===');
+  console.log('娉ㄦ剰锛氳繖涓€姝ュ彲鑳介渶瑕佽緝闀挎椂闂达紝鍥犱负闇€瑕佷笅杞紼lectron');
   
-  // 使用npx直接运行electron-packager，只使用最基本的参数
-  const command = 'npx electron-packager . cat9 --platform=win32 --arch=x64 --out=dist-exe';
-  console.log(`执行命令: ${command}`);
+  // 浣跨敤npx鐩存帴杩愯electron-packager锛屽彧浣跨敤鏈€鍩烘湰鐨勫弬鏁?  const command = 'npx electron-packager . cat9 --platform=win32 --arch=x64 --out=dist-exe';
+  console.log(`鎵ц鍛戒护: ${command}`);
   
-  // 不设置超时，让它自然完成
+  // 涓嶈缃秴鏃讹紝璁╁畠鑷劧瀹屾垚
   execSync(command, { stdio: 'inherit' });
   
-  console.log('\n✅ Electron应用构建完成!');
+  console.log('\n鉁?Electron搴旂敤鏋勫缓瀹屾垚!');
   
-  // 检查构建结果
-  const exePath = path.join(__dirname, 'dist-exe', 'cat9-win32-x64', 'cat9.exe');
+  // 妫€鏌ユ瀯寤虹粨鏋?  const exePath = path.join(__dirname, 'dist-exe', 'cat9-win32-x64', 'cat9.exe');
   if (fs.existsSync(exePath)) {
-    console.log(`✅ 可执行文件已成功生成: ${exePath}`);
+    console.log(`鉁?鍙墽琛屾枃浠跺凡鎴愬姛鐢熸垚: ${exePath}`);
   } else {
-    console.log('⚠️  请检查dist-exe目录中的构建结果');
+    console.log('鈿狅笍  璇锋鏌ist-exe鐩綍涓殑鏋勫缓缁撴灉');
   }
   
 } catch (err) {
-  console.error('\n❌ 构建失败:', err.message);
-  console.log('\n手动构建建议:');
-  console.log('1. 确保所有依赖已安装: npm install');
-  console.log('2. 单独运行Vue构建: npm run build');
-  console.log('3. 然后手动运行: npx electron-packager . cat9 --platform=win32 --arch=x64 --out=dist-exe');
+  console.error('\n鉂?鏋勫缓澶辫触:', err.message);
+  console.log('\n鎵嬪姩鏋勫缓寤鸿:');
+  console.log('1. 纭繚鎵€鏈変緷璧栧凡瀹夎: npm install');
+  console.log('2. 鍗曠嫭杩愯Vue鏋勫缓: npm run build');
+  console.log('3. 鐒跺悗鎵嬪姩杩愯: npx electron-packager . cat9 --platform=win32 --arch=x64 --out=dist-exe');
   process.exit(1);
 }
