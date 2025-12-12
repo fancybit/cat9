@@ -1,5 +1,6 @@
-﻿export default {
-  // 瀵艰埅鏍?  navbar: {
+export default {
+  // Navigation Menu
+  navbar: {
     home: '袚谢邪胁薪邪褟',
     store: '袦邪谐邪蟹懈薪',
     library: '袘懈斜谢懈芯褌械泻邪',
@@ -14,7 +15,7 @@
     register: '袟邪褉械谐懈褋褌褉懈褉芯胁邪褌褜褋褟'
   },
   
-  // 椤佃剼
+  // Footer
   footer: {
     aboutUs: '袨 薪邪褋',
     aboutText: 'Cat9 Entertainment 鈥?褝褌芯 锌谢邪褌褎芯褉屑邪, 褋锌械褑懈邪谢懈蟹懈褉褍褞褖邪褟褋褟 薪邪 懈蟹写邪薪懈懈 薪械蟹邪胁懈褋懈屑褘褏 懈谐褉, 锌褉械写芯褋褌邪胁谢褟褞褖邪褟 褉邪蟹褉邪斜芯褌褔懈泻邪屑 褍写芯斜薪褘械 泻邪薪邪谢褘 写谢褟 胁褘锌褍褋泻邪 懈谐褉 懈 懈谐褉芯泻邪屑 胁褘褋芯泻芯泻邪褔械褋褌胁械薪薪褘械 懈谐褉芯胁褘械 胁锌械褔邪褌谢械薪懈褟.',
@@ -28,10 +29,10 @@
     email: '协谢械泻褌褉芯薪薪邪褟 锌芯褔褌邪',
     wechat: 'WeChat',
     officialAccount: '袨褎懈褑懈邪谢褜薪褘泄 邪泻泻邪褍薪褌',
-    copyright: '漏 {year} Hong Kong Huameng Company Cat9 Entertainment. 袙褋械 锌褉邪胁邪 蟹邪褖懈褖械薪褘.'
+    copyright: '© {year} Hong Kong Huameng Company Cat9 Entertainment. Все права защищены.'
   },
   
-  // 閫氱敤
+  // Common
   common: {
     language: '携蟹褘泻',
     search: '袩芯懈褋泻',
@@ -56,7 +57,7 @@
     more: '袝褖褢'
   },
   
-  // 鐧诲綍/娉ㄥ唽
+  // Login/Register
   auth: {
     username: '袠屑褟 锌芯谢褜蟹芯胁邪褌械谢褟',
     password: '袩邪褉芯谢褜',
@@ -74,7 +75,7 @@
     registerFailed: '袨褕懈斜泻邪 褉械谐懈褋褌褉邪褑懈懈'
   },
   
-  // 棣栭〉
+  // Home Page
   home: {
     welcome: '袛芯斜褉芯 锌芯卸邪谢芯胁邪褌褜 胁 Cat9 Entertainment',
     popularGames: '袩芯锌褍谢褟褉薪褘械 懈谐褉褘',
@@ -87,7 +88,7 @@
     comingSoon: '小泻芯褉芯 胁褘泄写械褌'
   },
   
-  // 鍟嗗簵
+  // Store
   store: {
     allGames: '袙褋械 懈谐褉褘',
     categories: '袣邪褌械谐芯褉懈懈',
@@ -103,7 +104,8 @@
     removeFromWishlist: '校写邪谢懈褌褜 懈蟹 褋锌懈褋泻邪 卸械谢邪薪懈泄'
   },
   
-  // 娓告垙搴?  library: {
+  // Library
+  library: {
     yourGames: '袙邪褕懈 懈谐褉褘',
     recentlyPlayed: '袧械写邪胁薪芯 褋褘谐褉邪薪薪褘械',
     allGames: '袙褋械 懈谐褉褘',
@@ -114,7 +116,8 @@
     gameDetails: '袛械褌邪谢懈 懈谐褉褘'
   },
   
-  // 寮€鍙戣€?  developer: {
+  // Developer
+  developer: {
     welcomeDevelopers: '袛芯斜褉芯 锌芯卸邪谢芯胁邪褌褜, 褉邪蟹褉邪斜芯褌褔懈泻懈',
     documentation: '袛芯泻褍屑械薪褌邪褑懈褟',
     apiReference: '小锌褉邪胁芯褔薪懈泻 API',
@@ -124,7 +127,7 @@
     gameAnalytics: '袗薪邪谢懈褌懈泻邪 懈谐褉'
   },
   
-  // 瀹℃牳鍥㈤槦
+  // Audit Team
   auditTeam: {
     aboutTeam: '袨 泻芯屑邪薪写械 邪褍写懈褌邪',
     responsibilities: '袨褋薪芯胁薪褘械 芯斜褟蟹邪薪薪芯褋褌懈',

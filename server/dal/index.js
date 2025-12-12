@@ -1,155 +1,175 @@
-﻿// 鏁版嵁璁块棶灞?DAL) - 涓篶at9搴撴彁渚涚粺涓€鐨勬暟鎹闂帴鍙ｏ紝鍩轰簬鐜勭帀鍖哄潡閾剧綉缁?
-// 瀵煎叆鏁版嵁搴撹繛鎺ュ櫒
+﻿// 数据访问层(DAL) - 为Cat9提供统一的数据查询接口，基于玄玉区块链网络
+// 导入数据库连接器
 const MetaJadeConnector = require('../dbconnectors/metajadeConnector');
 
-// 瀵煎叆MongoDB妯″瀷锛堟殏鏃朵繚鐣欙紝鐢ㄤ簬鍏煎锛?const Game = require('../models/Game');
+// 导入MongoDB模型(临时保留，用于兼容)const Game = require('../models/Game');
 const mongoose = require('mongoose');
 
-// 鏁版嵁璁块棶灞傜被
+// 数据访问层类
 class DataAccessLayer {
   constructor(dbType = 'blockchain') {
-    // 鍒濆鍖栫巹鐜夊尯鍧楅摼杩炴帴鍣?    this.connector = new MetaJadeConnector();
+    // 初始化玄玉区块链连接器
+    this.connector = new MetaJadeConnector();
     this.isInitialized = false;
   }
 
   /**
-   * 鍒濆鍖栨暟鎹闂眰
+   * 初始化数据查询层
    */
   async initialize() {
     if (this.isInitialized) return;
-    
+
     try {
-      // 杩炴帴鍒扮巹鐜夊尯鍧楅摼缃戠粶
+      // 连接到玄玉区块链网络
       await this.connector.connect();
-      console.log('鏁版嵁璁块棶灞傚垵濮嬪寲瀹屾垚锛屼娇鐢ㄧ巹鐜夊尯鍧楅摼缃戠粶');
+      console.log('数据访问层初始化完成，使用玄玉区块链网络');
       this.isInitialized = true;
     } catch (error) {
-      console.error('鏁版嵁璁块棶灞傚垵濮嬪寲澶辫触:', error);
+      console.error('数据访问层初始化失败:', error);
       throw error;
     }
   }
 
   /**
-   * 鐢熸垚鍞竴ID
-   * @param {string} prefix - ID鍓嶇紑
-   * @returns {string} 鍞竴ID
+   * 生成唯一ID
+   * @param {string} prefix - ID前缀
+   * @returns {string} 唯一ID
    */
   generateId(prefix) {
     return `${prefix}_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
   }
 
   /**
-   * 瀛樺偍鏁版嵁鍒扮巹鐜夊尯鍧楅摼
-   * @param {string} key - 鏁版嵁閿?   * @param {Object} data - 鏁版嵁瀵硅薄
+   * 存储数据到玄玉区块链
+   * @param {string} key - 数据键
+   * @param {Object} data - 数据对象
    * @returns {Promise<void>}
    */
   async storeData(key, data) {
     await this.initialize();
     const serializedData = JSON.stringify(data);
-    await this.connector.metaJadeHome.store(key, serializedData);
+    await this.connector.store(key, serializedData);
+    console.log(`尝试存储数据: ${key}`);
   }
 
   /**
-   * 浠庣巹鐜夊尯鍧楅摼妫€绱㈡暟鎹?   * @param {string} key - 鏁版嵁閿?   * @returns {Promise<Object|null>} 鏁版嵁瀵硅薄
+   * 从玄玉区块链检索数据
+   * @param {string} key - 数据键
+   * @returns {Promise<Object|null>} 数据对象
    */
   async retrieveData(key) {
     await this.initialize();
     try {
-      const serializedData = await this.connector.metaJadeHome.retrieve(key);
+      const serializedData = await this.connector.retrieve(key);
       if (serializedData) {
         const data = JSON.parse(serializedData);
         return data;
       }
       return null;
     } catch (error) {
-      console.error(`浠庣巹鐜夊尯鍧楅摼妫€绱㈡暟鎹け璐?(${key}):`, error);
+      console.error(`从玄玉区块链检索数据失败(${key}):`, error);
       return null;
     }
   }
 
   /**
-   * 鐢熸垚鐢ㄦ埛鏁版嵁閿?   * @param {string} userId - 鐢ㄦ埛ID
-   * @returns {string} 鐢ㄦ埛鏁版嵁閿?   */
+   * 生成用户数据键
+   * @param {string} userId - 用户ID
+   * @returns {string} 用户数据键
+   */
   getUserKey(userId) {
     return `user_${userId}`;
   }
 
   /**
-   * 鐢熸垚鐢ㄦ埛鍚嶇储寮曢敭
-   * @param {string} username - 鐢ㄦ埛鍚?   * @returns {string} 鐢ㄦ埛鍚嶇储寮曢敭
+   * 生成用户名索引键
+   * @param {string} username - 用户名
+   * @returns {string} 用户名索引键
    */
   getUsernameIndexKey(username) {
     return `username_index_${username}`;
   }
 
   /**
-   * 鐢熸垚閭绱㈠紩閿?   * @param {string} email - 閭
-   * @returns {string} 閭绱㈠紩閿?   */
+   * 生成邮箱索引键
+   * @param {string} email - 邮箱
+   * @returns {string} 邮箱索引键
+   */
   getEmailIndexKey(email) {
     return `email_index_${email}`;
   }
 
   /**
-   * 鐢熸垚娓告垙鏁版嵁閿?   * @param {string} gameId - 娓告垙ID
-   * @returns {string} 娓告垙鏁版嵁閿?   */
+   * 生成游戏数据键
+   * @param {string} gameId - 游戏ID
+   * @returns {string} 游戏数据键
+   */
   getGameKey(gameId) {
     return `game_${gameId}`;
   }
 
   /**
-   * 鐢熸垚浜ゆ槗鏁版嵁閿?   * @param {string} transactionId - 浜ゆ槗ID
-   * @returns {string} 浜ゆ槗鏁版嵁閿?   */
+   * 生成交易数据键
+   * @param {string} transactionId - 交易ID
+   * @returns {string} 交易数据键
+   */
   getTransactionKey(transactionId) {
     return `transaction_${transactionId}`;
   }
 
   /**
-   * 鐢熸垚寮€鍙戣€呮暟鎹敭
-   * @param {string} developerId - 寮€鍙戣€匢D
-   * @returns {string} 寮€鍙戣€呮暟鎹敭
+   * 生成开发者数据键
+   * @param {string} developerId - 开发者ID
+   * @returns {string} 开发者数据键
    */
   getDeveloperKey(developerId) {
     return `developer_${developerId}`;
   }
 
   /**
-   * 鐢熸垚杞欢鏁版嵁閿?   * @param {string} softwareId - 杞欢ID
-   * @returns {string} 杞欢鏁版嵁閿?   */
+   * 生成软件数据键
+   * @param {string} softwareId - 软件ID
+   * @returns {string} 软件数据键
+   */
   getSoftwareKey(softwareId) {
     return `software_${softwareId}`;
   }
 
   /**
-   * 鐢熸垚鍟嗗搧鏁版嵁閿?   * @param {string} productId - 鍟嗗搧ID
-   * @returns {string} 鍟嗗搧鏁版嵁閿?   */
+   * 生成产品数据键
+   * @param {string} productId - 产品ID
+   * @returns {string} 产品数据键
+   */
   getProductKey(productId) {
     return `product_${productId}`;
   }
 
-  // ===== 鐢ㄦ埛鐩稿叧鏂规硶 =====
-  
+  // ===== 用户相关方法 =====
+
   /**
-   * 鍒涘缓鐢ㄦ埛
-   * @param {Object} userData - 鐢ㄦ埛鏁版嵁
-   * @returns {Promise<Object>} 鍒涘缓鐨勭敤鎴?   */
+   * 创建用户
+   * @param {Object} userData - 用户数据
+   * @returns {Promise<Object>} 创建的用户
+   */
   async createUser(userData) {
     await this.initialize();
-    
-    // 妫€鏌ョ敤鎴峰悕鏄惁宸插瓨鍦?    const existingUsername = await this.getUserByUsername(userData.username);
+
+    // 检查用户名是否已存在
+    const existingUsername = await this.getUserByUsername(userData.username);
     if (existingUsername) {
-      throw new Error('鐢ㄦ埛鍚嶅凡瀛樺湪');
+      throw new Error('用户名已存在');
     }
-    
-    // 妫€鏌ラ偖绠辨槸鍚﹀凡瀛樺湪
+
+    // 检查邮箱是否已存在
     const existingEmail = await this.getUserByEmail(userData.email);
     if (existingEmail) {
-      throw new Error('閭宸茶娉ㄥ唽');
+      throw new Error('邮箱已被注册');
     }
-    
-    // 鐢熸垚鍞竴鐢ㄦ埛ID
+
+    // 生成唯一用户ID
     const userId = this.generateId('user');
-    
-    // 鍒涘缓鐢ㄦ埛瀵硅薄
+
+    // 创建用户对象
     const user = {
       ...userData,
       _id: userId,
@@ -160,40 +180,37 @@ class DataAccessLayer {
         balance: userData.wallet?.balance || 0,
         address: userData.wallet?.address || this.generateId('wallet')
       },
-      // 娣诲姞鏂规硶妯℃嫙MongoDB妯″瀷鐨勮涓?      toJSON: function() {
-        return { ...this };
-      },
-      save: async function() {
+      // 添加方法模拟MongoDB模型的行为
+      toJSON: function () {
         return this;
-      },
-      verifyPassword: async function(compareFn, password) {
-        return compareFn(password, this.passwordHash);
       }
     };
-    
-    // 瀛樺偍鐢ㄦ埛鏁版嵁鍒扮巹鐜夊尯鍧楅摼
+
+    // 存储用户数据到玄玉区块链
     await this.storeData(this.getUserKey(userId), user);
-    
-    // 鍒涘缓鐢ㄦ埛鍚嶇储寮?    await this.storeData(this.getUsernameIndexKey(userData.username), userId);
-    
-    // 鍒涘缓閭绱㈠紩
+
+    // 创建用户名索引
+    await this.storeData(this.getUsernameIndexKey(userData.username), userId);
+
+    // 创建邮箱索引
     await this.storeData(this.getEmailIndexKey(userData.email), userId);
-    
     return user;
   }
 
   /**
-   * 鑾峰彇鐢ㄦ埛
-   * @param {string} userId - 鐢ㄦ埛ID
-   * @returns {Promise<Object|null>} 鐢ㄦ埛瀵硅薄
-   */
+  * 获取用户
+  * @param {string} userId - 用户ID
+  * @returns {Promise<Object|null>} 用户对象
+  */
   async getUser(userId) {
     await this.initialize();
     return this.retrieveData(this.getUserKey(userId));
-  }
 
+  }
   /**
-   * 閫氳繃鐢ㄦ埛鍚嶈幏鍙栫敤鎴?   * @param {string} username - 鐢ㄦ埛鍚?   * @returns {Promise<Object|null>} 鐢ㄦ埛瀵硅薄
+   * 通过用户名获取用户
+   * @param {string} username - 用户名
+   * @returns {Promise<Object|null>} 用户对象
    */
   async getUserByUsername(username) {
     await this.initialize();
@@ -205,9 +222,9 @@ class DataAccessLayer {
   }
 
   /**
-   * 閫氳繃閭鑾峰彇鐢ㄦ埛
-   * @param {string} email - 閭
-   * @returns {Promise<Object|null>} 鐢ㄦ埛瀵硅薄
+   * 通过邮箱获取用户
+   * @param {string} email - 邮箱
+   * @returns {Promise<Object|null>} 用户对象
    */
   async getUserByEmail(email) {
     await this.initialize();
@@ -219,80 +236,81 @@ class DataAccessLayer {
   }
 
   /**
-   * 閫氳繃閲嶇疆浠ょ墝鑾峰彇鐢ㄦ埛
-   * @param {string} token - 閲嶇疆浠ょ墝
-   * @returns {Promise<Object|null>} 鐢ㄦ埛瀵硅薄
+   * 通过重置令牌获取用户
+   * @param {string} token - 重置令牌
+   * @returns {Promise<Object|null>} 用户对象
    */
   async getUserByResetToken(token) {
     await this.initialize();
-    // 閬嶅巻鎵€鏈夌敤鎴锋煡鎵惧尮閰嶇殑閲嶇疆浠ょ墝
-    // 娉ㄦ剰锛氳繖鏄竴绉嶄綆鏁堢殑瀹炵幇锛屽疄闄呯敓浜х幆澧冧腑搴旇浣跨敤绱㈠紩
-    // 鐢变簬鐜勭帀鍖哄潡閾綝HT鐨勯檺鍒讹紝杩欓噷鏆傛椂浣跨敤杩欑鏂瑰紡
+    // 遍历所有用户查找匹配的重置令牌
+    // 注意：这是一种低效的实现，实际生产环境中应该使用索引
+    // 由于玄玉区块链DHT的限制，这里暂时使用这种方式
     return null;
   }
 
   /**
-   * 鏇存柊鐢ㄦ埛
-   * @param {string} userId - 鐢ㄦ埛ID
-   * @param {Object} updateData - 鏇存柊鏁版嵁
-   * @returns {Promise<Object|null>} 鏇存柊鍚庣殑鐢ㄦ埛
-   */
+  * 更新用户
+ * @param { string } userId - 用户ID
+   * @param { Object } updateData - 更新数据
+     * @returns { Promise < Object | null >} 更新后的用户
+       */
   async updateUser(userId, updateData) {
     await this.initialize();
-    
-    // 鑾峰彇鐜版湁鐢ㄦ埛
+    // 获取现有用户
     const user = await this.getUser(userId);
     if (!user) {
       return null;
     }
-    
-    // 鏇存柊鐢ㄦ埛鏁版嵁
+
+    // 更新用户数据
     const updatedUser = {
       ...user,
       ...updateData,
       updatedAt: new Date()
     };
-    
-    // 瀛樺偍鏇存柊鍚庣殑鐢ㄦ埛鏁版嵁鍒扮巹鐜夊尯鍧楅摼
-    await this.storeData(this.getUserKey(userId), updatedUser);
-    
-    return updatedUser;
-  }
 
-  // ===== 杞欢鐩稿叧鏂规硶 =====
-  
+    // 存储更新后的用户数据到玄玉区块链
+    await this.storeData(this.getUserKey(userId), updatedUser);
+
+    return updatedUser;
+
+  }
+  // ===== 软件相关方法 =====
+
   /**
-   * 鍒涘缓杞欢
-   * @param {Object} softwareData - 杞欢鏁版嵁
-   * @returns {Promise<Object>} 鍒涘缓鐨勮蒋浠?   */
+   * 创建软件
+   * @param {Object} softwareData - 软件数据
+   * @returns {Promise<Object>} 创建的软件
+   */
   async createSoftware(softwareData) {
     await this.initialize();
-    
-    // 鐢熸垚鍞竴杞欢ID
+
+    // 生成唯一软件ID
     const softwareId = this.generateId('software');
-    
-    // 鍒涘缓杞欢瀵硅薄
+
+    // 创建软件对象
     const software = {
       ...softwareData,
       _id: softwareId,
       id: softwareId,
       createdAt: new Date(),
       updatedAt: new Date(),
-      // 娣诲姞鏂规硶妯℃嫙MongoDB妯″瀷鐨勮涓?      toJSON: function() {
-        return { ...this };
+      // 添加方法模拟MongoDB模型的行为
+      toJSON: function () {
+        return this;
       }
     };
-    
-    // 瀛樺偍杞欢鏁版嵁鍒扮巹鐜夊尯鍧楅摼
+
+    // 存储软件数据到玄玉区块链
     await this.storeData(this.getSoftwareKey(softwareId), software);
-    
+
     return software;
   }
 
   /**
-   * 鑾峰彇杞欢
-   * @param {string} softwareId - 杞欢ID
-   * @returns {Promise<Object|null>} 杞欢瀵硅薄
+   * 获取软件
+   * @param {string} softwareId - 软件ID
+   * @returns {Promise<Object|null>} 软件对象
    */
   async getSoftware(softwareId) {
     await this.initialize();
@@ -300,49 +318,53 @@ class DataAccessLayer {
   }
 
   /**
-   * 鑾峰彇鐢ㄦ埛鎷ユ湁鐨勮蒋浠?   * @param {string} userId - 鐢ㄦ埛ID
-   * @returns {Promise<Array>} 杞欢鍒楄〃
+   * 获取用户拥有的软件
+   * @param {string} userId - 用户ID
+   * @returns {Promise<Array>} 软件列表
    */
   async getUserSoftware(userId) {
     await this.initialize();
-    // 娉ㄦ剰锛氱巹鐜夊尯鍧楅摼DHT涓嶆敮鎸佹寜鐢ㄦ埛ID鏌ヨ杞欢锛岃繖閲岃繑鍥炵┖鍒楄〃
-    // 瀹為檯鐢熶骇鐜涓簲璇ョ淮鎶ょ敤鎴疯蒋浠剁储寮?    return [];
+    // 注意：玄玉区块链DHT不支持按用户ID查询软件，这里返回空列表
+    // 实际生产环境中应该维护用户软件索引
+    return [];
   }
 
-  // ===== 鍟嗗搧鐩稿叧鏂规硶 =====
-  
+  // ===== 产品相关方法 =====
+
   /**
-   * 鍒涘缓鍟嗗搧
-   * @param {Object} productData - 鍟嗗搧鏁版嵁
-   * @returns {Promise<Object>} 鍒涘缓鐨勫晢鍝?   */
+   * 创建产品
+   * @param {Object} productData - 产品数据
+   * @returns {Promise<Object>} 创建的产品
+   */
   async createProduct(productData) {
     await this.initialize();
-    
-    // 鐢熸垚鍞竴鍟嗗搧ID
+
+    // 生成唯一产品ID
     const productId = this.generateId('product');
-    
-    // 鍒涘缓鍟嗗搧瀵硅薄
+
+    // 创建产品对象
     const product = {
       ...productData,
       _id: productId,
       id: productId,
       createdAt: new Date(),
       updatedAt: new Date(),
-      // 娣诲姞鏂规硶妯℃嫙MongoDB妯″瀷鐨勮涓?      toJSON: function() {
-        return { ...this };
+      // 添加方法模拟MongoDB模型的行为
+      toJSON: function () {
+        return this;
       }
     };
-    
-    // 瀛樺偍鍟嗗搧鏁版嵁鍒扮巹鐜夊尯鍧楅摼
+
+    // 存储产品数据到玄玉区块链
     await this.storeData(this.getProductKey(productId), product);
-    
+
     return product;
   }
 
   /**
-   * 鑾峰彇鍟嗗搧
-   * @param {string} productId - 鍟嗗搧ID
-   * @returns {Promise<Object|null>} 鍟嗗搧瀵硅薄
+   * 获取产品
+   * @param {string} productId - 产品ID
+   * @returns {Promise<Object|null>} 产品对象
    */
   async getProduct(productId) {
     await this.initialize();
@@ -350,102 +372,116 @@ class DataAccessLayer {
   }
 
   /**
-   * 鑾峰彇鎵€鏈夊晢鍝?   * @returns {Promise<Array>} 鍟嗗搧鍒楄〃
+   * 获取所有产品
+   * @returns {Promise<Array>} 产品列表
    */
   async getAllProducts() {
     await this.initialize();
-    // 娉ㄦ剰锛氱巹鐜夊尯鍧楅摼DHT涓嶆敮鎸佽幏鍙栨墍鏈夊晢鍝侊紝杩欓噷杩斿洖绌哄垪琛?    // 瀹為檯鐢熶骇鐜涓簲璇ョ淮鎶ゅ晢鍝佺储寮?    return [];
+    // 注意：玄玉区块链DHT不支持获取所有产品，这里返回空列表
+    // 实际生产环境中应该维护产品索引
+    return [];
   }
 
-  // ===== 娓告垙鐩稿叧鏂规硶 =====
-  
+  // ===== 游戏相关方法 =====
+
   /**
-   * 鍒涘缓娓告垙
-   * @param {Object} gameData - 娓告垙鏁版嵁
-   * @returns {Promise<Object>} 鍒涘缓鐨勬父鎴?   */
+   * 创建游戏
+   * @param {Object} gameData - 游戏数据
+   * @returns {Promise<Object>} 创建的游戏
+   */
   async createGame(gameData) {
     await this.initialize();
-    
-    // 鐢熸垚鍞竴娓告垙ID
+
+    // 生成唯一游戏ID
     const gameId = this.generateId('game');
-    
-    // 鍒涘缓娓告垙瀵硅薄
+
+    // 创建游戏对象
     const game = {
       ...gameData,
       _id: gameId,
       id: gameId,
       createdAt: new Date(),
       updatedAt: new Date(),
-      // 娣诲姞鏂规硶妯℃嫙MongoDB妯″瀷鐨勮涓?      toJSON: function() {
-        return { ...this };
+      // 添加方法模拟MongoDB模型的行为
+      toJSON: function () {
+        return this;
       }
     };
-    
-    // 瀛樺偍娓告垙鏁版嵁鍒扮巹鐜夊尯鍧楅摼
+
+    // 存储游戏数据到玄玉区块链
     await this.storeData(this.getGameKey(gameId), game);
-    
+
     return game;
   }
 
   /**
-   * 鑾峰彇鎵€鏈夋父鎴?   * @returns {Promise<Array>} 娓告垙鍒楄〃
+   * 获取所有游戏
+   * @returns {Promise<Array>} 游戏列表
    */
   async getAllGames() {
     await this.initialize();
-    // 娉ㄦ剰锛氱巹鐜夊尯鍧楅摼DHT涓嶆敮鎸佽幏鍙栨墍鏈夋父鎴忥紝杩欓噷杩斿洖绌哄垪琛?    // 瀹為檯鐢熶骇鐜涓簲璇ョ淮鎶ゆ父鎴忕储寮?    return [];
+    // 注意：玄玉区块链DHT不支持获取所有游戏，这里返回空列表
+    // 实际生产环境中应该维护游戏索引
+    return [];
   }
 
   /**
-   * 鑾峰彇绮鹃€夋父鎴?   * @returns {Promise<Array>} 绮鹃€夋父鎴忓垪琛?   */
+   * 获取精选游戏
+   * @returns {Promise<Array>} 精选游戏列表
+   */
   async getFeaturedGames() {
     await this.initialize();
-    // 娉ㄦ剰锛氱巹鐜夊尯鍧楅摼DHT涓嶆敮鎸佽幏鍙栫簿閫夋父鎴忥紝杩欓噷杩斿洖绌哄垪琛?    // 瀹為檯鐢熶骇鐜涓簲璇ョ淮鎶ょ簿閫夋父鎴忕储寮?    return [];
+    // 注意：玄玉区块链DHT不支持获取精选游戏，这里返回空列表
+    // 实际生产环境中应该维护精选游戏索引
+    return [];
   }
 
   /**
-   * 閫氳繃ID鑾峰彇娓告垙
-   * @param {string} gameId - 娓告垙ID
-   * @returns {Promise<Object|null>} 娓告垙瀵硅薄
+   * 通过ID获取游戏
+   * @param {string} gameId - 游戏ID
+   * @returns {Promise<Object|null>} 游戏对象
    */
   async getGameById(gameId) {
     await this.initialize();
     return this.retrieveData(this.getGameKey(gameId));
   }
 
-  // ===== 浜ゆ槗鐩稿叧鏂规硶 =====
-  
+  // ===== 交易相关方法 =====
+
   /**
-   * 鍒涘缓浜ゆ槗
-   * @param {Object} transactionData - 浜ゆ槗鏁版嵁
-   * @returns {Promise<Object>} 鍒涘缓鐨勪氦鏄?   */
+   * 创建交易
+   * @param {Object} transactionData - 交易数据
+   * @returns {Promise<Object>} 创建的交易
+   */
   async createTransaction(transactionData) {
     await this.initialize();
-    
-    // 鐢熸垚鍞竴浜ゆ槗ID
+
+    // 生成唯一交易ID
     const transactionId = this.generateId('transaction');
-    
-    // 鍒涘缓浜ゆ槗瀵硅薄
+
+    // 创建交易对象
     const transaction = {
       ...transactionData,
       _id: transactionId,
       id: transactionId,
       createdAt: new Date(),
       status: 'pending',
-      // 娣诲姞鏂规硶妯℃嫙MongoDB妯″瀷鐨勮涓?      toJSON: function() {
-        return { ...this };
+      // 添加方法模拟MongoDB模型的行为
+      toJSON: function () {
+        return this;
       }
     };
-    
-    // 瀛樺偍浜ゆ槗鏁版嵁鍒扮巹鐜夊尯鍧楅摼
+
+    // 存储交易数据到玄玉区块链
     await this.storeData(this.getTransactionKey(transactionId), transaction);
-    
+
     return transaction;
   }
 
   /**
-   * 鑾峰彇浜ゆ槗璇︽儏
-   * @param {string} transactionId - 浜ゆ槗ID
-   * @returns {Promise<Object|null>} 浜ゆ槗瀵硅薄
+   * 获取交易详情
+   * @param {string} transactionId - 交易ID
+   * @returns {Promise<Object|null>} 交易对象
    */
   async getTransaction(transactionId) {
     await this.initialize();
@@ -453,37 +489,39 @@ class DataAccessLayer {
   }
 
   /**
-   * 鑾峰彇鐢ㄦ埛浜ゆ槗璁板綍
-   * @param {string} userId - 鐢ㄦ埛ID
-   * @returns {Promise<Array>} 浜ゆ槗鍒楄〃
+   * 获取用户交易记录
+   * @param {string} userId - 用户ID
+   * @returns {Promise<Array>} 交易列表
    */
   async getUserTransactions(userId) {
     await this.initialize();
-    // 娉ㄦ剰锛氱巹鐜夊尯鍧楅摼DHT涓嶆敮鎸佹寜鐢ㄦ埛ID鏌ヨ浜ゆ槗璁板綍锛岃繖閲岃繑鍥炵┖鍒楄〃
-    // 瀹為檯鐢熶骇鐜涓簲璇ョ淮鎶ょ敤鎴蜂氦鏄撶储寮?    return [];
+    // 注意：玄玉区块链DHT不支持按用户ID查询交易记录，这里返回空列表
+    // 实际生产环境中应该维护用户交易索引
+    return [];
   }
 
   /**
-   * 鎵ц浜ゆ槗
-   * @param {string} transactionId - 浜ゆ槗ID
-   * @returns {Promise<boolean>} 鎵ц缁撴灉
+   * 执行交易
+   * @param {string} transactionId - 交易ID
+   * @returns {Promise<boolean>} 执行结果
    */
   async executeTransaction(transactionId) {
     await this.initialize();
-    
-    // 鑾峰彇浜ゆ槗
+
+    // 获取交易
     const transaction = await this.getTransaction(transactionId);
     if (!transaction) {
       return false;
     }
-    
-    // 鏇存柊浜ゆ槗鐘舵€?    transaction.status = 'completed';
+
+    // 更新交易状态
+    transaction.status = 'completed';
     transaction.executedAt = new Date();
-    
-    // 瀛樺偍鏇存柊鍚庣殑浜ゆ槗鏁版嵁鍒扮巹鐜夊尯鍧楅摼
+
+    // 存储更新后的交易数据到玄玉区块链
     await this.storeData(this.getTransactionKey(transactionId), transaction);
-    
-    // 鏇存柊鐢ㄦ埛浣欓
+
+    // 更新用户余额
     if (transaction.fromUserId) {
       const fromUser = await this.getUser(transaction.fromUserId);
       if (fromUser) {
@@ -491,7 +529,7 @@ class DataAccessLayer {
         await this.storeData(this.getUserKey(transaction.fromUserId), fromUser);
       }
     }
-    
+
     if (transaction.toUserId) {
       const toUser = await this.getUser(transaction.toUserId);
       if (toUser) {
@@ -499,119 +537,133 @@ class DataAccessLayer {
         await this.storeData(this.getUserKey(transaction.toUserId), toUser);
       }
     }
-    
+
     return true;
   }
 
   /**
-   * 鏇存柊鐢ㄦ埛浣欓
-   * @param {string} userId - 鐢ㄦ埛ID
-   * @param {number} amount - 浜ゆ槗閲戦锛堣礋鏁拌〃绀烘墸娆撅級
-   * @returns {Promise<Object>} 鏇存柊鍚庣殑鐢ㄦ埛瀵硅薄
+   * 更新用户余额
+   * @param {string} userId - 用户ID
+   * @param {number} amount - 交易金额（负数表示扣除）
+   * @returns {Promise<Object>} 更新后的用户对象
    */
   async updateUserBalance(userId, amount) {
     await this.initialize();
-    
-    // 鑾峰彇鐢ㄦ埛
+
+    // 获取用户
     const user = await this.getUser(userId);
     if (!user) {
-      throw new Error('鐢ㄦ埛涓嶅瓨鍦?);
+      throw new Error('用户不存在');
     }
-    
-    // 鏇存柊鐢ㄦ埛浣欓
+
+    // 更新用户余额
     user.wallet.balance += amount;
-    
-    // 瀛樺偍鏇存柊鍚庣殑鐢ㄦ埛鏁版嵁鍒扮巹鐜夊尯鍧楅摼
+
+    // 存储更新后的用户数据到玄玉区块链
     await this.storeData(this.getUserKey(userId), user);
-    
+
     return user;
   }
 
-  // ===== 寮€鍙戣€呯浉鍏虫柟娉?=====
-  
+  // ===== 开发者相关方法 =====
+
   /**
-   * 鍒涘缓寮€鍙戣€?   * @param {Object} developerData - 寮€鍙戣€呮暟鎹?   * @returns {Promise<Object>} 鍒涘缓鐨勫紑鍙戣€?   */
+   * 创建开发者
+   * @param {Object} developerData - 开发者数据
+   * @returns {Promise<Object>} 创建的开发者
+   */
   async createDeveloper(developerData) {
     await this.initialize();
-    
-    // 鐢熸垚鍞竴寮€鍙戣€匢D
+
+    // 生成唯一开发者ID
     const developerId = this.generateId('developer');
-    
-    // 鍒涘缓寮€鍙戣€呭璞?    const developer = {
+
+    // 创建开发者对象
+    const developer = {
       ...developerData,
       _id: developerId,
       id: developerId,
       createdAt: new Date(),
       updatedAt: new Date(),
-      // 娣诲姞鏂规硶妯℃嫙MongoDB妯″瀷鐨勮涓?      toJSON: function() {
-        return { ...this };
+      // 添加方法模拟MongoDB模型的行为
+      toJSON: function () {
+        return this;
       }
     };
-    
-    // 瀛樺偍寮€鍙戣€呮暟鎹埌鐜勭帀鍖哄潡閾?    await this.storeData(this.getDeveloperKey(developerId), developer);
-    
+
+    // 存储开发者数据到玄玉区块链
+    await this.storeData(this.getDeveloperKey(developerId), developer);
+
     return developer;
   }
 
   /**
-   * 鑾峰彇寮€鍙戣€?   * @param {string} developerId - 寮€鍙戣€匢D
-   * @returns {Promise<Object|null>} 寮€鍙戣€呭璞?   */
+   * 获取开发者
+   * @param {string} developerId - 开发者ID
+   * @returns {Promise<Object|null>} 开发者对象
+   */
   async getDeveloper(developerId) {
     await this.initialize();
     return this.retrieveData(this.getDeveloperKey(developerId));
   }
 
   /**
-   * 鏇存柊寮€鍙戣€?   * @param {string} developerId - 寮€鍙戣€匢D
-   * @param {Object} updateData - 鏇存柊鏁版嵁
-   * @returns {Promise<Object|null>} 鏇存柊鍚庣殑寮€鍙戣€?   */
+   * 更新开发者
+   * @param {string} developerId - 开发者ID
+   * @param {Object} updateData - 更新数据
+   * @returns {Promise<Object|null>} 更新后的开发者
+   */
   async updateDeveloper(developerId, updateData) {
     await this.initialize();
-    
-    // 鑾峰彇鐜版湁寮€鍙戣€?    const developer = await this.getDeveloper(developerId);
+
+    // 获取现有开发者
+    const developer = await this.getDeveloper(developerId);
     if (!developer) {
       return null;
     }
-    
-    // 鏇存柊寮€鍙戣€呮暟鎹?    const updatedDeveloper = {
+
+    // 更新开发者数据
+    const updatedDeveloper = {
       ...developer,
       ...updateData,
       updatedAt: new Date()
     };
-    
-    // 瀛樺偍鏇存柊鍚庣殑寮€鍙戣€呮暟鎹埌鐜勭帀鍖哄潡閾?    await this.storeData(this.getDeveloperKey(developerId), updatedDeveloper);
-    
+
+    // 存储更新后的开发者数据到玄玉区块链
+    await this.storeData(this.getDeveloperKey(developerId), updatedDeveloper);
+
     return updatedDeveloper;
   }
 
-  // ===== 涓氬姟鎿嶄綔鏂规硶 =====
-  
+  // ===== 业务操作方法 =====
+
   /**
-   * 鐢ㄦ埛璐拱杞欢
-   * @param {string} userId - 鐢ㄦ埛ID
-   * @param {string} softwareId - 杞欢ID
-   * @returns {Promise<Object>} 鎿嶄綔缁撴灉
+   * 用户购买软件
+   * @param {string} userId - 用户ID
+   * @param {string} softwareId - 软件ID
+   * @returns {Promise<Object>} 操作结果
    */
   async purchaseSoftware(userId, softwareId) {
     await this.initialize();
-    
+
     try {
-      // 鑾峰彇鐢ㄦ埛鍜岃蒋浠朵俊鎭?      const user = await this.getUser(userId);
+      // 获取用户和软件信息
+      const user = await this.getUser(userId);
       const software = await this.getSoftware(softwareId);
-      
+
       if (!user || !software) {
-        throw new Error('鐢ㄦ埛鎴栬蒋浠朵笉瀛樺湪');
+        throw new Error('用户或软件不存在');
       }
-      
-      // 鍋囪鐢ㄦ埛浣跨敤wallet.balance杩涜鏀粯
+
+      // 假设用户使用wallet.balance进行支付
       if (user.wallet.balance < software.price) {
-        throw new Error('浣欓涓嶈冻');
+        throw new Error('余额不足');
       }
-      
-      // 鎵ｆ
+
+      // 扣款
       const updatedUser = await this.updateUserBalance(userId, -software.price);
-      
-      // 璁板綍浜ゆ槗
+
+      // 记录交易
       const transaction = await this.createTransaction({
         userId,
         type: 'purchase',
@@ -620,7 +672,7 @@ class DataAccessLayer {
         itemType: 'software',
         status: 'completed'
       });
-      
+
       return {
         success: true,
         user: updatedUser,
@@ -628,45 +680,46 @@ class DataAccessLayer {
         software
       };
     } catch (error) {
-      console.error('璐拱杞欢澶辫触:', error);
+      console.error('购买软件失败:', error);
       throw error;
     }
   }
 
   /**
-   * 鐢ㄦ埛璐拱鍟嗗搧
-   * @param {string} userId - 鐢ㄦ埛ID
-   * @param {string} productId - 鍟嗗搧ID
-   * @returns {Promise<Object>} 鎿嶄綔缁撴灉
+   * 用户购买产品
+   * @param {string} userId - 用户ID
+   * @param {string} productId - 产品ID
+   * @returns {Promise<Object>} 操作结果
    */
   async purchaseProduct(userId, productId) {
     await this.initialize();
-    
+
     try {
-      // 鑾峰彇鐢ㄦ埛鍜屽晢鍝佷俊鎭?      const user = await this.getUser(userId);
+      // 获取用户和产品信息
+      const user = await this.getUser(userId);
       const product = await this.getProduct(productId);
-      
+
       if (!user || !product) {
-        throw new Error('鐢ㄦ埛鎴栧晢鍝佷笉瀛樺湪');
+        throw new Error('用户或产品不存在');
       }
-      
+
       if (product.stock <= 0) {
-        throw new Error('鍟嗗搧搴撳瓨涓嶈冻');
+        throw new Error('产品库存不足');
       }
-      
+
       if (user.wallet.balance < product.price) {
-        throw new Error('浣欓涓嶈冻');
+        throw new Error('余额不足');
       }
-      
-      // 鎵ｆ
+
+      // 扣款
       const updatedUser = await this.updateUserBalance(userId, -product.price);
-      
-      // 鏇存柊鍟嗗搧搴撳瓨
+
+      // 更新产品库存
       product.stock -= 1;
       product.updatedAt = new Date();
       await this.storeData(this.getProductKey(productId), product);
-      
-      // 璁板綍浜ゆ槗
+
+      // 记录交易
       const transaction = await this.createTransaction({
         userId,
         type: 'purchase',
@@ -675,7 +728,7 @@ class DataAccessLayer {
         itemType: 'product',
         status: 'completed'
       });
-      
+
       return {
         success: true,
         user: updatedUser,
@@ -683,51 +736,52 @@ class DataAccessLayer {
         product
       };
     } catch (error) {
-      console.error('璐拱鍟嗗搧澶辫触:', error);
+      console.error('购买产品失败:', error);
       throw error;
     }
   }
 
   /**
-   * 濂栧姳鐢ㄦ埛Cat9Coins
-   * @param {string} userId - 鐢ㄦ埛ID
-   * @param {number} amount - 濂栧姳閲戦
-   * @returns {Promise<Object>} 鎿嶄綔缁撴灉
+   * 奖励用户Cat9Coins
+   * @param {string} userId - 用户ID
+   * @param {number} amount - 奖励金额
+   * @returns {Promise<Object>} 操作结果
    */
   async rewardCoins(userId, amount) {
     await this.initialize();
-    
+
     try {
-      // 鏇存柊鐢ㄦ埛浣欓
+      // 更新用户余额
       const updatedUser = await this.updateUserBalance(userId, amount);
-      
-      // 璁板綍浜ゆ槗
+
+      // 记录交易
       const transaction = await this.createTransaction({
         userId,
         type: 'reward',
         amount: amount,
         status: 'completed'
       });
-      
+
       return {
         success: true,
         user: updatedUser,
         transaction
       };
     } catch (error) {
-      console.error('濂栧姳Coins澶辫触:', error);
+      console.error('奖励Coins失败:', error);
       throw error;
     }
   }
 
-  // ===== 鍏朵粬鏂规硶 =====
-  
+  // ===== 其他方法 =====
+
   /**
-   * 鑾峰彇鏁版嵁搴撶粺璁′俊鎭?   * @returns {Promise<Object>} 缁熻淇℃伅
+   * 获取数据库统计信息
+   * @returns {Promise<Object>} 统计信息
    */
   async getStats() {
     await this.initialize();
-    // 杩斿洖绠€鍗曠殑缁熻淇℃伅
+    // 返回简单的统计信息
     return {
       users: 0,
       games: 0,
@@ -738,27 +792,29 @@ class DataAccessLayer {
   }
 
   /**
-   * 鍏抽棴鏁版嵁搴撹繛鎺?   */
+   * 关闭数据库连接
+   */
   async close() {
     if (this.isInitialized) {
-      // 璋冪敤杩炴帴鍣ㄧ殑disconnect鏂规硶鍏抽棴杩炴帴
+      // 调用连接器的disconnect方法关闭连接
       await this.connector.disconnect();
       this.isInitialized = false;
     }
   }
 
   /**
-   * 鑾峰彇Cat9DB瀹炰緥锛堝吋瀹规棫鐗堟湰锛?   * @returns {Object} Cat9DB瀹炰緥
+   * 获取Cat9DB实例（兼容旧版本）
+   * @returns {Object} Cat9DB实例
    */
   get catDB() {
-    // 杩斿洖褰撳墠瀹炰緥锛屼綔涓篊at9DB鐨勫吋瀹瑰眰
+    // 返回当前实例，作为Cat9DB的兼容接口
     return this;
   }
 }
 
-// 鍒涘缓骞跺鍑篋AL瀹炰緥
+// 创建并导出DAL实例
 const dal = new DataAccessLayer();
 
-// 瀵煎嚭DAL绫诲拰瀹炰緥
+// 导出DAL类和实例
 module.exports = dal;
 module.exports.DataAccessLayer = DataAccessLayer;

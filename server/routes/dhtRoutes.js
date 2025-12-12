@@ -1,8 +1,9 @@
-﻿const express = require('express');
+const express = require('express');
 const router = express.Router();
 const dhtService = require('../services/dhtService');
 
-// 鑾峰彇 DHT 鏈嶅姟鍣ㄧ姸鎬?router.get('/status', async (req, res) => {
+// 获取 DHT 服务器状态
+router.get('/status', async (req, res) => {
   try {
     const status = dhtService.getStatus();
     res.json({
@@ -25,7 +26,7 @@ router.post('/store', async (req, res) => {
     if (!key || value === undefined) {
       return res.status(400).json({
         success: false,
-        error: '蹇呴』鎻愪緵 key 鍜?value 鍙傛暟'
+        error: '必须提供 key 和 value 参数'
       });
     }
 
@@ -33,7 +34,7 @@ router.post('/store', async (req, res) => {
     
     res.json({
       success: result,
-      message: result ? '鏁版嵁瀛樺偍鎴愬姛' : '鏁版嵁瀛樺偍澶辫触'
+      message: result ? '数据存储成功' : '数据存储失败'
     });
   } catch (error) {
     res.status(500).json({
@@ -43,7 +44,8 @@ router.post('/store', async (req, res) => {
   }
 });
 
-// 浠?DHT 妫€绱㈡暟鎹?router.get('/retrieve/:key', async (req, res) => {
+// 从 DHT 查询数据
+router.get('/retrieve/:key', async (req, res) => {
   try {
     const { key } = req.params;
     const data = await dhtService.retrieveData(key);
@@ -51,7 +53,7 @@ router.post('/store', async (req, res) => {
     if (data === null) {
       return res.status(404).json({
         success: false,
-        error: `鏈壘鍒伴敭涓?${key} 鐨勬暟鎹甡
+        error: `未找到键为 ${key} 的数据`
       });
     }
 
@@ -70,7 +72,7 @@ router.post('/store', async (req, res) => {
   }
 });
 
-// 鏌ユ壘鎻愪緵鐗瑰畾閿殑鑺傜偣
+// 查找提供特定键的数据的节点
 router.get('/providers/:key', async (req, res) => {
   try {
     const { key } = req.params;
@@ -91,7 +93,8 @@ router.get('/providers/:key', async (req, res) => {
   }
 });
 
-// 鏌ユ壘鐗瑰畾 ID 鐨勮妭鐐?router.get('/peer/:peerId', async (req, res) => {
+// 查找特定 ID 的节点
+router.get('/peer/:peerId', async (req, res) => {
   try {
     const { peerId } = req.params;
     const peerInfo = await dhtService.findPeer(peerId);
@@ -99,7 +102,7 @@ router.get('/providers/:key', async (req, res) => {
     if (!peerInfo) {
       return res.status(404).json({
         success: false,
-        error: `鏈壘鍒拌妭鐐?${peerId}`
+        error: `未找到节点 ${peerId}`
       });
     }
 
@@ -115,14 +118,15 @@ router.get('/providers/:key', async (req, res) => {
   }
 });
 
-// 鎻愪緵褰撳墠鑺傜偣浣滀负鎸囧畾閿殑鏁版嵁鎻愪緵鑰?router.post('/provide/:key', async (req, res) => {
+// 提供当前节点作为指定键的数据提供者
+router.post('/provide/:key', async (req, res) => {
   try {
     const { key } = req.params;
     const result = await dhtService.provide(key);
     
     res.json({
       success: result,
-      message: result ? `鎴愬姛鎻愪緵閿?${key} 鐨勬暟鎹甡 : `鎻愪緵閿?${key} 鐨勬暟鎹け璐
+      message: result ? `成功提供键 ${key} 的数据` : `提供键 ${key} 的数据失败`
     });
   } catch (error) {
     res.status(500).json({

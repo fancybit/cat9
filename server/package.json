@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "cat9-server",
   "version": "1.0.0",
   "description": "鐜勭帀閫嶆父鍚庣鏈嶅姟",
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "body-parser": "^2.2.1",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
@@ -17,7 +18,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.3",
     "multer": "^2.0.2",
-    "mysql2": "^3.9.7"
+    "mysql2": "^3.9.7",
+    "raw-body": "^3.0.2"
   },
   "devDependencies": {
     "jest": "^30.2.0",
@@ -25,9 +27,9 @@
   },
   "keywords": [
     "web3",
-    "娓告垙",
-    "鍖哄潡閾?,
-    "鐜勭帀閫嶆父"
+    "游戏",
+    "区块链",
+    "玄玉引擎"
   ],
   "author": "鍗庢ⅵ鏈夐檺鍏徃",
   "license": "ISC"

@@ -1,17 +1,19 @@
-﻿const multer = require('multer');
+const multer = require('multer');
 
-// 閰嶇疆鏂囦欢瀛樺偍
+// 配置文件存储
 const storage = multer.memoryStorage();
 
-// 鏂囦欢杩囨护鍣紝鍙厑璁镐笂浼犲浘鐗?const fileFilter = (req, file, cb) => {
-  // 妫€鏌ユ枃浠剁被鍨?  if (file.mimetype.startsWith('image/')) {
+// 文件过滤器，只允许上传图片
+const fileFilter = (req, file, cb) => {
+  // 检查文件类型
+  if (file.mimetype.startsWith('image/')) {
     cb(null, true);
   } else {
-    cb(new Error('鍙厑璁镐笂浼犲浘鐗囨枃浠?), false);
+    cb(new Error('只允许上传图片文件'), false);
   }
 };
 
-// 鍒涘缓multer瀹炰緥
+// 创建multer实例
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,

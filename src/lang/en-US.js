@@ -1,5 +1,6 @@
-﻿export default {
-  // 瀵艰埅鏍?  navbar: {
+export default {
+  // Navigation Menu
+  navbar: {
     home: 'Home',
     store: 'Store',
     library: 'Library',
@@ -14,7 +15,7 @@
     register: 'Register'
   },
   
-  // 椤佃剼
+  // Footer
   footer: {
     aboutUs: 'About Us',
     aboutText: 'Cat9 Entertainment is a platform focused on independent game publishing, providing convenient game release channels for developers and bringing high-quality gaming experiences to players.',
@@ -32,10 +33,10 @@
     qq: 'QQ Number',
     qqGroup: 'QQ Group',
     groupName: 'Jiuyi Union',
-    copyright: '漏 {year} Hong Kong Huameng Company Cat9 Entertainment. All rights reserved.'
+    copyright: '© {year} Hong Kong Huameng Company Cat9 Entertainment. All rights reserved.'
   },
   
-  // 閫氱敤
+  // Common
   common: {
     language: 'Language',
     search: 'Search',
@@ -60,7 +61,7 @@
     more: 'More'
   },
   
-  // 鐧诲綍/娉ㄥ唽
+  // Login/Register
   auth: {
     username: 'Username',
     password: 'Password',
@@ -78,7 +79,7 @@
     registerFailed: 'Registration Failed'
   },
   
-  // 棣栭〉
+  // Home Page
   home: {
     welcome: 'Welcome to Cat9 Entertainment',
     popularGames: 'Popular Games',
@@ -91,7 +92,7 @@
     comingSoon: 'Coming Soon'
   },
   
-  // 鍟嗗簵
+  // Store
   store: {
     allGames: 'All Games',
     categories: 'Categories',
@@ -107,7 +108,8 @@
     removeFromWishlist: 'Remove from Wishlist'
   },
   
-  // 娓告垙搴?  library: {
+  // Library
+  library: {
     yourGames: 'Your Games',
     recentlyPlayed: 'Recently Played',
     allGames: 'All Games',
@@ -118,7 +120,8 @@
     gameDetails: 'Game Details'
   },
   
-  // 寮€鍙戣€?  developer: {
+  // Developer
+  developer: {
     welcomeDevelopers: 'Welcome Developers',
     documentation: 'Documentation',
     apiReference: 'API Reference',
@@ -128,7 +131,7 @@
     gameAnalytics: 'Game Analytics'
   },
   
-  // 瀹℃牳鍥㈤槦
+  // Audit Team
   auditTeam: {
     aboutTeam: 'About the Audit Team',
     responsibilities: 'Core Responsibilities',

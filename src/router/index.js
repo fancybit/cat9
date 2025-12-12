@@ -1,6 +1,7 @@
-﻿import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
-// 鎳掑姞杞借矾鐢辩粍浠?const Login = () => import('../views/Login.vue')
+// 延迟加载路由组件
+const Login = () => import('../views/Login.vue')
 const Register = () => import('../views/Register.vue')
 const UserProfile = () => import('../views/UserProfile.vue')
 const Store = () => import('../views/Store.vue')
@@ -83,26 +84,26 @@ const routes = [
     component: AuctionHouse
   },
   {
-        path: '/community',
-        name: 'Community',
-        component: Community
-      },
-      {
-        path: '/developer',
-        name: 'Developer',
-        component: Developer
-      },
-      {
-        path: '/audit-team',
-        name: 'AuditTeam',
-        component: AuditTeam
-      },
-      {
-        path: '/dht-manager',
-        name: 'DHTManager',
-        component: DHTManager,
-        meta: { requiresAuth: true, requiresAdmin: true }
-      }
+    path: '/community',
+    name: 'Community',
+    component: Community
+  },
+  {
+    path: '/developer',
+    name: 'Developer',
+    component: Developer
+  },
+  {
+    path: '/audit-team',
+    name: 'AuditTeam',
+    component: AuditTeam
+  },
+  {
+    path: '/dht-manager',
+    name: 'DHTManager',
+    component: DHTManager,
+    meta: { requiresAuth: true, requiresAdmin: true }
+  }
 ]
 
 const router = createRouter({
@@ -110,20 +111,21 @@ const router = createRouter({
   routes
 })
 
-// 璺敱瀹堝崼
+// 路由守卫
 router.beforeEach((to, from, next) => {
   const user = JSON.parse(localStorage.getItem('user'))
   const isAuthenticated = user !== null
   const isAdmin = user && user.roles && user.roles.includes('admin')
   
-  // 妫€鏌ユ槸鍚﹂渶瑕佽璇?  if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
+  // 检查是否需要认证
+  if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
     next({ name: 'Login' })
     return
   }
   
-  // 妫€鏌ユ槸鍚﹂渶瑕佺鐞嗗憳鏉冮檺
+  // 检查是否需要管理员权限
   if (to.matched.some(record => record.meta.requiresAdmin) && !isAdmin) {
-    // 濡傛灉鏄鐞嗗憳椤甸潰浣嗙敤鎴蜂笉鏄鐞嗗憳锛岃烦杞埌棣栭〉
+    // 如果是管理员页面但用户不是管理员，重定向到首页
     next({ name: 'Home' })
     return
   }

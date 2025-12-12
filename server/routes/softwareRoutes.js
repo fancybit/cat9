@@ -1,29 +1,30 @@
-﻿// 杞欢鐩稿叧璺敱
+// 软件相关路由
 
 const express = require('express');
 const router = express.Router();
 const softwareService = require('../services/softwareService');
 
-// 妯℃嫙璁よ瘉涓棿浠?const authMiddleware = (req, res, next) => {
+// 模拟认证中间件
+const authMiddleware = (req, res, next) => {
   const userId = req.headers['x-user-id'];
   if (!userId) {
-    return res.status(401).json({ success: false, error: '鏈璇? });
+    return res.status(401).json({ success: false, error: '未认证' });
   }
   req.userId = userId;
   next();
 };
 
-// 妯℃嫙绠＄悊鍛樻潈闄愪腑闂翠欢
+// 模拟管理员权限中间件
 const adminMiddleware = (req, res, next) => {
-  // 杩欓噷搴旇鏈夊疄闄呯殑鏉冮檺妫€鏌ラ€昏緫
+  // 这里应该有实际的权限验证逻辑
   const isAdmin = req.headers['x-is-admin'] === 'true';
   if (!isAdmin) {
-    return res.status(403).json({ success: false, error: '闇€瑕佺鐞嗗憳鏉冮檺' });
+    return res.status(403).json({ success: false, error: '需要管理员权限' });
   }
   next();
 };
 
-// 鍒涘缓杞欢 - 闇€瑕佺鐞嗗憳鏉冮檺
+// 创建软件 - 需要管理员权限
 router.post('/', authMiddleware, adminMiddleware, async (req, res) => {
   const result = await softwareService.createSoftware(req.body);
   if (result.success) {
@@ -33,32 +34,33 @@ router.post('/', authMiddleware, adminMiddleware, async (req, res) => {
   }
 });
 
-// 鑾峰彇鎵€鏈夎蒋浠?router.get('/', async (req, res) => {
+// 获取所有软件
+router.get('/', async (req, res) => {
   const softwareList = await softwareService.getAllSoftware();
   res.json({ success: true, software: softwareList });
 });
 
-// 閫氳繃ID鑾峰彇杞欢璇︽儏
+// 通过ID获取软件详情
 router.get('/:softwareId', async (req, res) => {
   const software = await softwareService.getSoftwareInfo(req.params.softwareId);
   if (software) {
     res.json({ success: true, software });
   } else {
-    res.status(404).json({ success: false, error: '杞欢涓嶅瓨鍦? });
+    res.status(404).json({ success: false, error: '软件不存在' });
   }
 });
 
-// 閫氳繃鍚嶇О鑾峰彇杞欢
+// 通过名称获取软件
 router.get('/name/:name', async (req, res) => {
   const software = await softwareService.getSoftwareByName(req.params.name);
   if (software) {
     res.json({ success: true, software });
   } else {
-    res.status(404).json({ success: false, error: '杞欢涓嶅瓨鍦? });
+    res.status(404).json({ success: false, error: '软件不存在' });
   }
 });
 
-// 鏇存柊杞欢 - 闇€瑕佺鐞嗗憳鏉冮檺
+// 更新软件 - 需要管理员权限
 router.put('/:softwareId', authMiddleware, adminMiddleware, async (req, res) => {
   const result = await softwareService.updateSoftware(req.params.softwareId, req.body);
   if (result.success) {
@@ -68,7 +70,7 @@ router.put('/:softwareId', authMiddleware, adminMiddleware, async (req, res) => 
   }
 });
 
-// 璁剧疆杞欢涓虹簿閫?- 闇€瑕佺鐞嗗憳鏉冮檺
+// 设置软件为精选 - 需要管理员权限
 router.patch('/:softwareId/featured', authMiddleware, adminMiddleware, async (req, res) => {
   const { featured } = req.body;
   const result = await softwareService.setSoftwareFeatured(req.params.softwareId, featured);
@@ -79,7 +81,8 @@ router.patch('/:softwareId/featured', authMiddleware, adminMiddleware, async (re
   }
 });
 
-// 璐拱杞欢 - 闇€瑕佽璇?router.post('/:softwareId/purchase', authMiddleware, async (req, res) => {
+// 购买软件 - 需要认证
+router.post('/:softwareId/purchase', authMiddleware, async (req, res) => {
   const result = await softwareService.purchaseSoftware(req.userId, req.params.softwareId);
   if (result.success) {
     res.json(result);
@@ -88,7 +91,8 @@ router.patch('/:softwareId/featured', authMiddleware, adminMiddleware, async (re
   }
 });
 
-// 鑾峰彇鐢ㄦ埛鎷ユ湁鐨勮蒋浠?- 闇€瑕佽璇?router.get('/user/my-software', authMiddleware, async (req, res) => {
+// 获取用户拥有的软件 - 需要认证
+router.get('/user/my-software', authMiddleware, async (req, res) => {
   const softwareList = await softwareService.getUserSoftware(req.userId);
   res.json({ success: true, software: softwareList });
 });

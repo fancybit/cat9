@@ -1,5 +1,6 @@
-﻿export default {
-  // 瀵艰埅鏍?  navbar: {
+export default {
+  // Navigation Menu
+  navbar: {
     home: 'Startseite',
     store: 'Shop',
     library: 'Bibliothek',
@@ -14,7 +15,7 @@
     register: 'Registrieren'
   },
   
-  // 椤佃剼
+  // Footer
   footer: {
     aboutUs: '脺ber Uns',
     aboutText: 'Cat9 Entertainment ist eine Plattform, die sich auf die Ver枚ffentlichung unabh盲ngiger Spiele spezialisiert hat. Sie bietet Entwicklern bequeme Spielever枚ffentlichungskan盲le und den Spielern qualitativ hochwertige Spielerlebnisse.',
@@ -31,7 +32,7 @@
     copyright: '漏 {year} Hong Kong Huameng Company Cat9 Entertainment. Alle Rechte vorbehalten.'
   },
   
-  // 閫氱敤
+  // Common
   common: {
     language: 'Sprache',
     search: 'Suchen',
@@ -56,7 +57,7 @@
     more: 'Mehr'
   },
   
-  // 鐧诲綍/娉ㄥ唽
+  // Login/Register
   auth: {
     username: 'Benutzername',
     password: 'Passwort',
@@ -74,7 +75,7 @@
     registerFailed: 'Registrierung fehlgeschlagen'
   },
   
-  // 棣栭〉
+  // Home Page
   home: {
     welcome: 'Willkommen bei Cat9 Entertainment',
     popularGames: 'Beliebte Spiele',
@@ -87,7 +88,7 @@
     comingSoon: 'Bald verf眉gbar'
   },
   
-  // 鍟嗗簵
+  // Store
   store: {
     allGames: 'Alle Spiele',
     categories: 'Kategorien',
@@ -103,7 +104,8 @@
     removeFromWishlist: 'Von der Wunschliste entfernen'
   },
   
-  // 娓告垙搴?  library: {
+  // Library
+  library: {
     yourGames: 'Ihre Spiele',
     recentlyPlayed: 'K眉rzlich gespielt',
     allGames: 'Alle Spiele',
@@ -114,7 +116,8 @@
     gameDetails: 'Spieledetails'
   },
   
-  // 寮€鍙戣€?  developer: {
+  // Developer
+  developer: {
     welcomeDevelopers: 'Willkommen Entwickler',
     documentation: 'Dokumentation',
     apiReference: 'API-Referenz',
@@ -124,7 +127,7 @@
     gameAnalytics: 'Spielanalytik'
   },
   
-  // 瀹℃牳鍥㈤槦
+  // Audit Team
   auditTeam: {
     aboutTeam: '脺ber das Pr眉ferteam',
     responsibilities: 'Kernverantwortlichkeiten',

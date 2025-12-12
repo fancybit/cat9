@@ -1,62 +1,65 @@
-﻿// 璁よ瘉涓棿浠?- 鐢ㄤ簬楠岃瘉JWT浠ょ墝
+// 认证中间件 - 用于验证JWT令牌
 
 const { verifyToken, getTokenFromHeader } = require('../utils/jwt');
 const userService = require('../services/userService');
 
 /**
- * JWT璁よ瘉涓棿浠? * @param {Object} req - Express璇锋眰瀵硅薄
- * @param {Object} res - Express鍝嶅簲瀵硅薄
- * @param {Function} next - Express涓嬩竴涓腑闂翠欢鍑芥暟
+ * JWT认证中间件
+ * @param {Object} req - Express请求对象
+ * @param {Object} res - Express响应对象
+ * @param {Function} next - Express下一个中间件函数
  */
 const authMiddleware = async (req, res, next) => {
   try {
-    // 浠庤姹傚ご鑾峰彇token
+    // 从请求头获取token
     const token = getTokenFromHeader(req);
     
     if (!token) {
-      return res.status(401).json({ success: false, error: '鏈彁渚涜璇佷护鐗? });
+      return res.status(401).json({ success: false, error: '未提供认证令牌' });
     }
     
-    // 楠岃瘉token
+    // 验证token
     const decoded = verifyToken(token);
     
     if (!decoded) {
-      return res.status(401).json({ success: false, error: '鏃犳晥鐨勮璇佷护鐗? });
+      return res.status(401).json({ success: false, error: '无效的认证令牌' });
     }
     
-    // 鑾峰彇鐢ㄦ埛淇℃伅
+    // 获取用户信息
     const user = await userService.getUserInfo(decoded.userId);
     
     if (!user) {
-      return res.status(401).json({ success: false, error: '鐢ㄦ埛涓嶅瓨鍦? });
+      return res.status(401).json({ success: false, error: '用户不存在' });
     }
     
-    // 灏嗙敤鎴蜂俊鎭坊鍔犲埌璇锋眰瀵硅薄涓?    req.user = user;
+    // 将用户信息添加到请求对象中
+    req.user = user;
     req.userId = user.id;
     
     next();
   } catch (error) {
-    console.error('璁よ瘉涓棿浠堕敊璇?', error);
-    res.status(500).json({ success: false, error: '鏈嶅姟鍣ㄨ璇侀敊璇? });
+    console.error('认证中间件错误', error);
+    res.status(500).json({ success: false, error: '服务器认证错误' });
   }
 };
 
 /**
- * 绠＄悊鍛樻潈闄愰獙璇佷腑闂翠欢
- * @param {Object} req - Express璇锋眰瀵硅薄
- * @param {Object} res - Express鍝嶅簲瀵硅薄
- * @param {Function} next - Express涓嬩竴涓腑闂翠欢鍑芥暟
+ * 管理员权限验证中间件
+ * @param {Object} req - Express请求对象
+ * @param {Object} res - Express响应对象
+ * @param {Function} next - Express下一个中间件函数
  */
 const adminMiddleware = (req, res, next) => {
   try {
-    // 妫€鏌ョ敤鎴锋槸鍚︽湁绠＄悊鍛樿鑹?    if (req.user && req.user.roles && req.user.roles.includes('admin')) {
+    // 检查用户是否有管理员权限
+    if (req.user && req.user.roles && req.user.roles.includes('admin')) {
       next();
     } else {
-      res.status(403).json({ success: false, error: '闇€瑕佺鐞嗗憳鏉冮檺' });
+      res.status(403).json({ success: false, error: '需要管理员权限' });
     }
   } catch (error) {
-    console.error('绠＄悊鍛樹腑闂翠欢閿欒:', error);
-    res.status(500).json({ success: false, error: '鏈嶅姟鍣ㄩ敊璇? });
+    console.error('管理员中间件错误:', error);
+    res.status(500).json({ success: false, error: '服务器错误' });
   }
 };
 

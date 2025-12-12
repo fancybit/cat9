@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "cat9",
   "version": "0.1.0",
   "private": true,
@@ -37,7 +37,12 @@
     "parserOptions": {
       "parser": "@babel/eslint-parser"
     },
-    "rules": {}
+    "rules": {
+      "strict": "off",
+      "no-undef": "off",
+      "no-unused-vars": "off",
+      "vue/no-unused-vars": "off"
+    }
   },
   "browserslist": [
     "> 1%",

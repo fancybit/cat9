@@ -1,31 +1,31 @@
-﻿// DHT 鏈嶅姟 - 涓庣巹鐜夎妭鐐硅В鑰︼紝鐙珛杩愯
+// DHT 服务 - 与玄玉节点分离，独立运行
 class DHTService {
   constructor() {
     this.isInitialized = false;
   }
 
   /**
-   * 鍒濆鍖?DHT 鏈嶅姟
+   * 初始化 DHT 服务
    */
   async initialize(options = {}) {
     if (this.isInitialized) {
-      console.warn('DHT 鏈嶅姟宸茬粡鍒濆鍖?);
+      console.warn('DHT 服务已经初始化');
       return this;
     }
 
     try {
-      // DHT 鏈嶅姟宸蹭笌鐜勭帀鑺傜偣瑙ｈ€︼紝涓嶅啀渚濊禆MetaJadeHome
+      // DHT 服务已与玄玉节点分离，不再依赖MetaJadeHome
       this.isInitialized = true;
-      console.log('DHT 鏈嶅姟宸叉垚鍔熷垵濮嬪寲锛堜笌鐜勭帀鑺傜偣瑙ｈ€︼級');
+      console.log('DHT 服务已成功初始化（与玄玉节点分离）');
       return this;
     } catch (error) {
-      console.error('鍒濆鍖?DHT 鏈嶅姟澶辫触:', error);
+      console.error('初始化 DHT 服务失败:', error);
       throw error;
     }
   }
 
   /**
-   * 鍋滄 DHT 鏈嶅姟
+   * 关闭 DHT 服务
    */
   async shutdown() {
     if (!this.isInitialized) {
@@ -33,16 +33,17 @@ class DHTService {
     }
 
     try {
-      // DHT 鏈嶅姟宸蹭笌鐜勭帀鑺傜偣瑙ｈ€︼紝涓嶅啀闇€瑕佸仠姝etaJadeNode
+      // DHT 服务已与玄玉节点分离，不再需要停止MetaJadeNode
       this.isInitialized = false;
-      console.log('DHT 鏈嶅姟宸插叧闂?);
+      console.log('DHT 服务已关闭');
     } catch (error) {
-      console.error('鍏抽棴 DHT 鏈嶅姟鏃跺嚭閿?', error);
+      console.error('关闭 DHT 服务时出错', error);
     }
   }
 
   /**
-   * 鑾峰彇 DHT 鏈嶅姟鍣ㄧ姸鎬?   */
+   * 获取 DHT 服务器状态
+   */
   getStatus() {
     return {
       status: this.isInitialized ? 'running' : 'stopped',
@@ -51,62 +52,65 @@ class DHTService {
   }
 
   /**
-   * 瀛樺偍鏁版嵁鍒?DHT
+   * 存储数据到 DHT
    */
   async storeData(key, value) {
     if (!this.isInitialized) {
-      throw new Error('DHT 鏈嶅姟鏈垵濮嬪寲');
+      throw new Error('DHT 服务未初始化');
     }
 
-    console.log('DHT 鏈嶅姟宸蹭笌鐜勭帀鑺傜偣瑙ｈ€︼紝瀛樺偍鏁版嵁鍔熻兘鏆傛椂涓嶅彲鐢?);
+    console.log('DHT 服务已与玄玉节点分离，存储数据功能暂时不可用');
     return Promise.resolve();
   }
 
   /**
-   * 浠?DHT 妫€绱㈡暟鎹?   */
+   * 从 DHT 检索数据
+   */
   async retrieveData(key) {
     if (!this.isInitialized) {
-      throw new Error('DHT 鏈嶅姟鏈垵濮嬪寲');
+      throw new Error('DHT 服务未初始化');
     }
 
-    console.log('DHT 鏈嶅姟宸蹭笌鐜勭帀鑺傜偣瑙ｈ€︼紝妫€绱㈡暟鎹姛鑳芥殏鏃朵笉鍙敤');
+    console.log('DHT 服务已与玄玉节点分离，检索数据功能暂时不可用');
     return Promise.resolve(null);
   }
 
   /**
-   * 鏌ユ壘鎻愪緵鐗瑰畾閿殑鑺傜偣
+   * 查找提供指定哈希的节点
    */
   async findProviders(key) {
     if (!this.isInitialized) {
-      throw new Error('DHT 鏈嶅姟鏈垵濮嬪寲');
+      throw new Error('DHT 服务未初始化');
     }
 
-    console.log('DHT 鏈嶅姟宸蹭笌鐜勭帀鑺傜偣瑙ｈ€︼紝鏌ユ壘鎻愪緵鑰呭姛鑳芥殏鏃朵笉鍙敤');
+    console.log('DHT 服务已与玄玉节点分离，查找提供者功能暂时不可用');
     return Promise.resolve([]);
   }
 
   /**
-   * 鏌ユ壘鐗瑰畾 ID 鐨勮妭鐐?   */
+   * 查找指定 ID 的节点
+   */
   async findPeer(peerId) {
     if (!this.isInitialized) {
-      throw new Error('DHT 鏈嶅姟鏈垵濮嬪寲');
+      throw new Error('DHT 服务未初始化');
     }
 
-    console.log('DHT 鏈嶅姟宸蹭笌鐜勭帀鑺傜偣瑙ｈ€︼紝鏌ユ壘鑺傜偣鍔熻兘鏆傛椂涓嶅彲鐢?);
+    console.log('DHT 服务已与玄玉节点分离，查找节点功能暂时不可用');
     return Promise.resolve({ peerId: peerId, addresses: [] });
   }
 
   /**
-   * 鎻愪緵褰撳墠鑺傜偣浣滀负鎸囧畾閿殑鏁版嵁鎻愪緵鑰?   */
+   * 提供当前节点作为指定哈希的数据提供者
+   */
   async provide(key) {
     if (!this.isInitialized) {
-      throw new Error('DHT 鏈嶅姟鏈垵濮嬪寲');
+      throw new Error('DHT 服务未初始化');
     }
 
-    console.log('DHT 鏈嶅姟宸蹭笌鐜勭帀鑺傜偣瑙ｈ€︼紝鎻愪緵鏁版嵁鍔熻兘鏆傛椂涓嶅彲鐢?);
+    console.log('DHT 服务已与玄玉节点分离，提供数据功能暂时不可用');
     return Promise.resolve();
   }
 }
 
-// 瀵煎嚭鍗曚緥瀹炰緥
+// 导出单例实例
 module.exports = new DHTService();

@@ -1,5 +1,6 @@
-﻿export default {
-  // 瀵艰埅鏍?  navbar: {
+export default {
+  // Navigation Menu
+  navbar: {
     home: 'Accueil',
     store: 'Boutique',
     library: 'Biblioth猫que',
@@ -14,7 +15,7 @@
     register: 'Inscription'
   },
   
-  // 椤佃剼
+  // Footer
   footer: {
     aboutUs: '脌 Propos de Nous',
     aboutText: 'Cat9 Entertainment est une plateforme sp茅cialis茅e dans la publication de jeux ind茅pendants, offrant des canaux de publication de jeux pratiques pour les d茅veloppeurs et des exp茅riences de jeu de haute qualit茅 pour les joueurs.',
@@ -28,10 +29,10 @@
     email: 'Email',
     wechat: 'WeChat',
     officialAccount: 'Compte Officiel',
-    copyright: '漏 {year} Hong Kong Huameng Company Cat9 Entertainment. Tous droits r茅serv茅s.'
+    copyright: '© {year} Hong Kong Huameng Company Cat9 Entertainment. Tous droits r茅serv茅s.'
   },
   
-  // 閫氱敤
+  // Common
   common: {
     language: 'Langue',
     search: 'Rechercher',
@@ -53,10 +54,10 @@
     next: 'Suivant',
     previous: 'Pr茅c茅dent',
     back: 'Retour',
-    more: 'Plus',
+    more: 'Plus'
   },
   
-  // 鐧诲綍/娉ㄥ唽
+  // Login/Register
   auth: {
     username: 'Nom d\'utilisateur',
     password: 'Mot de passe',
@@ -74,7 +75,7 @@
     registerFailed: '脡chec de l\'inscription'
   },
   
-  // 棣栭〉
+  // Home Page
   home: {
     welcome: 'Bienvenue sur Cat9 Entertainment',
     popularGames: 'Jeux Populaires',
@@ -87,7 +88,7 @@
     comingSoon: 'Bient么t Disponible'
   },
   
-  // 鍟嗗簵
+  // Store
   store: {
     allGames: 'Tous les Jeux',
     categories: 'Cat茅gories',
@@ -103,7 +104,8 @@
     removeFromWishlist: 'Retirer de la Liste de Souhaits'
   },
   
-  // 娓告垙搴?  library: {
+  // Library
+  library: {
     yourGames: 'Vos Jeux',
     recentlyPlayed: 'Jou茅s R茅cemment',
     allGames: 'Tous les Jeux',
@@ -114,7 +116,8 @@
     gameDetails: 'D茅tails du Jeu'
   },
   
-  // 寮€鍙戣€?  developer: {
+  // Developer
+  developer: {
     welcomeDevelopers: 'Bienvenue aux D茅veloppeurs',
     documentation: 'Documentation',
     apiReference: 'R茅f茅rence API',
@@ -124,7 +127,7 @@
     gameAnalytics: 'Analyse de Jeux'
   },
   
-  // 瀹℃牳鍥㈤槦
+  // Audit Team
   auditTeam: {
     aboutTeam: '脌 Propos de l\'脡quipe d\'Audit',
     responsibilities: 'Responsabilit茅s Principales',

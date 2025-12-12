@@ -1,6 +1,7 @@
-﻿const News = require('../models/News');
+const News = require('../models/News');
 
-// 鑾峰彇鎵€鏈夋柊闂?exports.getAllNews = async (req, res) => {
+// 获取所有新闻
+exports.getAllNews = async (req, res) => {
   try {
     const news = await News.find({}).sort({ publishDate: -1 });
     res.status(200).json({
@@ -12,12 +13,12 @@
     console.error(error);
     res.status(500).json({
       success: false,
-      error: '鏈嶅姟鍣ㄩ敊璇?,
+      error: '服务器错误',
     });
   }
 };
 
-// 鑾峰彇鐗硅壊鏂伴椈
+// 获取精选新闻
 exports.getFeaturedNews = async (req, res) => {
   try {
     const news = await News.find({ isFeatured: true }).sort({ publishDate: -1 });
@@ -30,12 +31,12 @@ exports.getFeaturedNews = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: '鏈嶅姟鍣ㄩ敊璇?,
+      error: '服务器错误',
     });
   }
 };
 
-// 鑾峰彇鍗曚釜鏂伴椈
+// 获取单个新闻
 exports.getNewsById = async (req, res) => {
   try {
     const news = await News.findById(req.params.id);
@@ -43,7 +44,7 @@ exports.getNewsById = async (req, res) => {
     if (!news) {
       return res.status(404).json({
         success: false,
-        error: '鏂伴椈涓嶅瓨鍦?,
+        error: '新闻不存在',
       });
     }
 
@@ -55,12 +56,12 @@ exports.getNewsById = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: '鏈嶅姟鍣ㄩ敊璇?,
+      error: '服务器错误',
     });
   }
 };
 
-// 鍒涘缓鏂伴椈
+// 创建新闻
 exports.createNews = async (req, res) => {
   try {
     const news = await News.create(req.body);
@@ -73,12 +74,12 @@ exports.createNews = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: '鍒涘缓鏂伴椈澶辫触',
+      error: '创建新闻失败',
     });
   }
 };
 
-// 鏇存柊鏂伴椈
+// 更新新闻
 exports.updateNews = async (req, res) => {
   try {
     const news = await News.findByIdAndUpdate(req.params.id, req.body, {
@@ -89,7 +90,7 @@ exports.updateNews = async (req, res) => {
     if (!news) {
       return res.status(404).json({
         success: false,
-        error: '鏂伴椈涓嶅瓨鍦?,
+        error: '新闻不存在',
       });
     }
 
@@ -101,12 +102,12 @@ exports.updateNews = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: '鏇存柊鏂伴椈澶辫触',
+      error: '更新新闻失败',
     });
   }
 };
 
-// 鍒犻櫎鏂伴椈
+// 删除新闻
 exports.deleteNews = async (req, res) => {
   try {
     const news = await News.findByIdAndDelete(req.params.id);
@@ -114,7 +115,7 @@ exports.deleteNews = async (req, res) => {
     if (!news) {
       return res.status(404).json({
         success: false,
-        error: '鏂伴椈涓嶅瓨鍦?,
+        error: '新闻不存在',
       });
     }
 
@@ -126,7 +127,7 @@ exports.deleteNews = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: '鍒犻櫎鏂伴椈澶辫触',
+      error: '删除新闻失败',
     });
   }
 };

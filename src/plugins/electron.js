@@ -1,58 +1,62 @@
-﻿// Electron鍔熻兘鎻掍欢
+// Electron功能插件
 
 /**
- * Vue Electron鎻掍欢
- * 鐢ㄤ簬鍦╒ue搴旂敤涓畨鍏ㄥ湴璁块棶Electron鍔熻兘
+ * Vue Electron插件
+ * 用于在Vue应用中安全地访问Electron功能
  */
 export default {
   install: (app) => {
-    // 妫€娴嬫槸鍚﹀湪Electron鐜涓?    const isElectron = typeof window !== 'undefined' && 
+    // 检测是否在Electron环境中
+    const isElectron = typeof window !== 'undefined' && 
                        window.electronAPI && 
                        window.electronAPI.isElectron
     
-    // 瀹氫箟Electron鍔熻兘瀵硅薄
+    // 定义Electron功能对象
     const electronPlugin = {
-      // 鐜妫€娴?      isElectron,
+      // 环境检测
+      isElectron,
       
-      // 骞冲彴淇℃伅
+      // 平台信息
       platform: isElectron ? window.electronAPI.getPlatform() : null,
       
-      // 搴旂敤淇℃伅
+      // 应用信息
       appInfo: isElectron ? window.electronAPI.getAppInfo() : null,
       
-      // 鍙戦€佹秷鎭埌涓昏繘绋?      sendMessage: (channel, data) => {
+      // 发送消息到主进程
+      sendMessage: (channel, data) => {
         if (isElectron) {
           window.electronAPI.sendMessage(channel, data)
           return true
         }
-        console.warn('Electron鍔熻兘涓嶅彲鐢? 涓嶅湪Electron鐜涓?)
+        console.warn('Electron功能不可用，不在Electron环境中')
         return false
       },
       
-      // 鐩戝惉鏉ヨ嚜涓昏繘绋嬬殑娑堟伅
+      // 监听来自主进程的消息
       onMessage: (channel, callback) => {
         if (isElectron) {
           window.electronAPI.onMessage(channel, callback)
           return true
         }
-        console.warn('Electron鍔熻兘涓嶅彲鐢? 涓嶅湪Electron鐜涓?)
+        console.warn('Electron功能不可用，不在Electron环境中')
         return false
       },
       
-      // 涓嬭浇鏂囦欢锛圗lectron鐜涓撶敤锛?      downloadFile: (url, filename) => {
+      // 下载文件（Electron环境专用）
+      downloadFile: (url, filename) => {
         return new Promise((resolve, reject) => {
           if (!isElectron) {
-            reject(new Error('涓嬭浇鍔熻兘浠呭湪Electron鐜涓彲鐢?))
+            reject(new Error('下载功能仅在Electron环境中可用'))
             return
           }
           
-          // 鐢熸垚涓嬭浇ID
+          // 生成下载ID
           const downloadId = Date.now().toString()
           
-          // 涓存椂瀛樺偍progress鍥炶皟
+          // 临时存储progress回调
           const progressCallbacks = new Map()
           
-          // 鐩戝惉涓嬭浇杩涘害
+          // 监听下载进度
           window.electronAPI.onMessage('download_progress', (data) => {
             if (data.downloadId === downloadId) {
               const callbacks = progressCallbacks.get(downloadId)
@@ -62,19 +66,21 @@ export default {
             }
           })
           
-          // 鍙戦€佷笅杞借姹?          window.electronAPI.sendMessage('download_request', { url, filename })
+          // 发送下载请求
+          window.electronAPI.sendMessage('download_request', { url, filename })
           
-          // 杩斿洖鎺у埗瀵硅薄
+          // 返回控制对象
           resolve({
             downloadId,
-            // 鎻愪緵鏂规硶鏉ョ洃鍚繘搴?            onProgress: (callback) => {
+            // 提供方法来监听进度
+            onProgress: (callback) => {
               if (!progressCallbacks.has(downloadId)) {
                 progressCallbacks.set(downloadId, {})
               }
               progressCallbacks.get(downloadId).onProgress = callback
-              return this // 鏀寔閾惧紡璋冪敤
+              return this // 支持链式调用
             },
-            // 鍙栨秷涓嬭浇
+            // 取消下载
             cancel: () => {
               window.electronAPI.sendMessage('cancel_download', { downloadId })
               progressCallbacks.delete(downloadId)
@@ -84,13 +90,14 @@ export default {
         })
       },
       
-      // 鏄剧ず绯荤粺閫氱煡锛圗lectron鐜妯℃嫙锛?      showNotification: (title, options) => {
+      // 显示系统通知（Electron环境优先）
+      showNotification: (title, options) => {
         if (isElectron) {
-          // 鍦‥lectron鐜涓紝鍙互閫氳繃IPC鍙戦€佸埌涓昏繘绋嬫樉绀哄師鐢熼€氱煡
+          // 在Electron环境中，可以通过IPC发送到主进程显示原生通知
           window.electronAPI.sendMessage('show_notification', { title, options })
           return true
         } else if (typeof window !== 'undefined' && 'Notification' in window) {
-          // 鍦ㄦ祻瑙堝櫒鐜涓紝灏濊瘯浣跨敤Web Notification API
+          // 在浏览器环境中，尝试使用Web Notification API
           if (Notification.permission === 'granted') {
             new Notification(title, options)
             return true
@@ -107,9 +114,10 @@ export default {
       }
     }
     
-    // 鍏ㄥ眬灞炴€?    app.config.globalProperties.$electron = electronPlugin
+    // 全局属性
+    app.config.globalProperties.$electron = electronPlugin
     
-    // 鎻愪緵缁欑粍鍚堝紡API浣跨敤
+    // 提供给组合式API使用
     app.provide('electron', electronPlugin)
   }
 }

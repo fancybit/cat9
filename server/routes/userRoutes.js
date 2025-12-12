@@ -1,11 +1,11 @@
-﻿// 鐢ㄦ埛鐩稿叧璺敱
+// 用户相关路由
 
 const express = require('express');
 const router = express.Router();
 const userService = require('../services/userService');
 const { authMiddleware, adminMiddleware } = require('../middleware/auth');
 
-// 鐢ㄦ埛娉ㄥ唽
+// 用户注册
 router.post('/register', async (req, res) => {
   const result = await userService.register(req.body);
   if (result.success) {
@@ -15,7 +15,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// 鐢ㄦ埛鐧诲綍
+// 用户登录
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
   const result = await userService.login(username, password);
@@ -26,16 +26,18 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// 鑾峰彇鐢ㄦ埛淇℃伅 - 闇€瑕佽璇?router.get('/me', authMiddleware, async (req, res) => {
+// 获取用户信息 - 需要认证
+router.get('/me', authMiddleware, async (req, res) => {
   const user = await userService.getUserInfo(req.userId);
   if (user) {
     res.json({ success: true, user });
   } else {
-    res.status(404).json({ success: false, error: '鐢ㄦ埛涓嶅瓨鍦? });
+    res.status(404).json({ success: false, error: '用户不存在' });
   }
 });
 
-// 鏇存柊鐢ㄦ埛淇℃伅 - 闇€瑕佽璇?router.put('/me', authMiddleware, async (req, res) => {
+// 更新用户信息 - 需要认证
+router.put('/me', authMiddleware, async (req, res) => {
   const result = await userService.updateUserInfo(req.userId, req.body);
   if (result.success) {
     res.json(result);
@@ -44,33 +46,35 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// 鑾峰彇鐢ㄦ埛閽卞寘淇℃伅 - 闇€瑕佽璇?router.get('/me/wallet', authMiddleware, async (req, res) => {
+// 获取用户钱包信息 - 需要认证
+router.get('/me/wallet', authMiddleware, async (req, res) => {
   const wallet = await userService.getUserWallet(req.userId);
   if (wallet) {
     res.json({ success: true, wallet });
   } else {
-    res.status(404).json({ success: false, error: '鐢ㄦ埛涓嶅瓨鍦? });
+    res.status(404).json({ success: false, error: '用户不存在' });
   }
 });
 
-// 鑾峰彇鐢ㄦ埛浜ゆ槗璁板綍 - 闇€瑕佽璇?router.get('/me/transactions', authMiddleware, async (req, res) => {
+// 获取用户交易记录 - 需要认证
+router.get('/me/transactions', authMiddleware, async (req, res) => {
   const transactions = await userService.getUserTransactions(req.userId);
   res.json({ success: true, transactions });
 });
 
-// 閫氳繃ID鑾峰彇鐢ㄦ埛淇℃伅
+// 通过ID获取用户信息
 router.get('/:userId', async (req, res) => {
   const user = await userService.getUserInfo(req.params.userId);
   if (user) {
-    // 绉婚櫎鏁忔劅淇℃伅
+    // 移除敏感信息
     const { passwordHash, email, ...publicInfo } = user;
     res.json({ success: true, user: publicInfo });
   } else {
-    res.status(404).json({ success: false, error: '鐢ㄦ埛涓嶅瓨鍦? });
+    res.status(404).json({ success: false, error: '用户不存在' });
   }
 });
 
-// 璇锋眰瀵嗙爜閲嶇疆
+// 请求密码重置
 router.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
   const result = await userService.requestPasswordReset(email);
@@ -81,7 +85,7 @@ router.post('/forgot-password', async (req, res) => {
   }
 });
 
-// 楠岃瘉瀵嗙爜閲嶇疆浠ょ墝
+// 验证密码重置令牌
 router.get('/reset-password/:token', async (req, res) => {
   const token = req.params.token;
   const result = await userService.verifyResetToken(token);
@@ -92,7 +96,7 @@ router.get('/reset-password/:token', async (req, res) => {
   }
 });
 
-// 閲嶇疆瀵嗙爜
+// 重置密码
 router.post('/reset-password/:userId/:token', async (req, res) => {
   const { userId, token } = req.params;
   const { newPassword } = req.body;
@@ -104,17 +108,18 @@ router.post('/reset-password/:userId/:token', async (req, res) => {
   }
 });
 
-// 澶村儚涓婁紶鏀寔涓ょ鏂瑰紡锛歮ultipart/form-data鏂囦欢涓婁紶鍜孞SON鏁版嵁涓婁紶
+// 头像上传支持两种方式：multipart/form-data文件上传和JSON数据上传
 const upload = require('../middleware/upload');
 
-// 涓棿浠讹紝鐢ㄤ簬妫€娴嬭姹傜被鍨嬪苟鍐冲畾鏄惁浣跨敤multer
+// 中间件，用于检测请求类型并决定是否使用multer
 function dynamicUploadMiddleware(req, res, next) {
-  // 妫€鏌ontent-Type澶?  const contentType = req.headers['content-type'];
+  // 检查Content-Type头部
+  const contentType = req.headers['content-type'];
   if (contentType && contentType.includes('multipart/form-data')) {
-    // 浼犵粺鏂囦欢涓婁紶锛屼娇鐢╩ulter
+    // 传统文件上传，使用multer
     return upload.single('avatar')(req, res, next);
   }
-  // JSON鏁版嵁涓婁紶锛岀洿鎺ラ€氳繃
+  // JSON数据上传，直接通过
   next();
 }
 
@@ -122,10 +127,10 @@ router.post('/avatar', authMiddleware, dynamicUploadMiddleware, async (req, res)
   try {
     let result;
     if (req.file) {
-      // 浼犵粺鏂囦欢涓婁紶鏂瑰紡
+      // 传统文件上传方式
       result = await userService.uploadAvatar(req.userId, req.file);
     } else {
-      // JSON鏁版嵁涓婁紶鏂瑰紡
+      // JSON数据上传方式
       result = await userService.uploadAvatar(req.userId, null, req.body.avatarData);
     }
     if (result.success) {
@@ -134,8 +139,8 @@ router.post('/avatar', authMiddleware, dynamicUploadMiddleware, async (req, res)
       res.status(400).json(result);
     }
   } catch (error) {
-    console.error('澶村儚涓婁紶閿欒:', error);
-    res.status(500).json({ success: false, error: '鏈嶅姟鍣ㄩ敊璇紝璇风◢鍚庨噸璇? });
+    console.error('头像上传错误:', error);
+    res.status(500).json({ success: false, error: '服务器错误，请稍后重试' });
   }
 });
 
