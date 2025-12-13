@@ -56,6 +56,20 @@ class MetaJadeConnector {
 
       console.log(`正在连接到玄玉节点: ${this.options.bridgeHost}:${this.options.bridgePort}`);
 
+      // 初始化玄玉节点服务
+      const initializeResult = await this.metaJadeNode.start({
+        userCid: options.userCid || 'default-user-cid',
+        port: options.port || 4001,
+        enableRelay: options.enableRelay !== false
+      });
+      console.log('玄玉节点初始化结果:', initializeResult);
+
+      // 检查初始化结果
+      if (!initializeResult) {
+        console.error('玄玉节点初始化失败');
+        return Promise.reject(new Error('玄玉节点初始化失败'));
+      }
+
       // 测试连接，调用getStatus方法检查玄玉节点是否可用
       const status = await this.metaJadeNode.getStatus();
       console.log('玄玉节点状态:', status);
