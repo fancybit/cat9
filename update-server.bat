@@ -45,7 +45,7 @@ echo 4. Connecting to server and updating code
 echo Connecting to server %SERVER_DOMAIN%...
 
 :: Execute SSH command
-ssh -i "%PRIVATE_KEY%" %SSH_USER%@%SERVER_DOMAIN%
+ssh -i "%PRIVATE_KEY%" %SSH_USER%@%SERVER_DOMAIN% ^
     "cd %PROJECT_PATH% && ^
     echo '=== Updating Git code ===' && ^
     git pull && ^
