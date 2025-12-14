@@ -17,6 +17,7 @@ const AuditTeam = () => import('../views/AuditTeam.vue')
 const DHTManager = () => import('../views/DHTManager.vue')
 const ForgotPassword = () => import('../views/ForgotPassword.vue')
 const ResetPassword = () => import('../views/ResetPassword.vue')
+const AboutUs = () => import('../views/AboutUs.vue')
 
 const routes = [
   {
@@ -97,6 +98,11 @@ const routes = [
     path: '/audit-team',
     name: 'AuditTeam',
     component: AuditTeam
+  },
+  {
+    path: '/about-us',
+    name: 'AboutUs',
+    component: AboutUs
   },
   {
     path: '/dht-manager',

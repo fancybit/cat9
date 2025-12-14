@@ -178,7 +178,7 @@
             <h4>余额概览</h4>
             <div class="wallet-balance-display">
               <span class="balance-amount">{{ user?.wallet?.balance || 0 }}</span>
-              <span class="balance-label">Cat9Coins</span>
+              <span class="balance-label">{{ $t('common.metaJades') }}</span>
             </div>
             <div class="wallet-actions">
               <button class="btn btn-primary">充值</button>
@@ -481,19 +481,14 @@ export default {
         const data = await uploadAvatar(file)
         console.log('上传响应数据:', data)
         
-        if (data.success) {
-          // 更新用户头像，确保触发Vue响应式
-          if (this.user) {
-            // 创建新的用户对象，确保Vue能检测到变化
-            this.user = {
-              ...this.user,
-              avatar: data.avatarUrl
-            }
-            alert('头像上传成功')
+        // 更新用户头像，确保触发Vue响应式
+        if (this.user) {
+          // 创建新的用户对象，确保Vue能检测到变化
+          this.user = {
+            ...this.user,
+            avatar: data.avatarUrl
           }
-        } else {
-          console.error('上传失败:', data.error)
-          alert(data.error || '头像上传失败')
+          alert('头像上传成功')
         }
       } catch (error) {
         console.error('头像上传错误:', error)
@@ -879,6 +874,20 @@ export default {
 .icon-bell::before { content: '🔔'; }
 .icon-language::before { content: '🌐'; }
 .icon-logout::before { content: '🚪'; }
+
+/* 协议同意选项样式 */
+.terms-agreement {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.terms-agreement input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  flex-shrink: 0;
+}
 
 /* 响应式设计 */
 @media (max-width: 1024px) {

@@ -114,7 +114,17 @@ class UserService {
   async getUserInfo(userId) {
     try {
       const user = await dal.getUser(userId);
-      return user ? user.toJSON() : null;
+      if (!user) {
+        return null;
+      }
+      // 兼容不同类型的用户对象，有些可能没有toJSON方法
+      return typeof user.toJSON === 'function' ? user.toJSON() : {
+        ...user,
+        // 确保密码哈希等敏感信息不被返回
+        passwordHash: undefined,
+        resetPasswordToken: undefined,
+        resetPasswordExpires: undefined
+      };
     } catch (error) {
       console.error('获取用户信息失败:', error);
       return null;
@@ -137,7 +147,18 @@ class UserService {
       }
 
       const user = await dal.updateUser(userId, updateData);
-      return user ? { success: true, user: user.toJSON() } : { success: false, error: '用户不存在' };
+      if (!user) {
+        return { success: false, error: '用户不存在' };
+      }
+      // 兼容不同类型的用户对象，有些可能没有toJSON方法
+      const userJson = typeof user.toJSON === 'function' ? user.toJSON() : {
+        ...user,
+        // 确保密码哈希等敏感信息不被返回
+        passwordHash: undefined,
+        resetPasswordToken: undefined,
+        resetPasswordExpires: undefined
+      };
+      return { success: true, user: userJson };
     } catch (error) {
       console.error('更新用户信息失败:', error);
       return { success: false, error: '更新失败，请稍后重试' };

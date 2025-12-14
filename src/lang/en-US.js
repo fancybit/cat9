@@ -33,7 +33,7 @@ export default {
     qq: 'QQ Number',
     qqGroup: 'QQ Group',
     groupName: 'Jiuyi Union',
-    copyright: '© {year} Hong Kong Huameng Company Cat9 Entertainment. All rights reserved.'
+    copyright: '© {year} MetaJade Travel Co., Ltd. 玄玉引擎 MetaJadeGaming. All rights reserved.'
   },
   
   // Common
@@ -58,7 +58,8 @@ export default {
     next: 'Next',
     previous: 'Previous',
     back: 'Back',
-    more: 'More'
+    more: 'More',
+    metaJades: 'MetaJades'
   },
   
   // Login/Register
@@ -139,5 +140,31 @@ export default {
     members: 'Team Members',
     faq: 'FAQ',
     contact: 'Contact Us'
+  },
+  
+  // Profile
+  profile: {
+    language: 'Language',
+    languageSettings: 'Language Preferences',
+    interfaceLanguage: 'Interface Language',
+    contentPreferences: 'Content Preferences',
+    contentRegion: 'Content Region',
+    showAdultContent: 'Show Adult Content',
+    languageChanged: 'Language has been updated. Please refresh the page to apply all changes.',
+    regions: {
+      china: 'China Mainland',
+      us: 'United States',
+      japan: 'Japan',
+      korea: 'Korea',
+      global: 'Global'
+    },
+    // Profile Edit
+    editProfile: 'Edit Profile',
+    displayName: 'Display Name',
+    placeholderDisplayName: 'Please enter your display name',
+    email: 'Email',
+    placeholderEmail: 'Please enter your email address',
+    emailCannotEdit: 'Email address cannot be changed',
+    logout: 'Logout'
   }
 }

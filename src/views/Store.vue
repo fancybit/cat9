@@ -44,7 +44,7 @@
             <h4>价格区间</h4>
             <div class="price-range">
               <input type="range" v-model="priceRange.min" min="0" max="1000" step="10">
-              <span>{{ priceRange.min }} - {{ priceRange.max }} Cat9Coins</span>
+              <span>{{ priceRange.min }} - {{ priceRange.max }} {{ $t('common.metaJades') }}</span>
               <input type="range" v-model="priceRange.max" min="0" max="1000" step="10">
             </div>
             <div class="price-options">
@@ -131,10 +131,10 @@
               
               <div class="game-price">
                 <span v-if="game.discount > 0" class="original-price">
-                  {{ game.originalPrice }} Cat9Coins
+                  {{ game.originalPrice }} {{ $t('common.metaJades') }}
                 </span>
                 <span class="current-price" :class="{ free: game.price === 0 }">
-                  {{ game.price === 0 ? '免费' : `${game.price} Cat9Coins` }}
+                  {{ game.price === 0 ? '免费' : `${game.price} ${$t('common.metaJades')}` }}
                 </span>
               </div>
               
@@ -174,18 +174,18 @@
       </div>
       <div class="cart-items">
         <div v-for="item in cart" :key="item.id" class="cart-item">
-          <img :src="item.imageUrl" :alt="item.name" class="cart-item-image">
-          <div class="cart-item-info">
-            <span class="cart-item-name">{{ item.name }}</span>
-            <span class="cart-item-price">{{ item.price }} Cat9Coins</span>
+            <img :src="item.imageUrl" :alt="item.name" class="cart-item-image">
+            <div class="cart-item-info">
+              <span class="cart-item-name">{{ item.name }}</span>
+              <span class="cart-item-price">{{ item.price }} {{ $t('common.metaJades') }}</span>
+            </div>
+            <button class="cart-item-remove" @click="removeFromCart(item.id)">
+              ×
+            </button>
           </div>
-          <button class="cart-item-remove" @click="removeFromCart(item.id)">
-            ×
-          </button>
-        </div>
       </div>
       <div class="cart-summary">
-        <span>总计: {{ cartTotal }} Cat9Coins</span>
+        <span>总计: {{ cartTotal }} {{ $t('common.metaJades') }}</span>
         <button class="btn btn-primary checkout-button">去结算</button>
       </div>
     </div>

@@ -56,7 +56,7 @@ router.post('/transfer', authMiddleware, async (req, res) => {
   }
 });
 
-// 奖励用户Cat9Coins - 需要管理员权限
+// 奖励用户MetaJades - 需要管理员权限
 router.post('/reward', authMiddleware, adminMiddleware, async (req, res) => {
   const { userId, amount, description } = req.body;
   const result = await transactionService.rewardCoins(userId, amount, description);

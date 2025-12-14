@@ -30,7 +30,7 @@
             <li><router-link to="/developer" class="nav-link">{{ $t('navbar.developer') }}</router-link></li>
             <li><router-link to="/audit-team" class="nav-link">{{ $t('navbar.auditTeam') }}</router-link></li>
             <li v-if="isAdmin"><router-link to="/admin" class="nav-link">{{ $t('navbar.admin') }}</router-link></li>
-            <li><a href="#" class="nav-link">{{ $t('navbar.aboutUs') }}</a></li>
+            <li><router-link to="/about-us" class="nav-link">{{ $t('navbar.aboutUs') }}</router-link></li>
           </ul>
         </nav>
 
@@ -112,7 +112,7 @@
           $t('navbar.admin') }}</router-link></li>
         <li v-if="isAdmin"><router-link to="/dht-manager" class="nav-link mobile-link" @click="menuOpen = false">DHT
             管理器</router-link></li>
-        <li><a href="#" class="nav-link mobile-link">{{ $t('navbar.aboutUs') }}</a></li>
+        <li><router-link to="/about-us" class="nav-link mobile-link">{{ $t('navbar.aboutUs') }}</router-link></li>
         <li v-if="isLoggedIn">
           <router-link to="/profile" class="nav-link mobile-link" @click="menuOpen = false">
             <div class="user-avatar">{{ userInitial }}</div>

@@ -33,7 +33,7 @@ export default {
     qq: 'QQ群',
     qqGroup: 'QQ群',
     groupName: '玄玉工作室',
-    copyright: '© {year} 棣欐腐鍗庢ⅵ公司 玄玉引擎 MetaJadeGaming. 保留所有权利。'
+    copyright: '© {year} 玄玉逍游股份有限公司 玄玉引擎 MetaJadeGaming. 保留所有权利。'
   },
   
   // 通用
@@ -58,7 +58,8 @@ export default {
     next: '下一步',
     previous: '上一步',
     back: '返回',
-    more: '更多'
+    more: '更多',
+    metaJades: '玄玉'
   },
   
   // 登录/注册
@@ -228,6 +229,14 @@ export default {
       japan: '日本',
       korea: '韩国',
       global: '全球'
-    }
+    },
+    // 个人资料编辑
+    editProfile: '编辑个人资料',
+    displayName: '显示名称',
+    placeholderDisplayName: '请输入显示名称',
+    email: '邮箱',
+    placeholderEmail: '请输入邮箱地址',
+    emailCannotEdit: '邮箱地址不可修改',
+    logout: '退出登录'
   }
 }

@@ -742,7 +742,7 @@ class DataAccessLayer {
   }
 
   /**
-   * 奖励用户Cat9Coins
+   * 奖励用户MetaJades
    * @param {string} userId - 用户ID
    * @param {number} amount - 奖励金额
    * @returns {Promise<Object>} 操作结果

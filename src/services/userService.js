@@ -36,6 +36,8 @@ class UserService {
               errorMessage = error.response.data?.error || '未授权，请重新登录';
               // 清除本地存储的用户信息和token
               this.logout();
+              // 重定向到登录页
+              window.location.href = '/login';
               break;
             case 403:
               errorMessage = error.response.data?.error || '权限不足，无法访问';
@@ -131,8 +133,9 @@ class UserService {
     try {
       const response = await this.api.put('/me', userData);
       // 更新localStorage中的用户信息
-      localStorage.setItem('user', JSON.stringify(response.data));
-      return response.data;
+      const user = response.data.user || response.data;
+      localStorage.setItem('user', JSON.stringify(user));
+      return user;
     } catch (error) {
       console.error('更新用户信息失败:', error);
       throw error;

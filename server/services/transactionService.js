@@ -1,4 +1,4 @@
-// 交易服务 - 处理Cat9Coin交易和钱包管理相关的业务逻辑
+// 交易服务 - 处理MetaJades交易和钱包管理相关的业务逻辑
 
 const dal = require('../dal');
 
@@ -68,7 +68,7 @@ class TransactionService {
   }
 
   /**
-   * 转账Cat9Coins
+   * 转账MetaJades
    * @param {string} fromUserId - 转出用户ID
    * @param {string} toUserId - 转入用户ID
    * @param {number} amount - 金额
@@ -116,7 +116,7 @@ class TransactionService {
   }
 
   /**
-   * 奖励用户Cat9Coins
+   * 奖励用户MetaJades
    * @param {string} userId - 用户ID
    * @param {number} amount - 金额
    * @param {string} description - 描述
