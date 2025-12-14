@@ -46,14 +46,14 @@ echo Connecting to server %SERVER_DOMAIN%...
 
 :: Execute SSH command
 ssh -i "%PRIVATE_KEY%" %SSH_USER%@%SERVER_DOMAIN%
-    "cd %PROJECT_PATH% &&
-    echo '=== Updating Git code ===' &&
-    git pull &&
-    echo '=== Updating submodules ===' &&
-    git submodule update --remote --init --recursive &&
-    echo '=== Rebuilding frontend ===' &&
-    npm run build &&
-    echo '=== Restarting PM2 services ===' &&
+    "cd %PROJECT_PATH% && ^
+    echo '=== Updating Git code ===' && ^
+    git pull && ^
+    echo '=== Updating submodules ===' && ^
+    git submodule update --remote --init --recursive && ^
+    echo '=== Rebuilding frontend ===' && ^
+    npm run build && ^
+    echo '=== Restarting PM2 services ===' && ^
     pm2 restart all"
 
 echo.
