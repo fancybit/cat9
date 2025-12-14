@@ -1,46 +1,5 @@
 // 玄玉节点连接器 - 用于连接玄玉节点网络
-
-// 尝试加载MetaJadeNode SDK，如果加载失败则使用模拟实现
-let MetaJadeNode;
-try {
-  const metaJadeModule = require('../../metajade-csharp/MetaJadeNode/nodejs');
-  MetaJadeNode = metaJadeModule.MetaJadeNode;
-  console.log('MetaJadeNode SDK加载成功');
-} catch (error) {
-  console.warn('MetaJadeNode SDK加载失败，使用模拟实现:', error.message);
-  
-  // 模拟实现MetaJadeNode类
-  MetaJadeNode = class MockMetaJadeNode {
-    constructor(options = {}) {
-      this.host = options.host || 'localhost';
-      this.port = options.port || 5000;
-    }
-    
-    async start(options = {}) {
-      console.log('模拟玄玉区块链DHT服务初始化成功');
-      return true;
-    }
-    
-    async getStatus() {
-      return { status: 'mock', connected: true };
-    }
-    
-    async saveVar(key, value) {
-      console.log(`模拟玄玉区块链存储数据成功: ${key}`);
-      return true;
-    }
-    
-    async getVar(key) {
-      console.log(`模拟玄玉区块链检索数据: ${key}`);
-      return null;
-    }
-    
-    async addTransaction(txId, fromCid, toCid, amount, metadata = null, timestamp = new Date()) {
-      console.log(`模拟玄玉区块链添加交易: ${txId}`);
-      return { id: txId, fromCid, toCid, amount, metadata, timestamp };
-    }
-  };
-}
+const { MetaJadeNode } = require('../../metajade-csharp/MetaJadeNode/nodejs');
 
 class MetaJadeConnector {
   /**
@@ -53,7 +12,7 @@ class MetaJadeConnector {
     this.connected = false;
     this.dataCache = new Map(); // 本地缓存，提高性能
     this.options = options;
-    // 初始化MetaJadeNode SDK实例（真实或模拟）
+    // 初始化MetaJadeNode SDK实例
     this.metaJadeNode = new MetaJadeNode({
       host: options.bridgeHost || 'localhost',
       port: options.bridgePort || 5000
