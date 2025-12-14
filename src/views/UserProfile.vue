@@ -39,9 +39,6 @@
             <li :class="{ active: activeTab === 'notifications' }" @click="activeTab = 'notifications'">
               <i class="icon-bell"></i> 通知设置
             </li>
-            <li :class="{ active: activeTab === 'language' }" @click="activeTab = 'language'">
-              <i class="icon-language"></i> {{ $t('profile.language') }}
-            </li>
           </ul>
         </nav>
         
@@ -261,75 +258,7 @@
           </div>
         </div>
         
-        <!-- 语言偏好 -->
-        <div v-else-if="activeTab === 'language'" class="profile-tab">
-          <h3>{{ $t('profile.languageSettings') }}</h3>
-          
-          <div class="card">
-            <h4>{{ $t('profile.interfaceLanguage') }}</h4>
-            <div class="language-options">
-              <label class="language-option" :class="{ active: selectedLanguage === 'zh-CN' }">
-                <input type="radio" name="language" value="zh-CN" v-model="selectedLanguage" @change="changeLanguage">
-                <span>简体中文</span>
-              </label>
-              <label class="language-option" :class="{ active: selectedLanguage === 'zh-TW' }">
-                <input type="radio" name="language" value="zh-TW" v-model="selectedLanguage" @change="changeLanguage">
-                <span>繁體中文</span>
-              </label>
-              <label class="language-option" :class="{ active: selectedLanguage === 'en-US' }">
-                <input type="radio" name="language" value="en-US" v-model="selectedLanguage" @change="changeLanguage">
-                <span>English (US)</span>
-              </label>
-              <label class="language-option" :class="{ active: selectedLanguage === 'ja-JP' }">
-                <input type="radio" name="language" value="ja-JP" v-model="selectedLanguage" @change="changeLanguage">
-                <span>日本語</span>
-              </label>
-              <label class="language-option" :class="{ active: selectedLanguage === 'ko-KR' }">
-                <input type="radio" name="language" value="ko-KR" v-model="selectedLanguage" @change="changeLanguage">
-                <span>한국어</span>
-              </label>
-              <label class="language-option" :class="{ active: selectedLanguage === 'es-ES' }">
-                <input type="radio" name="language" value="es-ES" v-model="selectedLanguage" @change="changeLanguage">
-                <span>Español</span>
-              </label>
-              <label class="language-option" :class="{ active: selectedLanguage === 'fr-FR' }">
-                <input type="radio" name="language" value="fr-FR" v-model="selectedLanguage" @change="changeLanguage">
-                <span>Français</span>
-              </label>
-              <label class="language-option" :class="{ active: selectedLanguage === 'de-DE' }">
-                <input type="radio" name="language" value="de-DE" v-model="selectedLanguage" @change="changeLanguage">
-                <span>Deutsch</span>
-              </label>
-              <label class="language-option" :class="{ active: selectedLanguage === 'ru-RU' }">
-                <input type="radio" name="language" value="ru-RU" v-model="selectedLanguage" @change="changeLanguage">
-                <span>Русский</span>
-              </label>
-            </div>
-            
-            <h4 class="mt-30">{{ $t('profile.contentPreferences') }}</h4>
-            <div class="content-preferences">
-              <div class="form-group">
-                <label for="contentRegion">{{ $t('profile.contentRegion') }}</label>
-                <select id="contentRegion" v-model="contentRegion" class="form-control">
-                  <option value="CN">{{ $t('profile.regions.china') }}</option>
-                  <option value="US">{{ $t('profile.regions.us') }}</option>
-                  <option value="JP">{{ $t('profile.regions.japan') }}</option>
-                  <option value="KR">{{ $t('profile.regions.korea') }}</option>
-                  <option value="global">{{ $t('profile.regions.global') }}</option>
-                </select>
-              </div>
-              
-              <div class="form-group">
-                <label class="terms-agreement">
-                  <input type="checkbox" v-model="showAdultContent">
-                  <span>{{ $t('profile.showAdultContent') }}</span>
-                </label>
-              </div>
-            </div>
-            
-            <button class="btn btn-primary mt-30">保存设置</button>
-          </div>
-        </div>
+
       </div>
     </div>
   </div>
@@ -379,9 +308,7 @@ export default {
         inApp: true,
         email: true
       },
-      selectedLanguage: 'zh-CN',
-      contentRegion: 'CN',
-      showAdultContent: false
+
     }
   },
   mounted() {
@@ -404,21 +331,6 @@ export default {
           showOnlineStatus: this.user.showOnlineStatus !== false
         }
       }
-      
-      // 加载保存的语言设置
-      const savedLanguage = localStorage.getItem('preferredLanguage')
-      if (savedLanguage && this.$i18n.availableLocales.includes(savedLanguage)) {
-        this.selectedLanguage = savedLanguage
-        this.$i18n.locale = savedLanguage
-      }
-    },
-    changeLanguage() {
-      // 更新i18n语言
-      this.$i18n.locale = this.selectedLanguage
-      // 保存到localStorage
-      localStorage.setItem('preferredLanguage', this.selectedLanguage)
-      // 提示用户刷新页面以应用所有翻译
-      alert(this.$t('profile.languageChanged'))
     },
     async saveProfile() {
       // 保存个人资料
@@ -811,6 +723,7 @@ export default {
   outline: none;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative; /* 添加相对定位，确保伪元素正确定位 */
 }
 
 .toggle-switch:checked {
@@ -833,39 +746,7 @@ export default {
   transform: translateX(20px);
 }
 
-/* 语言偏好 */
-.language-options {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
 
-.language-option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 15px;
-  background-color: var(--secondary-color);
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 2px solid transparent;
-}
-
-.language-option:hover {
-  background-color: var(--button-secondary-hover);
-}
-
-.language-option.active {
-  border-color: var(--accent-color);
-  background-color: rgba(102, 192, 244, 0.1);
-}
-
-.content-preferences {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
 
 /* 图标占位 */
 .icon-user::before { content: '👤'; }
