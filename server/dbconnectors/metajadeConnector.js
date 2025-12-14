@@ -42,45 +42,129 @@ class MetaJadeConnector {
     });
   }
 
+  // 检查玄玉节点是否正在运行
+  async isMetaJadeNodeRunning() {
+    return new Promise((resolve) => {
+      const net = require('net');
+      const client = new net.Socket();
+      const timeout = 2000;
+      
+      const timer = setTimeout(() => {
+        client.destroy();
+        resolve(false);
+      }, timeout);
+      
+      client.connect(5000, 'localhost', () => {
+        clearTimeout(timer);
+        client.destroy();
+        resolve(true);
+      });
+      
+      client.on('error', () => {
+        clearTimeout(timer);
+        resolve(false);
+      });
+    });
+  }
+  
+  // 启动玄玉节点
+  async startMetaJadeNode() {
+    console.log('尝试启动玄玉节点...');
+    try {
+      const { exec } = require('child_process');
+      const path = require('path');
+      const metaJadePath = path.join(__dirname, '../../metajade-csharp/MetaJadeNode');
+      
+      // 启动玄玉节点，使用dotnet run命令
+      exec(`cd "${metaJadePath}" && dotnet run`, {
+        detached: true,
+        stdio: 'ignore'
+      }, (error, stdout, stderr) => {
+        if (error) {
+          console.error('启动玄玉节点失败:', error.message);
+          return;
+        }
+        if (stderr) {
+          console.error('启动玄玉节点错误:', stderr);
+          return;
+        }
+        console.log('玄玉节点启动成功:', stdout);
+      });
+      
+      // 等待玄玉节点启动
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      
+      return true;
+    } catch (error) {
+      console.error('启动玄玉节点异常:', error);
+      return false;
+    }
+  }
+  
   // 连接方法
   async connect(options = {}) {
     console.log('玄玉节点正在连接中...');
-    try {
-      // 更新连接选项
-      this.options = {
-        ...this.options,
-        ...options,
-        bridgeHost: options.bridgeHost || 'localhost',
-        bridgePort: options.bridgePort || 5000
-      };
+    
+    // 更新连接选项
+    this.options = {
+      ...this.options,
+      ...options,
+      bridgeHost: options.bridgeHost || 'localhost',
+      bridgePort: options.bridgePort || 5000
+    };
 
-      console.log(`正在连接到玄玉节点: ${this.options.bridgeHost}:${this.options.bridgePort}`);
+    console.log(`正在连接到玄玉节点: ${this.options.bridgeHost}:${this.options.bridgePort}`);
+    
+    let connectionAttempts = 0;
+    const maxAttempts = 2;
+    
+    while (connectionAttempts < maxAttempts) {
+      connectionAttempts++;
+      
+      try {
+        // 初始化玄玉节点服务
+        const initializeResult = await this.metaJadeNode.start({
+          userCid: options.userCid || 'default-user-cid',
+          port: options.port || 4001,
+          enableRelay: options.enableRelay !== false
+        });
+        console.log('玄玉节点初始化结果:', initializeResult);
 
-      // 初始化玄玉节点服务
-      const initializeResult = await this.metaJadeNode.start({
-        userCid: options.userCid || 'default-user-cid',
-        port: options.port || 4001,
-        enableRelay: options.enableRelay !== false
-      });
-      console.log('玄玉节点初始化结果:', initializeResult);
+        // 检查初始化结果
+        if (!initializeResult) {
+          console.error('玄玉节点初始化失败');
+          throw new Error('玄玉节点初始化失败');
+        }
 
-      // 检查初始化结果
-      if (!initializeResult) {
-        console.error('玄玉节点初始化失败');
-        return Promise.reject(new Error('玄玉节点初始化失败'));
+        // 测试连接，调用getStatus方法检查玄玉节点是否可用
+        const status = await this.metaJadeNode.getStatus();
+        console.log('玄玉节点状态:', status);
+
+        console.log('玄玉节点连接成功');
+        this.connected = true;
+        return Promise.resolve(true);
+      } catch (error) {
+        console.error(`玄玉节点连接失败 (尝试 ${connectionAttempts}/${maxAttempts}):`, error.message);
+        
+        if (connectionAttempts < maxAttempts && error.message.includes('ECONNREFUSED')) {
+          // 如果是连接被拒绝，尝试启动玄玉节点
+          const isRunning = await this.isMetaJadeNodeRunning();
+          if (!isRunning) {
+            console.log('玄玉节点未运行，尝试启动...');
+            await this.startMetaJadeNode();
+          } else {
+            console.log('玄玉节点已运行，但连接失败，可能是其他原因');
+            break;
+          }
+        } else {
+          // 其他错误或达到最大尝试次数，直接返回错误
+          return Promise.reject(error);
+        }
       }
-
-      // 测试连接，调用getStatus方法检查玄玉节点是否可用
-      const status = await this.metaJadeNode.getStatus();
-      console.log('玄玉节点状态:', status);
-
-      console.log('玄玉节点连接成功');
-      this.connected = true;
-      return Promise.resolve(true);
-    } catch (error) {
-      console.error('玄玉节点连接失败', error.message);
-      return Promise.reject(error);
     }
+    
+    // 如果所有尝试都失败
+    return Promise.reject(new Error('玄玉节点连接失败，已尝试启动玄玉节点但仍无法连接'));
   }
 
   // 断开连接方法
